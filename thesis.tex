@@ -1,0 +1,41 @@
+\documentclass[a4paper, 12pt, twoside]{book}
+\input{preamble.tex}
+
+\begin{document}
+
+
+\frontmatter
+ 
+    \input{1_frontmatter/titlepage.tex}%
+    % Preface
+    % \input{abstract.tex}
+    % \include{dedication.tex}
+    % \include{formal_declaration.tex}
+    \tableofcontents%
+
+
+\mainmatter
+
+    \input{2_mainmatter/1_introduction/0_introduction.tex}% ~5 pages
+
+    \input{2_mainmatter/2_theoretical_background/0_theoretical_background.tex}% ~15 pages
+
+    \input{2_mainmatter/3_state_of_the_art/0_state_of_the_art.tex}% ~10 pages
+
+    \input{2_mainmatter/4_generative_pattern_database/0_generative_pattern_database.tex}% ~25 pages
+
+    \input{2_mainmatter/5_experimental_evaluation/0_experimental_evaluation.tex}% ~20 pages
+
+    \input{2_mainmatter/6_conclusion/0_conclusion.tex}% ~5 pages
+
+
+\backmatter
+
+    % \include{appendix.tex}
+    \printbibliography%
+    % \include{abbreviations.tex}
+    % \include{list_of_abbreviations.tex}
+    % \include{list_of_tables.tex}
+
+
+\end{document}

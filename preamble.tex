@@ -1,0 +1,62 @@
+\usepackage[activate={true,nocompatibility},
+final,
+tracking=true,
+kerning=true,
+spacing=true,
+factor=1100,
+stretch=10,
+shrink=10]{microtype}
+\microtypecontext{spacing=nonfrench}
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, inner=3.0cm, outer=2.5cm, headheight=15pt]{geometry}
+
+\usepackage{amsmath, amssymb, amsthm, bm}
+\newcommand\doubleplus{\mathbin{+\mkern-10mu+}}
+
+% \usepackage{titlesec}
+% \titleformat{\section}
+%   {\normalfont\fontsize{14}{15}\bfseries}
+%   {\thesection}{1cm}{}
+
+% \titleformat{\subsection}
+%   {\normalfont\fontsize{14}{15}\bfseries}
+%   {\thesubsection}{1cm}{}
+
+\usepackage{svg}  
+\usepackage{graphicx}
+\usepackage{transparent}
+\usepackage{eso-pic}
+
+\usepackage{caption}
+\captionsetup{width=0.8\textwidth}
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{csquotes}
+
+\usepackage[colorlinks, linkcolor=black, citecolor=black]{hyperref}
+\usepackage{url}
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\nouppercase\leftmark}
+\fancyhead[RO]{Section \nouppercase\rightmark}
+\fancyhead[RE,LO]{\thepage}
+\fancyfoot[C]{}
+
+\usepackage{lipsum}
+
+
+
