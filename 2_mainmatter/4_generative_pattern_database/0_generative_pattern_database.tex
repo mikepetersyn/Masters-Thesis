@@ -1,20 +1,22 @@
 \chapter{Generative Pattern Database}
+% TODO: investigate the effect of clustering data into regions before applying gen model
+Three main challenges in the context of data dissemination in CIDS were identified. First, intrusion related data is usually of sensitive nature. Thus, the exchange mechanism must not compromise any policies and regulations related to data \textit{privacy}. At the same time, the usability of the data has to be preserved. Second, the data that is subject of the exchange may exhibit large volumes. That constitutes a challenge, since the dissemination is desired to be executed with \textit{minimal overhead} in a timely and scalable fashion. Lastly, the \textit{interoperability} of the CIDS with existing local IDS is an important aspect that influences the practical adoption into security architectures.
 
-Three main challenges in the context of data dissemination in CIDS were identified. First, intrusion related data is usually of sensitive nature. Thus, the exchange mechanism must not compromise \textit{privacy} policies and regulations. At the same time, the usability of the data has to be preserved. Second, the data that is subject of the exchange may exhibit large volumes. That constitutes a challenge, since the dissemination is desired to be executed with a \textit{minimal overhead} in a timely and scalable fashion. Lastly, the \textit{interoperability} of the CIDS with existing local IDS is an important aspect that influences the adoption and operational usability in practice. 
+In summary, existing approaches for data dissemination mainly provide mechanisms for exchanging alert data or single attributes, e.g. IP addresses, as they focus on the correlation of intrusion detection incidents that originate from different sensors. The exchange of actual training data is neglected, possibly due to high data volumes. Thus, these systems lack of mechanisms for the extraction and global persistence of novel attack patterns, e.g. from zero day exploits, that can be used for the training of an intrusion detection sensor.
 
-In summary, existing approaches for data dissemination mainly provide mechanisms for exchanging alert data or single attributes, e.g. IP addresses, as they focus on the correlation of intrusion detection incidents that originate from different sensors. The exchange of actual training data is neglected, possibly due to high data volumes. Thus, these systems lack of mechanisms for the extraction and global persistence of novel attack patterns, e.g. zero day exploits, that can be used for the training of an intrusion detection sensor.
-
-The approach that is presented in this chapter exchanges attack patterns by sharing generative machine learning models that have been trained on partitions of similar data points. Such a model-based dissemination enables the receiving side to sample a synthetic dataset that enhances existing local datasets. This provides two main advantages. First, no original data leaves a local network and therefore does not violate any privacy restrictions. Second, the data is compressed considerably by representing it in form of a generative model. In order to make that mechanism scalable, the monitored data is clustered using random projections. This way, similar data points are partitioned into globally common clusters and provide data parallelism, such that updates on the database is done efficiently in a cluster-wise fashion. Furthermore, this mechanism enables a similarity-based correlation of distributed intrusion events. The integration of both a similarity based correlation of intrusion incidents and a mechanism for sharing attack knowledge makes it possible to extract novel patterns of distributed attacks and provide them globally within the CIDS, resulting in an improved attack detection.
+The approach that is presented in this chapter exchanges attack patterns by sharing generative machine learning models that have been trained on partitions of similar data points. Such a model-based dissemination enables the receiving side to sample a synthetic dataset that enhances existing local datasets. This provides two main advantages. First, no original data leaves a local network and therefore does not violate any privacy restrictions. Second, the data is compressed considerably by representing it in form of a generative model. In order to make that mechanism scalable, the monitored data is clustered using random projections. This way, similar data points are partitioned into globally common clusters, which is exploited as a data parallelism mechanism. Given that, bursty workloads can be served effectively in a cloud deployment. Furthermore, this mechanism enables a similarity-based correlation of distributed intrusion events. The integration of both a similarity based correlation of intrusion incidents and a mechanism for sharing attack knowledge makes it possible to extract novel patterns of distributed attacks and provide them globally within the CIDS, resulting in an improved attack detection.
 
 While Section \ref{sec:system_architecture} gives a high-level overview of the proposed architecture and its main processing primitives, details on the specific algorithms and strategies of the main services are described in Sections \ref{sec:local_indexing} to \ref{sec:classifier_fitting}.
 
-\input{2_mainmatter/4_generative_pattern_database/1_system_architecture.tex}
+\input{2_mainmatter/4_generative_pattern_database/1_high_level_architecture.tex}
 
-\input{2_mainmatter/4_generative_pattern_database/2_local_indexing.tex}
+\input{2_mainmatter/4_generative_pattern_database/2_system_speification.tex}
 
-\input{2_mainmatter/4_generative_pattern_database/3_complexity_estimation.tex}
+% \input{2_mainmatter/4_generative_pattern_database/2_local_indexing.tex}
 
-\input{2_mainmatter/4_generative_pattern_database/4_generative_fitting.tex}
+% \input{2_mainmatter/4_generative_pattern_database/3_complexity_estimation.tex}
 
-\input{2_mainmatter/4_generative_pattern_database/5_classifier_fitting.tex}
+% \input{2_mainmatter/4_generative_pattern_database/4_generative_fitting.tex}
+
+% \input{2_mainmatter/4_generative_pattern_database/5_classifier_fitting.tex}
 

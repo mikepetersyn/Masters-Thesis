@@ -18,6 +18,10 @@ shrink=10]{microtype}
 \usepackage{amsmath, amssymb, amsthm, bm}
 \newcommand\doubleplus{\mathbin{+\mkern-10mu+}}
 
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+
 % \usepackage{titlesec}
 % \titleformat{\section}
 %   {\normalfont\fontsize{14}{15}\bfseries}
@@ -57,6 +61,8 @@ sorting=ynt
 \fancyfoot[C]{}
 
 \usepackage{booktabs}
+
+\newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}
 
 
 

@@ -1,0 +1,45 @@
+A hash function is a function that maps a large input set to a smaller target set. The elements of the input set are called \textit{messages} or \textit{keys} and may be of arbitrary different lengths. The elements of the target set are called \textit{digests} or \textit{hash values} and are of fixed size length. More specifically, we define a hash function as $h: A \rightarrow B : \bm{p} \mapsto \bm{u}$ where $A \subset \mathbb{R}^d$ with $d \in \mathbb{N}$ is the input set and $B=\{0, 1\}^k$ with $k \in \mathbb{N}$ the target set of all bit sequences of fixed size $k$, with $k < d$. 
+
+Typically, hash functions are used for the realization of, e.g. hash tables, data integrity checks, error correction methods or database indexes. Depending on the application, different requirements are imposed on the utilized hash function. In this context, the most important property of a hash function is the probability of a \textit{collision}. A collision occurs when two keys $\bm{p}_1 \neq \bm{p}_2$ are projected onto the same hash value $\bm{u} = h(\bm{p}_1) = h(\bm{p}_2)$. 
+
+Two different types of hash functions were used to develop basic components of the generative pattern database. First, in Section \ref{subsec:cryptographic_hashes}, cryptographic hashes are defined by describing their strict properties. Next, in Section \ref{subsec:locality-sensitive-hashes} locality sensitive hashes are introduced as a contrasting concept to cryptographic hash functions. Finally, a specific family of hash functions that is locality-sensitive is explained in Section \ref{subsec:random_projection}.
+
+\subsection{Cryptographic Hashes} \label{subsec:cryptographic_hashes}
+Security Requirements for cryptograhic hash functions \cite[349]{williamcryptography}
+
+\begin{definition}[First preimage resistance]
+    For any given $\bm{u} \in B$ it is infeasible to determine any $\bm{p} \in A$ such that $h(\bm{p})=\bm{u}$.
+\end{definition}
+In order to be suitable for cryptographic applications, a hash function $h$ should have, among others, three basic properties. The \textit{first preimage resistance} defines, that for any given $\bm{u} \in B$ it is infeasible to determine any $\bm{p} \in A$ such that $h(\bm{p})=\bm{u}$, allowing $h$ to be effectively one-way only. Furthermore, the \textit{second preimage resistance} defines, that for any given $\bm{p} \in A$ it is infeasible to determine any other $\bm{p}' \in A,\; \bm{p} \neq \bm{p}$ which produces the same output, i.e. $h(\bm{p})=h(\bm{p}')$. Lastly, the \textit{strong collision resistance} states, that is infeasible to determine any two distinct $\bm{p} \neq \bm{p}' \in A$ such that $h(\bm{p})=h(\bm{p}')$.
+
+Applications that do not require the hash function to be resistant against adversaries, e.g. hash tables, caches or de-duplication, are usually implemented by using a hash function that exhibits relaxed guarantees on the properties defined before in \ref{subsubsec:cryptographic_hashes} in exchange for significant performance improvements.
+
+\subsection{Locality-Sensitive Hashes} \label{subsec:locality-sensitive-hashes}
+We further refer to a \textit{family} of hash functions $\mathcal{H}: A \rightarrow B$ as a collection of hash functions that have the same domain and range, share a basic structure and are only differentiated by constants.
+Introduced as an algorithm that solves the $cR$-near neighbour problem, locality-sensitive hashing (LSH) \cite{indyk_approximate_1998} maps similar messages to the same digest with higher probability than dissimilar messages. More formally, given a threshold $R \in \mathbb{R}^{>0}$, an approximation factor $c \in \mathbb{R}^{>1}$ and probabilities $P_1, P_2 \in \mathbb{R}^{\geq 0}$, a family $\mathcal{H}: A \rightarrow B$ is called $(R, cR, P_1, P_2)$-sensitive if for any two points $\bm{p}_1, \bm{p}_2 \in A$ and any hash function $h$ chosen uniformly at random from $\mathcal{H}$ the following conditions are satisfied:
+
+\begin{itemize}
+    \item if $|| \bm{p}_1 - \bm{p}_2 || \leq R$ then $P[h(\bm{p}_1)=h(\bm{p}_2)] \geq P_1$,
+    \item if $|| \bm{p}_1 - \bm{p}_2 || \geq cR$ then $P[h(\bm{p}_1)=h(\bm{p}_2)] \leq P_2$.
+\end{itemize}
+
+In order for a $\mathcal{H}$ to be applicable for the $cR$-near neighbour problem, it has to satisfy the inequality $P_1 > P_2$.
+
+
+
+\subsection{Hash Table} \label{subsec:hash_table}
+We describe a hash table operationally by defining a hash function $h$, that maps the keyspace $K$ into the slots of a hash table $T[0 \,.\,.\, S-1], S \in \mathbb{N}$, i.e. $h: K \rightarrow \{0, 1, \dots, S-1\}$ with $S \ll |K|$. Thus, a message with key $k \in K$ hashes to slot $h(k)$. Additionally, $h(k)$ is the hash value of the key $k$.
+
+\subsection{Random Projection}\label{subsec:random_projection}
+Given a message $\bm{x} \in A = \{x \in \mathbb{R}^d : 0 \leq x \leq 1 \}$ and a randomly selected hyperplane defined as $\bm{M}=(a_{ij}) \in \mathbb{R}^{d \times k}$ where $a \sim \mathcal{N}(0, I)$, a \textit{gaussian random projection (GRP)} aims to (\RomanNumeralCaps{1}) reduce the dimensionality from $d$ to $l$ dimensions and (\RomanNumeralCaps{2}) provide a binary encoding by first projecting $\bm{x}$ onto $\bm{M}$ and subsequently applying the sign function to each element of the result, i.e. :
+
+\begin{equation*}
+    h(\bm{x}) = [h(\bm{x}, a_1), \dots, h(\bm{x}, a_k)] \text{ with } h(\bm{x}, a) = sign(\bm{x}^Ta).
+\end{equation*}
+
+The resulting digest is a binary vector $h(\bm{x}) = \bm{u} \in B = \{0, 1\}^l$ that is commonly used as bucket index for storing $\bm{x}$ in a hash table. For any two messages $\bm{x}_1, \bm{x}_2$, the probability of being hashed to the same bucket increases with a decreasing distance, which is given by the angular distance as
+
+\begin{align*}
+    &P[h(\bm{x}_1) = h(\bm{x}_2)] = 1 - \frac{\theta(\bm{x}_1, \bm{x}_2)}{\pi} \\
+    &\text{with }\theta(\bm{x}_1, \bm{x}_2) = \text{cos}^{-1} \bigg( \frac{\bm{x}_1 \cdot \bm{x}_2}{||\bm{x}_1|| \: ||\bm{x}_1||} \Bigg).
+\end{align*}
