@@ -1,0 +1,38 @@
+\section{Intrusion Detection}
+
+Classic security mechanisms, such as encryption or firewalls, are considered as preventive measures for protecting IT infrastructures. However, in order to be able to react to security breaches that have already occurred, additional reactive mechanisms are required. To complement preventive measures, Intrusion Detection Systems (IDSs) have been commercially available since the late 1990s \cite[27]{whitman_principles_2018}.
+
+First, IDSs are described and categorized. In the context of the shortcomings of conventional IDSs for protecting large scale systems, Collaborative Intrusion Detection Systems (CIDSs) are introduced.
+
+\subsection{Intrusion Detection Systems}
+Generally, the main reason for operating an IDS is to monitor and analyze computer networks or systems in order to identify anomalies, intrusions or privacy violations \cite{hindy2020taxonomy}. Specifically, the following three advantages are significant \cite[391]{whitman_principles_2018}.
+
+\begin{itemize}
+    \item IDSs can detect the preliminaries of attacks, in particular the organized gathering of information about networks and defense mechanisms (attack reconnaissance), and thus enable the prevention or mitigation of damage to information assets.
+    \item IDSs can help protect information assets when known vulnerabilities cannot be fixed fast enough, notably in the context of an rapidly changing threat environment.
+    \item The occurrence of unknown security vulnerabilities (zero day vulnerabilities) is not predictable, meaning that no specific preparations can be made for them. However, IDSs can identify processes in the IT system that deviate from the normal state and thus contribute to the detection of zero day attacks
+\end{itemize}
+
+For an effective IDS, it is important to be able to detect as many steps as possible within the typical attack sequence, also called kill chain \cite[393]{whitman_principles_2018}. Since a successful intrusion into a system can be stopped at several points in this sequence, the effectiveness of the IDS increases with its functionality. The following categorization of intrusion attempts according to \cite{kendall1999database} reflects parts of the kill chain mentioned above:
+
+\begin{description}
+    \item[Probing] Probing refers to the preambles of actual attacks, also known as attack reconnaissance. This includes obtaining information about an organization and its network behavior (footprinting) and obtaining detailed information about the used operating systems, network protocols or hardware devices (fingerprinting).
+    \item[Denial of Service (DoS)] DoS refers to an attack aimed at disabling a particular service for legitimate users by overloading the target systems processing capacity.
+    \item[Remote to Local (R2L)] R2L attacks attempt to gain local access to the target system via a network connection.
+    \item[User to Root (U2R)] One step further, U2R attacks start out with user access on the system and gain root access by exploiting vulnerabilities.
+\end{description}
+
+Additionally, IDS are generally categorized by the platform being monitored and the employed attack detection method \cite{milenkoski2015evaluating}. Hence, a distinction is made between Host-based Intrusion Detection System (HIDS) and Network-based Intrusion Detection System (NIDS). While a HIDS resides on a system, known as host, only monitoring local activities, a NIDS resides on a network segment and monitors remote attacks that are carried out across the segment. Furthermore, IDS are categorized into signature-based detection and anomaly-based detection. A signature-based IDS (also called knowledge-based detection) compares the system or network state against a collection of signatures of known attacks. The false positive rate is very low when using signatures, but only when assuming the system is confronted with already known attacks. Typically, this method cannot detect novel \cite[403]{whitman_principles_2018}, metamorphic or polymorphic attacks \cite[236]{szor2005art}. An anomaly-based IDS, on the other hand, creates a statistical baseline profile of the system’s or network’s regular state and compares it with the monitored activities. This allows both known and unknown attacks to be detected, but the frequent occurrence of false-positive estimations is a major challenge. Furthermore, hybrid models of the presented approaches from the respective categories exist.
+
+\subsection{Coordinated Attacks}
+
+\subsection{Collaborative Intrusion Detection Systems}
+
+However, when considering the development of the current threat environment, the effectiveness of conventional intrusion detection systems is limited. Technology trends, such as the internet of things or cloud computing, are main drivers for increasingly blurring corporate boundaries in the context of interconnection of infrastructures and shared resources. This transformation increases the potential attack surface of productive computer systems for large-scale and high-velocity cyber attacks, which traditional IDSs have limited effectiveness due to their isolated nature. For example, such stand-alone IDS will not be able to create connections between security events that occur at different infrastructures simultaneously. Due to the mentioned increase of attack surface that is related to the size of current computer networks, attackers may attempt to obfuscate the characteristic overall sequence of the intrusion by spreading single attack steps.
+
+n order to address the aforementioned security problems of large IT systems, Collaborative Intrusion Detection Systems (CIDSs) have been proposed. In general, a CIDS is a network of several intrusion detection components that collect and exchange data on system security. A CIDS is essentially specified by two different types of components, namely the detection units and the correlation units, and their communication among each other. The detections units can be considered as conventional IDS that monitor a sub-network or a host and by that, generate low-level intrusion alerts. The correlation unit is responsible for merging the low-level intrusion alerts and their further post-processing. This includes, for instance, the correlation of the alerts, the generation of reports or the distribution of the information to the participants of the network. CIDSs pursue the following two goals \cite[24]{vasilomanolakis_collaborative_2016}.
+
+\begin{itemize}
+    \item The aggregation and correlation of data originating from different IDSs creates a holistic picture of the network to be monitored and enables the detection of distributed and coordinated attacks.
+    \item CIDSs can monitor large-scale networks more effectively with the realization of a loadbalancing strategy. By sharing IDS resources across different infrastructures, short-term peak loads can be served, reducing the downtime of individual IDSs.
+\end{itemize}

@@ -1,0 +1,43 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{pgfplots, pgfplotstable}
+\pgfplotsset{compat=1.17}
+
+\pgfplotsset{
+    myaxis/.style={axis line style={<->, {Latex}-{Latex}}}
+}
+
+\pgfplotstableread[col sep=space,row sep=newline,header=true]{
+ts   val
+0.0  1.0
+3.0  1.0
+5.0  -1.05
+8.1  -1.05
+}\mytable
+
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    width=4.25cm,height=4.25cm,
+    axis lines=left,
+    xlabel={$d(p,q)$},ylabel={$P[h(p)=h(q)]$},
+    every axis y label/.style={at={(current axis.north west)},above=2mm},
+    every axis x label/.style={at={(current axis.south east)},below=2mm},
+    ymax=1.2,
+    ymin=-1.15,
+    xmax=8.25,
+    ytick={1, -1.05},
+    yticklabels={$1$, $0$},
+    xtick={3, 5},
+    xticklabels={ $R$, $cR$ },
+    extra x ticks={3, 5},
+    extra x tick labels={},
+    extra y ticks={1.0, -1.05},
+    extra y tick labels={},
+    extra tick style={grid=major, dashed},
+    ] 
+    \addplot[] table {\mytable}; 
+\end{axis}
+\end{tikzpicture}
+\end{document}

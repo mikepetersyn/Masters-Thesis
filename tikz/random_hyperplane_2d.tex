@@ -1,0 +1,52 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows.meta, positioning, angles, quotes}
+\begin{document}
+
+\tikzstyle{arrow} = [-{Latex[length=1.5mm, width=1.0mm]},align=flush center]%
+
+
+\begin{tikzpicture}
+%\draw[very thin,color=gray] (-3,-3) grid (3,3);
+\coordinate (o) at (0,0);
+
+\coordinate (r) at (3,1);
+\coordinate (-r) at (-1.5,-0.5);
+
+\coordinate (r') at (0.5,2);
+\coordinate (-r') at (-0.5,-2);
+
+\coordinate (x) at (1,0);
+
+\coordinate (u) at (2, 1.5);
+\coordinate (-u) at (-2, -1.5);
+\coordinate (v) at (2, -1);
+\coordinate (-v) at (-2, 1);
+
+% \draw[arrow] (-3,0) -- (3,0) node[right] {$x_1$}; 
+% \draw[arrow] (0,-3) -- (0,3) node[above] {$x_2$};
+
+\draw[thick, dashed, draw=red] (-r) -- (r) node[right] {$r$};
+
+\draw[thick, dashed, draw=blue] (-r') -- (r') node[right] {$r'$};
+
+\draw[arrow, draw=red] (o) -- (-0.5, 1.25) node[right] {$r_0$};
+\draw[arrow, draw=blue] (o) -- (-2, 0.5) node[right] {$r'_0$};
+
+\draw[arrow] (-u) -- (u) node[right] {$p_1$};
+\draw[arrow] (-v) -- (v) node[right] {$p_2$};
+
+
+
+
+
+% \draw[dashed] (o|-r) node[left]{$y$} -- (r) -- (r|-o) node[below]{$x$};
+\pic[draw=red, fill=red, fill opacity=0.25] {angle = v--o--u} node[right, red, xshift=0.5cm] {$\theta$};
+\pic[draw=red, fill=red, fill opacity=0.15, angle radius=2cm] {angle = v--o--u};
+\pic[draw=red, fill=red, fill opacity=0.15, angle radius=2cm] {angle = -v--o---u};
+
+\pic[draw=blue, fill=blue, fill opacity=0.25] {angle = -u--o--v} node[right, blue, yshift=-0.75cm] {$\pi - \theta$};
+\pic[draw=blue, fill=blue, fill opacity=0.15, angle radius=2cm] {angle = -u--o--v};
+\pic[draw=blue, fill=blue, fill opacity=0.15, angle radius=2cm] {angle = u--o---v};
+% \node[below left] {$o$};
+\end{tikzpicture}
+\end{document}

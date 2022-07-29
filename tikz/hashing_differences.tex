@@ -1,0 +1,71 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{fontawesome}
+\usetikzlibrary{arrows.meta, automata, calc, positioning, quotes, calc, shadings, shadows, shapes.arrows}
+
+\begin{document}
+    \tikzstyle{index} = [rectangle, minimum width=0.5cm, minimum height=0.5cm, inner xsep=0pt, outer sep=0pt, align=flush center, draw=black]%
+    \tikzstyle{arrow} = [-{Latex[length=1.5mm, width=1mm]},align=flush center, font=\tiny, semithick]% 
+    \definecolor{indexcolor}{RGB}{221,204,119}
+    \begin{tikzpicture}
+
+        \foreach \i in {1, ..., 15}{
+            \node[index, fill=black!10] (\i) at (\i/1.5, 0.5) {};
+        }
+
+        \foreach \j in {1, ..., 15}{
+            \node[index, fill=black!10] (\j*) at (\j/1.5, -2.5) {};
+        }
+
+        
+
+        \node (very similar file 1) at (1, -1) {\faEnvelope};
+        \node[right=0.1cm of very similar file 1] (very similar file 2)  {\faEnvelope};
+        \node[right=0.5cm of very similar file 2, xshift=-0.3cm, inner sep=0pt, align=center] (label very similar) {very \\ similar};
+
+
+        \node (similar file 1) at (5, -1) {\faEnvelope};
+        \node[right=0.1cm of similar file 1] (similar file 2)  {\faEnvelope};
+        \node[right=0.1cm of similar file 2] (label very similar) {\scriptsize similar};
+
+        \node (non similar file 1) at (9, -1) {\faEnvelope};
+        \node[right=0.1cm of non similar file 1] (non similar file 2)  {\faEnvelope};
+        \node[right=0.1cm of non similar file 2] (label very similar) {\scriptsize not similar};
+
+        % cryptographic hashes
+        \draw[arrow] (very similar file 1.north) -- (3.south);
+        \node[index, fill=indexcolor] (1.75) at (3) {};
+        \draw[arrow] (very similar file 2.north) -- (7.south);
+        \node[index, fill=indexcolor] (1.75) at (7) {};
+        \draw[arrow] (similar file 1.north) -- (5.south);
+        \node[index, fill=indexcolor] (1.75) at (5) {};
+        \draw[arrow] (similar file 2.north) -- (10.south);
+        \node[index, fill=indexcolor] (1.75) at (10) {};
+        \draw[arrow] (non similar file 1.north) -- (11.south);
+        \node[index, fill=indexcolor] (1.75) at (11) {};
+        \draw[arrow] (non similar file 2.north) -- (15.south);
+        \node[index, fill=indexcolor] (1.75) at (15) {};
+
+
+
+        % locality sensitive hashes
+        \draw[arrow] (very similar file 1.south) -- (2*.north);
+        \draw[arrow] (very similar file 2.south) -- (2*.north);
+        \node[index, fill=indexcolor] (1.75) at (2*) {};
+        \draw[arrow] (similar file 1.south) -- (6*.north);
+        \node[index, fill=indexcolor] (1.75) at (6*) {};
+        \draw[arrow] (similar file 2.south) -- (7*.north);
+        \node[index, fill=indexcolor] (1.75) at (7*) {};
+        \draw[arrow] (non similar file 1.south) -- (14*.north);
+        \node[index, fill=indexcolor] (1.75) at (14*) {};
+        \draw[arrow] (non similar file 2.south) -- (10*.north);
+        \node[index, fill=indexcolor] (1.75) at (10*) {};
+
+
+        \node (cryptographic) at (10, 1){cryptographic hash};
+        \node (locality sensitive) at (10, -3){locality-sensitive hash};
+
+        
+
+    \end{tikzpicture}
+\end{document}

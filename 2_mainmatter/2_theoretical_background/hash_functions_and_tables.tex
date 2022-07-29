@@ -1,0 +1,26 @@
+\subsection{Hash Functions and Hash Tables} \label{subsec:hash_functions_and_tables}
+A hash function is a function that maps a large input set to a smaller target set. The elements of the input set are called \textit{messages} or \textit{keys} and may be of arbitrary different lengths. The elements of the target set are called \textit{digests} or \textit{hash values} and are of fixed size length. More specifically, we define a hash function as $h: A \rightarrow B : \bm{p} \mapsto \bm{u}$ where $A \subset \mathbb{R}^d$ with $d \in \mathbb{N}$ is the input set and $B=\{0, 1\}^k$ with $k \in \mathbb{N}$ the target set of all bit sequences of fixed size $k$, with $k < d$. 
+
+Typically, hash functions are used for the realization of, e.g. hash tables, data integrity checks, error correction methods or database indexes. Depending on the application, different requirements are imposed on the utilized hash function. In this context, the most important property of a hash function is the probability of a \textit{collision}. A collision occurs when two keys $\bm{p}_1 \neq \bm{p}_2$ are projected onto the same hash value $\bm{u} = h(\bm{p}_1) = h(\bm{p}_2)$. 
+
+We describe a hash table by defining a hash function $h$, that maps the keyspace $K$ into the slots of a hash table $T[0 \,.\,.\, S-1], S \in \mathbb{N}$, i.e. $h: K \rightarrow \{0, 1, \dots, S-1\}$ with $S \ll |K|$. Thus, a message with key $k \in K$ hashes to slot $h(k)$. Additionally, $h(k)$ is the hash value of the key $k$ \cite[256]{cormen2022introduction}.
+
+As cryptographic hash functions are used in systems, where adversaries try to break these systems, different security requirements are defined \cite[349]{williamcryptography}. Thre basic properties describe the resistance of the function against attacks. These properties hold under the assumption that the attacker has limited resources (time and computing power) for the execution of an attack, such that a given resistance makes is virtually impossible to break the hash function.
+
+First, the \textit{first preimage resistance}, also called one-way property, states that it should be easy to generate a hash value from a given key, but practically impossible to generate a key wih a given hash value.
+
+\begin{definition}[First preimage resistance]
+    For any given $\bm{u} \in B$ it is infeasible to determine any $\bm{p} \in A$ such that $h(\bm{p})=\bm{u}$.
+\end{definition}
+
+The \textit{second preimage resistance} describes that it is infeasible to find an alternative message with the same hash value as a given message.
+
+\begin{definition}[Second preimage resistance]
+    For any given $\bm{p} \in A$ it is infeasible to determine any other $\bm{p}' \in A,\; \bm{p} \neq \bm{p}$, such that. $h(\bm{p})=h(\bm{p}')$.
+\end{definition}
+
+A hash function that satisfies the first two properties is referred to as a weak hash function in the cryptographic context. If it satisfies also the property of \textit{strong collision restistance}, it is called a strong hash function. 
+\begin{definition}[Strong collision resistance]
+   It is infeasible to determine any two distinct $\bm{p} \neq \bm{p}' \in A$ such that $h(\bm{p})=h(\bm{p}')$.
+\end{definition}
+

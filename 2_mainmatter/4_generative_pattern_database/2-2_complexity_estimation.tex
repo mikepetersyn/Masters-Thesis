@@ -1,27 +1,45 @@
 \section{Complexity Estimation} \label{sec:complexity_estimation}
 
-A region is said to be complex, if it contains more than one unique label. Otherwise, a region is simple. Since the data within a region already represents a cluster, the existence of multiple classes indicates a more complex decision boundary. On that basis we differentiate how a region is processed in the subsequent services of the pipeline. Furthermore, the complexity state of a region may vary, depending on the scope it is observed. Note that since the projection matrix $\bm{M}$ is initialized with the same values in every $L_m$, all hashes that were computed by $h$ are globally comparable. This means that similar data points from different datasets, e.g. $\bm{x}_i \in D_1$ and $\bm{x}_j^* \in D_2$ may be hashed to the same region $h(\bm{x}_i) = h(\bm{x}^*_j)$. However, it is also possible that that the corresponding labels $y_i \in D_1$ and $y^*_j \in D_2$ are not equal and therefore lead to a different global view on that region's complexity state. Given that, the complexity estimation module acts as a bridge between the local and global components and answers the question, which regions are considered to be complex in a global context. First, an event containing a region $h(\bm{x}'_n)$ is received. This event is then used for retrieving the set of unique labels $Y_{h(\bm{x}'_n)}$ for that particular region stored at $PDB_{L_m}$, which is defined as
+A region is said to be complex, if it contains more than one unique label. Otherwise, a region is simple. Since the data within a region already represents a cluster, the existence of multiple classes indicates a more complex decision boundary. On that basis we differentiate how a region is processed in the subsequent services of the pipeline. Furthermore, the complexity state of a region may vary, depending on the scope it is observed. Note that since the projection matrix $\bm{M}$ is initialized with the same values in every $L_m$, all hashes that were computed by $h$ are globally comparable. This means that similar data points from different datasets, e.g. $\bm{x}_i \in D_1$ and $\bm{x}_j^* \in D_2$ may be hashed to the same region $h(\bm{x}_i) = h(\bm{x}^*_j)$. However, it is also possible that that the corresponding labels $y_i \in D_1$ and $y^*_j \in D_2$ are not equal and therefore lead to a different global view on that region's complexity state. Given that, the complexity estimation module acts as a bridge between the local and global components and answers the question, which regions are considered to be complex in a global context. 
 
- \begin{align*}
-    \bigcup_{y \in Y} \! \Bigl\{ y_n \! \in \! \bigl\{T_{m_n}\bigl(k_\beta(\bm{x}'_n)\bigl)\bigl\} : \! T_{m_n} \! \! \in \! \bigl\{PDB_{L_m}\bigl(k_\alpha(\bm{x}'_n, y) \bigl)\bigl\}\Bigl\}.
- \end{align*}
+\begin{algorithm}
+   \caption{Creating a global complexity state by combining local complexity states}
+   \label{alg:complexity_estimation}
+   \algsetup{indent=2em}
 
- Next, a key $k_\gamma \in K$ is constructed by concatenating an arbitrary prefix constant $p_y$ with the region $h(\bm{x}'_n)$ and the id of the current local infrastructure $m$:
+   \begin{algorithmic}[1]
+         \REQUIRE Regions $R_{\text{in}}$
+         \ENSURE Regions $R_{\text{out}}$
+         \STATE $R_{\text{out}} \leftarrow $ new Set
+         \STATE $m \leftarrow$ getID() \COMMENT{current local infrastructure identifier}
+         \FORALL{$r$ in $R$}
+            \STATE $k_\gamma \leftarrow \text{concatenate}(p_y, r)$
+            \STATE $Y_r \leftarrow PDB_{L_m}[k_\gamma]$
+            \STATE $k_\delta \leftarrow \text{concatenate}(p_y, r, m)$
+            \STATE $PDB_G[k_\delta] \leftarrow Y_r$
+            \STATE $S \leftarrow$ new Set
+            \FORALL{$m$ in $\{1, \dots, M\}$}
+               \STATE $k_\delta \leftarrow \text{concatenate}(p_y, r, m)$
+               \STATE $Y_r \leftarrow PDB_G[k_\delta]$
+               \STATE insert $Y_r$ into $S$
+            \ENDFOR
+            \IF{$|S| > 1$} 
+               \STATE $c_r \leftarrow 1$ 
+            \ELSE 
+               \STATE $c_r \leftarrow 0$ 
+            \ENDIF
+            \STATE $k_\kappa \leftarrow \text{concatenate}(p_c, r)$
+            \IF{$PDB_G[k_\kappa] \neq c_r$}
+               \STATE $PDB_G[k_\kappa] \leftarrow c_r$
+               \STATE insert $r$ into $R_{\text{out}}$
+            \ENDIF
+         \ENDFOR
+         \RETURN $R_{\text{out}}$
+   \end{algorithmic}
+\end{algorithm}
 
-\begin{align*}
-    k_\gamma(h(\bm{x}'_n), m) = p_y \doubleplus h(\bm{x}'_n) \doubleplus m.
-\end{align*}
+First, a set of regions $R$ is received. Then, for each region $r \in R$ the following operations are defined. The set of unique labels $Y_r$ for a particular region has been stored in Algorithm~\ref{alg:indexing} as auxiliary metadata, which is now retrieved by constructing the correspoding key $k_\gamma$. Subsequently, the slot $PDB_{L_m}[k_\gamma]$ is accessed and $Y_r$ is retrieved. In the next step, $Y_r$ has to be stored in the $PDB_G$. Therefore, another key $k_\delta$ is constructed by concatenating the prefix constant $p_y$, the region $r$ and the current local infrastructure identifier $m$, which prevents the collision of information from different infrastructures.
 
- Then, $Y_{h(\bm{x}'_n)}$ is inserted into the global pattern database at the slot $PDB_G(k_\gamma(h(\bm{x}'_n), m))$. The global complexity $c_{h(\bm{x}'_n)} \in \{0, 1\}$ is determined by combining the respective label sets from all local infrastructures and evaluating its cardinality:
- 
- \begin{align*}
-    c_{h(\bm{x}'_n)} = \Bigl| \bigcup_{m \in M} \Bigl\{ PDB_G\bigl(k_\gamma(h(\bm{x}'_n), m)\bigl) \Bigl\}\Bigl| > 1.
- \end{align*}
+After $Y_r$ is stored on a global level at $PDB_G[k_\delta]$, the label set information for that region from all members in the CIDS is aggregated. That aggregated view is essentially the global complexity state for that region. By iterating over all member identifiers in the CIDS, multiple keys $k_\delta$ are constructed. Each key retrieves the specific label set $Y_r$ of a member and inserts its content into the set $S$. 
 
- Finally, the state $c_{h(\bm{x}'_n)}$ is inserted in the global pattern database by constructing a key $k_\kappa \in K$ with a prefix constant $p_c$ and the region $h(\bm{x}'_n)$ as
-
- \begin{align*}
-     k_\kappa(h(\bm{x}'_n)) = p_c \doubleplus h(\bm{x}'_n)
- \end{align*}
-
-and storing it in the slot $PDB_G(k_\kappa(h(\bm{x}'_n)))$. If the state has changed, a response is returned and the corresponding region $h(\bm{x}'_n)$ is sent as an event into the global event channel $C_G$.
+After collecting all label sets in $S$, the complexity state is obtained by simply evaluating the cardinality $|S|$. If there is more than one class in a region on a global scope, that is $|S| > 1$, then assign a true value to the global complexity variable $c_r$. Otherwise, assign a false value. In order to store $c_r$, the key $k_\kappa$ is created by concatenating the prefix constant $p_c$ and the region $r$. Note, that $PDB_G[k_\kappa]$ is only updated, if storing $c_r$ changes the state that is already persisted. This is because, if an update is executed, this information has to be propagated to the next service. Thus, in that case, the region $r$ is inserted into $R_{\text{out}}$, which is subsequently sent into the global event channel $C_G$ in order to inform services in all local infrastructures about the update.

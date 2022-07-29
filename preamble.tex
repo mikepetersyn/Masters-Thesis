@@ -14,9 +14,14 @@ shrink=10]{microtype}
 \usepackage[english]{babel}
 
 \usepackage[a4paper, top=2.5cm, bottom=2.5cm, inner=3.0cm, outer=2.5cm, headheight=15pt]{geometry}
+\usepackage{parskip} 
 
 \usepackage{amsmath, amssymb, amsthm, bm}
-\newcommand\doubleplus{\mathbin{+\mkern-10mu+}}
+
+
+\usepackage{array} % for '\newcolumntype' macro
+\newcolumntype{C}{>{{}}c<{{}}} % for binary and relational operators
+\newcolumntype{L}{>{\displaystyle}l} % automatic display-style math mode, left-aligned
 
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
@@ -36,8 +41,17 @@ shrink=10]{microtype}
 \usepackage{transparent}
 \usepackage{eso-pic}
 
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\renewcommand{\algorithmiccomment}[1]{// #1}
+
 \usepackage{caption}
 \captionsetup{width=0.8\textwidth}
+\usepackage{subcaption}
 
 \usepackage[
 backend=biber,
