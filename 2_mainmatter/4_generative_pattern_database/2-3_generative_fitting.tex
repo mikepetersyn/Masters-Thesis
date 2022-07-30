@@ -1,2 +1,76 @@
 \section{Generative Fitting} \label{sec:generative_fitting}
 
+\begin{algorithm}
+    \caption{Main Loop}
+    \label{alg:generative_fitting}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE Regions $R_{\text{in}}$
+        \ENSURE Regions $R_{\text{out}}$
+
+        \STATE $m \leftarrow$ getID()
+        \FORALL{$r$ in $R_{\text{in}}$}
+            \STATE $k_\kappa \leftarrow \text{concatenate}(p_c, r)$
+            \STATE $c_r \leftarrow PDB_G[k_\kappa]$ % get complexity estimate for that region
+            \STATE $k_\delta \leftarrow \text{concatenate}(p_y, r, m)$
+            \STATE $Y_r \leftarrow PDB_G[k_\delta]$ % get label set of region from global PDB
+            
+            \FORALL{$y$ in $Y_r$}
+                \STATE $k_\omega \leftarrow \text{concatenate}(p_d, r, y, m)$ 
+                \IF{$c_r = 0$}
+                    \STATE delete model in $PDB_G[k_\omega]$
+                \ELSE
+                    \STATE . % retrieve flows
+                    \STATE . % fit gen model
+                \ENDIF
+            
+            \ENDFOR          
+ 
+            
+        \ENDFOR
+
+    \end{algorithmic}
+ \end{algorithm}
+
+% ALGO 3: Generative Fitting
+% get regions from communication channel
+
+% for each region in R
+%   - get complexity estimate for that region
+%   - if region is simple and model is available in that region:
+%       evict model from database
+%   - else (model is complex)
+%       retrieve flows from every HashTable that belongs to that region
+%   - fit generative model() // ALGO 3.1
+%   - persist model(dataset)
+
+
+% ALGO 3.1: Dataset preprocessing
+% catalogs = {}
+% for label in dataset:
+%   if label is not benign:
+%           // split into binary (filter the label that is to be learned into on chunk and the rest into another chunk)
+%           // upsample
+%           // model_selection()
+
+% ALGO 3.2: Model Fitting and Selection
+% n_components <- collection of params[1 - X.shape//2, 2er schritte]
+% cov_types <- collection of params[spherical, diag, full]
+% for each component in n_components:
+%   for each cov_type in cov_types:
+%       X_pca <- pca.fit_transform(X)
+%       gmm.fit(X_pca)
+%       bic <- gmm.bic(X_pca)
+%       // evaluation step
+%           - synth. samples from gmm (how many?)
+%           - inverse transform pca on these samples
+%           - create training dataset
+%           - create testing dataset
+%           - train DecisionTreeClassifier with train dataset
+%           - test DTClf with test dataset
+%           - write balanced accuracy score into catalog
+%           - write bic into catalog
+% sort list_of_gmms by bic (lowest is best)
+% sort list_of_gmms by acc (highest is best)
+% return best gmm
