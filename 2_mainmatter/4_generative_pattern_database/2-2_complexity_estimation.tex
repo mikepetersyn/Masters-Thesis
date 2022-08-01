@@ -43,3 +43,9 @@ First, a set of regions $R$ is received. Then, for each region $r \in R$ the fol
 After $Y_r$ is stored on a global level at $PDB_G[k_\delta]$, the label set information for that region from all members in the CIDS is aggregated. That aggregated view is essentially the global complexity state for that region. By iterating over all member identifiers in the CIDS, multiple keys $k_\delta$ are constructed. Each key retrieves the specific label set $Y_r$ of a member and inserts its content into the set $S$. 
 
 After collecting all label sets in $S$, the complexity state is obtained by simply evaluating the cardinality $|S|$. If there is more than one class in a region on a global scope, that is $|S| > 1$, then assign a true value to the global complexity variable $c_r$. Otherwise, assign a false value. In order to store $c_r$, the key $k_\kappa$ is created by concatenating the prefix constant $p_c$ and the region $r$. Note, that $PDB_G[k_\kappa]$ is only updated, if storing $c_r$ changes the state that is already persisted. This is because, if an update is executed, this information has to be propagated to the next service. Thus, in that case, the region $r$ is inserted into $R_{\text{out}}$, which is subsequently sent into the global event channel $C_G$ in order to inform services in all local infrastructures about the update.
+
+\begin{figure}[t]
+   \centering
+   \includegraphics[width=1\linewidth]{tikz/complexity_estimation.pdf}
+   \caption{Illustration of the complexity estimation algorithm with two local infrastructures. Each local label set at $PDB_{L_m}[k_\kappa]$ is synchronized into the global pattern database at $PDB_G[k\delta]$, where $k_\delta$ is constructed with $m$. Per region, the union operation is applied on the global label sets, whereupon the complexity is derived from.}  \label{fig:complexity_estimation}
+\end{figure}
