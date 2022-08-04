@@ -51,8 +51,8 @@ shrink=10]{microtype}
 \renewcommand{\algorithmiccomment}[1]{// #1}
 
 \usepackage{caption}
-\captionsetup{width=0.8\textwidth}
 \usepackage{subcaption}
+\captionsetup{width=0.8\textwidth}
 
 \usepackage[
 backend=biber,
@@ -78,6 +78,18 @@ sorting=ynt
 \usepackage{booktabs}
 
 \newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}
+
+\usepackage{tikz}
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz/]
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+
+\newcommand{\inputtikz}[1]{%
+  \tikzsetnextfilename{#1}%
+  \input{#1.tex}%
+}
+
 
 
 
