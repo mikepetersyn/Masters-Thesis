@@ -2,6 +2,12 @@
 
 \section{Data Dissemination in Collaborative Intrusion Detection}
 
+\subsection{Requirements}
+
+\subsection{Centralized and Hierarchical CIDS}
+
+\subsection{Distributed Architectures}
+
 The key components for designing a CIDS architecture are described in \cite[p. 34]{vasilomanolakis_collaborative_2016}. Among them, data dissemination is particularly noteworthy as one of the fundamental components for the communication between members. A central aspect is the communication \textit{overhead} that is introduced with the dissemination of alerts and knowledge within a CIDS, which in turn is heavily influenced by the CIDS architecture \cite[p.39]{vasilomanolakis_collaborative_2016}, that can be primarily categorized into centralized, hierarchical and decentralized approaches \cite{Zhou2010} (see Figure \ref{fig:architectures}). Centralized architectures, consisting of multiple monitoring units and a central analysis unit \cite{Cuppens2002}\cite{Miller2003}, suffer from a Single Point of Failure (SPoF) and are limited in their scalability due to a bottleneck, which is introduced by the central analysis unit. However, the SPoF problem can be mitigated if individual components in such a system are implemented redundantly and form a centralized architecture only at the logical level. A bottleneck, on the other hand, is usually avoided by a distributed implementation, which can also logically be regarded as a central data repository. Hierarchical designs exhibit multiple monitoring and analysis units organized in a tree-based topology \cite{Phillip1997,Zhang2001,Nguyen2019}. These systems are restricted in their scalability by the respective instances on higher levels, whose failure results in a malfunction of the respective sub-trees \cite{Zhou2010}. Again, such disadvantages only play a major role in non-redundantly implemented systems. Additionally, there exist approaches that are inherently distributed. Distributed architectures \cite{Vasilomanolakis2015SkipMon,Perez2013,Bye2008,Fung2008,Janakiraman2003}, wherein each participating system has a monitoring and analysis feature and where the communication is based on some form of data distribution protocol, are considered as scalable by design. However, they depend on effective and consistent data dissemination and the data attribute selected for correlation may affect load distribution among participants~\cite{Zhou2010}.
 
 % \begin{figure}[ht]
@@ -48,6 +54,12 @@ To sum up, the following challenges in the context of data dissemination are fou
 \end{description}
 
 \section{Similarity Hashing in Malware Detection}
+
+\subsection{Motivation}
+
+\subsection{Approximate Matching}
+
+\subsection{Locality-Sensitive Hashing in IDS}
 
 % Das Thema Patterns/Similarity Patterns/Pattern Detection umreißen und in den Kontext von ID
 

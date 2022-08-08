@@ -138,7 +138,7 @@ The generative fitting service is the most demanding procedure in the context of
     \text{BIC}(M|D) = (Kd + d +K-1) \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}).
 \end{equation}
 
-
+After that, another evaluation metric is calculated. This process is called adversary evaluation and is based on the principles of generative adversarial networks, where a discriminator function, i.e., classifier, tries to distinguish between the original and synthetic data. In other words, the generative algorithm synthesizes fake data, which resembles the original data. Then, a dataset is assembled by combining fake data with class labels 0 and original data with class labels 1. This dataset is shuffled and split into a training and test proportion Then, a discriminative model is trained on the training proportion, trying to find distinguishing features within both classes, allowing a distinction to be made. Within the evaluation step, the discriminator is tested on its ability to separate fake and original data. The lower the score of the discriminator, the better the generative model. Figure \ref{fig:adversary_evaluation} illustrates two scenarios. In the first scenario (\subref{subfig:adversary_evaluation_bad}), the generative model has been fitted poorly, because the synthetic data can be easily separated from the original data with a decision boundary (dashed line). In the second scenario (\subref{subfig:adversary_evaluation_bad}), the generative model does a good job by creating synthetic data that could not be seperated from the original data.
 
  \begin{algorithm}
     \caption{Model Selection}
@@ -169,6 +169,32 @@ The generative fitting service is the most demanding procedure in the context of
         \RETURN $(\text{GMMs}[kC], \text{PCA}[kC])$
     \end{algorithmic}
  \end{algorithm}
+
+ In order to quantify the performance of the discriminator, a classification metric is calculated. Since the original and synthetic data is equal in size and the posed problem is binary, the accuracy score is a precise metric, calculated as
+
+ \begin{equation}
+    a = \frac{TP + TN}{TP + TN + FP + FN}
+ \end{equation}
+
+ For each iteration in the model selection process, both the BIC and the accuracy score is stored. After all models have been trained on all parameter combinations, a combined metric is calculated from the stored metrics. In order to combine BIC and accuracy, the BIC scores have to be normalized into the range $[0, 1]$ by applying the min-max-normalization from Equation \ref{eq:normalization} to the set of BIC scores. After that, the mean is calculated for each metric pair as
+ 
+ \begin{equation}
+    m = \frac{BIC + a}{2}.
+ \end{equation}
+
+ Finally, the model with the lowest combined metric $m$ is selected. This way, both metrics are equally utilized leading to a balanced theoretical (BIC) and practical (accuracy) guarantee of model fitness. Both the GMM and the PCA parameters are stored in the global pattern database. In numbers, these can range, depending on which type of covariance matrix is chosen for the GMM as already shown in Equation X for the full covariance matrix and in Equation X for the diagonal case. PCA on the other hand, requires a $D \times M$ projection matrix, with $D$ being the dimensions of the original data space and $M$ being the number of dimensions in the projected subspace, leading to a number of $D \times M$ elements to store. Therefore, per region, the number of parameters to store is at least
+ 
+ \begin{equation}
+    n_{y_r} * ( Kd + d +K-1 + Md  )
+ \end{equation}
+
+ and at most
+
+ \begin{equation}
+    n_{y_r} * ((Kd + K(d(d+1)/2)+K-1) + Md  ).
+ \end{equation}
+
+ % store the number of original samples 
 
 
  \begin{algorithm}

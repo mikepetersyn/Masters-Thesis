@@ -1,13 +1,15 @@
 \begin{tikzpicture}
 
     \begin{axis}[
+        width=6cm,height=6cm,
         ymin=-4,
         ymax=4,
         xmin=-2,
-        xmax=1
+        xmax=1,
+        legend pos=south east
     ]
 
-        \addplot[only marks, draw=black, fill=black!40, mark=triangle*]
+        \addplot[only marks, mark size=2pt, draw=black, fill=black!40, mark=triangle*]
             table[x=x,y=y] {
                 x           y
                 -0.4017     1.8157
@@ -61,8 +63,9 @@
                 0.4074     2.5378
                 -0.9939     1.8804
         };
+        \addlegendentry{original data}
 
-        \addplot[only marks, draw=black, fill=black!60,]
+        \addplot[only marks, mark size=2pt, draw=black, fill=black!60,]
             table[x=x,y=y] {
                 x           y
                 -0.5661     1.394
@@ -116,6 +119,7 @@
                 0.4424     2.4034
                 -1.2763     1.7014
         };
+        \addlegendentry{synthetic data}
 
     \end{axis}
     \end{tikzpicture}

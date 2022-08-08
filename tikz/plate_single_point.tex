@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+    \node[obs] (x) {$\bm{x}$};
+    \node[latent, above= of x] (z) {$\bm{z}$};
+    \node[above=of z] (pi) {$\bm{\pi}$};
+    
+    \node[left=of x] (cov) {$\bm{\mathrm{C}}_k$};
+    \node[above=of cov, yshift=-1cm] (mean) {$\overline{\bm{x}}_k$};
+    
+    \plate {plate1} {(mean)(cov)} {$k=1, \dots, K$};
+    
+    \edge{pi}{z};
+    \edge{z}{x};
+    \edge{mean}{x};
+    \edge{cov}{x}
+    
+    
+    \end{tikzpicture}

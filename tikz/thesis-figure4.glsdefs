@@ -1,0 +1,660 @@
+\ifglsentryexists{ids}{}%
+{%
+\gls@defglossaryentry{ids}%
+{%
+name={IDS},%
+sort={IDS},%
+type={acronym},%
+first={Intrusion Detection System\glsspace (IDS)},%
+firstplural={Intrusion Detection Systems\glsspace (IDSs)},%
+text={IDS},%
+plural={IDSs},%
+description={Intrusion Detection System},%
+descriptionplural={Intrusion Detection System\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Intrusion Detection System},%
+longplural={Intrusion Detection Systems},%
+short={IDS},%
+shortplural={IDSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{cids}{}%
+{%
+\gls@defglossaryentry{cids}%
+{%
+name={CIDS},%
+sort={CIDS},%
+type={acronym},%
+first={Collaborative Intrusion Detection System\glsspace (CIDS)},%
+firstplural={Collaborative Intrusion Detection Systems\glsspace (CIDSs)},%
+text={CIDS},%
+plural={CIDSs},%
+description={Collaborative Intrusion Detection System},%
+descriptionplural={Collaborative Intrusion Detection System\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Collaborative Intrusion Detection System},%
+longplural={Collaborative Intrusion Detection Systems},%
+short={CIDS},%
+shortplural={CIDSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{qos}{}%
+{%
+\gls@defglossaryentry{qos}%
+{%
+name={QoS},%
+sort={QoS},%
+type={acronym},%
+first={Quality of Service\glsspace (QoS)},%
+firstplural={Quality of Services\glsspace (QoSs)},%
+text={QoS},%
+plural={QoSs},%
+description={Quality of Service},%
+descriptionplural={Quality of Service\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Quality of Service},%
+longplural={Quality of Services},%
+short={QoS},%
+shortplural={QoSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{pca}{}%
+{%
+\gls@defglossaryentry{pca}%
+{%
+name={PCA},%
+sort={PCA},%
+type={acronym},%
+first={Principal Component Analysis\glsspace (PCA)},%
+firstplural={Principal Component Analysiss\glsspace (PCAs)},%
+text={PCA},%
+plural={PCAs},%
+description={Principal Component Analysis},%
+descriptionplural={Principal Component Analysis\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Principal Component Analysis},%
+longplural={Principal Component Analysiss},%
+short={PCA},%
+shortplural={PCAs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{gmm}{}%
+{%
+\gls@defglossaryentry{gmm}%
+{%
+name={GMM},%
+sort={GMM},%
+type={acronym},%
+first={Gaussian Mixture Model\glsspace (GMM)},%
+firstplural={Gaussian Mixture Models\glsspace (GMMs)},%
+text={GMM},%
+plural={GMMs},%
+description={Gaussian Mixture Model},%
+descriptionplural={Gaussian Mixture Model\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Gaussian Mixture Model},%
+longplural={Gaussian Mixture Models},%
+short={GMM},%
+shortplural={GMMs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{dos}{}%
+{%
+\gls@defglossaryentry{dos}%
+{%
+name={DoS},%
+sort={DoS},%
+type={acronym},%
+first={Denial of Service\glsspace (DoS)},%
+firstplural={Denial of Services\glsspace (DoSs)},%
+text={DoS},%
+plural={DoSs},%
+description={Denial of Service},%
+descriptionplural={Denial of Service\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Denial of Service},%
+longplural={Denial of Services},%
+short={DoS},%
+shortplural={DoSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{r2l}{}%
+{%
+\gls@defglossaryentry{r2l}%
+{%
+name={R2L},%
+sort={R2L},%
+type={acronym},%
+first={Remote to Local\glsspace (R2L)},%
+firstplural={Remote to Locals\glsspace (R2Ls)},%
+text={R2L},%
+plural={R2Ls},%
+description={Remote to Local},%
+descriptionplural={Remote to Local\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Remote to Local},%
+longplural={Remote to Locals},%
+short={R2L},%
+shortplural={R2Ls},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{u2r}{}%
+{%
+\gls@defglossaryentry{u2r}%
+{%
+name={U2R},%
+sort={U2R},%
+type={acronym},%
+first={User to Root\glsspace (U2R)},%
+firstplural={User to Roots\glsspace (U2Rs)},%
+text={U2R},%
+plural={U2Rs},%
+description={User to Root},%
+descriptionplural={User to Root\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={User to Root},%
+longplural={User to Roots},%
+short={U2R},%
+shortplural={U2Rs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{hids}{}%
+{%
+\gls@defglossaryentry{hids}%
+{%
+name={HIDS},%
+sort={HIDS},%
+type={acronym},%
+first={Host-based Intrusion Detection System\glsspace (HIDS)},%
+firstplural={Host-based Intrusion Detection Systems\glsspace (HIDSs)},%
+text={HIDS},%
+plural={HIDSs},%
+description={Host-based Intrusion Detection System},%
+descriptionplural={Host-based Intrusion Detection System\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Host-based Intrusion Detection System},%
+longplural={Host-based Intrusion Detection Systems},%
+short={HIDS},%
+shortplural={HIDSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{nids}{}%
+{%
+\gls@defglossaryentry{nids}%
+{%
+name={NIDS},%
+sort={NIDS},%
+type={acronym},%
+first={Network-based Intrusion Detection System\glsspace (NIDS)},%
+firstplural={Network-based Intrusion Detection Systems\glsspace (NIDSs)},%
+text={NIDS},%
+plural={NIDSs},%
+description={Network-based Intrusion Detection System},%
+descriptionplural={Network-based Intrusion Detection System\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Network-based Intrusion Detection System},%
+longplural={Network-based Intrusion Detection Systems},%
+short={NIDS},%
+shortplural={NIDSs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{dpi}{}%
+{%
+\gls@defglossaryentry{dpi}%
+{%
+name={DPI},%
+sort={DPI},%
+type={acronym},%
+first={Deep Packet Inspection\glsspace (DPI)},%
+firstplural={Deep Packet Inspections\glsspace (DPIs)},%
+text={DPI},%
+plural={DPIs},%
+description={Deep Packet Inspection},%
+descriptionplural={Deep Packet Inspection\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Deep Packet Inspection},%
+longplural={Deep Packet Inspections},%
+short={DPI},%
+shortplural={DPIs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{gan}{}%
+{%
+\gls@defglossaryentry{gan}%
+{%
+name={GAN},%
+sort={GAN},%
+type={acronym},%
+first={Generative Adversarial Network\glsspace (GAN)},%
+firstplural={Generative Adversarial Networks\glsspace (GANs)},%
+text={GAN},%
+plural={GANs},%
+description={Generative Adversarial Network},%
+descriptionplural={Generative Adversarial Network\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Generative Adversarial Network},%
+longplural={Generative Adversarial Networks},%
+short={GAN},%
+shortplural={GANs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{dgm}{}%
+{%
+\gls@defglossaryentry{dgm}%
+{%
+name={DGM},%
+sort={DGM},%
+type={acronym},%
+first={Deep Generative Models\glsspace (DGM)},%
+firstplural={Deep Generative Modelss\glsspace (DGMs)},%
+text={DGM},%
+plural={DGMs},%
+description={Deep Generative Models},%
+descriptionplural={Deep Generative Models\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Deep Generative Models},%
+longplural={Deep Generative Modelss},%
+short={DGM},%
+shortplural={DGMs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{lvm}{}%
+{%
+\gls@defglossaryentry{lvm}%
+{%
+name={LVM},%
+sort={LVM},%
+type={acronym},%
+first={Latent Variable Model\glsspace (LVM)},%
+firstplural={Latent Variable Models\glsspace (LVMs)},%
+text={LVM},%
+plural={LVMs},%
+description={Latent Variable Model},%
+descriptionplural={Latent Variable Model\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Latent Variable Model},%
+longplural={Latent Variable Models},%
+short={LVM},%
+shortplural={LVMs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{ema}{}%
+{%
+\gls@defglossaryentry{ema}%
+{%
+name={EM Algorithm},%
+sort={EM Algorithm},%
+type={acronym},%
+first={Expectation Maximization Algorithm\glsspace (EM Algorithm)},%
+firstplural={Expectation Maximization Algorithms\glsspace (EM Algorithms)},%
+text={EM Algorithm},%
+plural={EM Algorithms},%
+description={Expectation Maximization Algorithm},%
+descriptionplural={Expectation Maximization Algorithm\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Expectation Maximization Algorithm},%
+longplural={Expectation Maximization Algorithms},%
+short={EM Algorithm},%
+shortplural={EM Algorithms},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{mle}{}%
+{%
+\gls@defglossaryentry{mle}%
+{%
+name={MLE},%
+sort={MLE},%
+type={acronym},%
+first={Maximum Likelihood Estimation\glsspace (MLE)},%
+firstplural={Maximum Likelihood Estimations\glsspace (MLEs)},%
+text={MLE},%
+plural={MLEs},%
+description={Maximum Likelihood Estimation},%
+descriptionplural={Maximum Likelihood Estimation\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Maximum Likelihood Estimation},%
+longplural={Maximum Likelihood Estimations},%
+short={MLE},%
+shortplural={MLEs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{onb}{}%
+{%
+\gls@defglossaryentry{onb}%
+{%
+name={ONB},%
+sort={ONB},%
+type={acronym},%
+first={Orthonormal Basis\glsspace (ONB)},%
+firstplural={Orthonormal Basiss\glsspace (ONBs)},%
+text={ONB},%
+plural={ONBs},%
+description={Orthonormal Basis},%
+descriptionplural={Orthonormal Basis\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Orthonormal Basis},%
+longplural={Orthonormal Basiss},%
+short={ONB},%
+shortplural={ONBs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{dr}{}%
+{%
+\gls@defglossaryentry{dr}%
+{%
+name={DR},%
+sort={DR},%
+type={acronym},%
+first={Detection Rate\glsspace (DR)},%
+firstplural={Detection Rates\glsspace (DRs)},%
+text={DR},%
+plural={DRs},%
+description={Detection Rate},%
+descriptionplural={Detection Rate\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Detection Rate},%
+longplural={Detection Rates},%
+short={DR},%
+shortplural={DRs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{fpr}{}%
+{%
+\gls@defglossaryentry{fpr}%
+{%
+name={FPR},%
+sort={FPR},%
+type={acronym},%
+first={False Postive Rate\glsspace (FPR)},%
+firstplural={False Postive Rates\glsspace (FPRs)},%
+text={FPR},%
+plural={FPRs},%
+description={False Postive Rate},%
+descriptionplural={False Postive Rate\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={False Postive Rate},%
+longplural={False Postive Rates},%
+short={FPR},%
+shortplural={FPRs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{fpf}{}%
+{%
+\gls@defglossaryentry{fpf}%
+{%
+name={FPF},%
+sort={FPF},%
+type={acronym},%
+first={Flow Processing Format\glsspace (FPF)},%
+firstplural={Flow Processing Formats\glsspace (FPFs)},%
+text={FPF},%
+plural={FPFs},%
+description={Flow Processing Format},%
+descriptionplural={Flow Processing Format\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Flow Processing Format},%
+longplural={Flow Processing Formats},%
+short={FPF},%
+shortplural={FPFs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{cidsm}{}%
+{%
+\gls@defglossaryentry{cidsm}%
+{%
+name={CIDSM},%
+sort={CIDSM},%
+type={acronym},%
+first={Collaborative Intrusion Detection System Message\glsspace (CIDSM)},%
+firstplural={Collaborative Intrusion Detection System Messages\glsspace (CIDSMs)},%
+text={CIDSM},%
+plural={CIDSMs},%
+description={Collaborative Intrusion Detection System Message},%
+descriptionplural={Collaborative Intrusion Detection System Message\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Collaborative Intrusion Detection System Message},%
+longplural={Collaborative Intrusion Detection System Messages},%
+short={CIDSM},%
+shortplural={CIDSMs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{pii}{}%
+{%
+\gls@defglossaryentry{pii}%
+{%
+name={PII},%
+sort={PII},%
+type={acronym},%
+first={Personally Identifiable Information \glsspace (PII)},%
+firstplural={Personally Identifiable Information s\glsspace (PIIs)},%
+text={PII},%
+plural={PIIs},%
+description={Personally Identifiable Information},%
+descriptionplural={Personally Identifiable Information \acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Personally Identifiable Information},%
+longplural={Personally Identifiable Information s},%
+short={PII},%
+shortplural={PIIs},%
+counter={page},%
+parent={},%
+%
+}%
+}%

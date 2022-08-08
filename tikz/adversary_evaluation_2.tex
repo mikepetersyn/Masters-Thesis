@@ -1,5 +1,6 @@
 \begin{tikzpicture}
     \begin{axis}[
+        width=6cm,height=6cm,
         ymin=-4,
         ymax=4,
         xmin=-2,
@@ -7,7 +8,7 @@
     ]
         \draw[black, dashed, thick] plot[smooth,tension=0.75] coordinates
         {(-3, 3) (-2, 1) (-1, 0.0) (-0.5, -0.6) (0, -0.7) (0.5, -0.6) (1, -0.25) (2, 1)};
-        \addplot[only marks, draw=black, fill=black!40, mark=triangle*]
+        \addplot[only marks,  mark size=2pt, draw=black, fill=black!40, mark=triangle*]
             table[x=x,y=y] {
                 x           y
                 -0.4017     1.8157
@@ -62,7 +63,7 @@
                 -0.9939     1.8804
         };
 
-        \addplot[only marks, draw=black, fill=black!60,]
+        \addplot[only marks,  mark size=2pt, draw=black, fill=black!60,]
             table[x=x,y=y] {
                 x           y
                 -0.5566     -1.9559
