@@ -1,48 +1,42 @@
 \subsection{Random Projection}\label{subsec:random_projection}
 
+This section presents a specific family $\mathcal{H}$ that is locality-sensitive. The algorithm that bases on this family is known as Gaussian Random Projection (GRP). This approach utilizes the cosine similarity of two real vectors in order to determine their similarity. In the course of this section, basic definitions for Cosine Distance and Cosine Similarity are introduced. Then, the individual calculation steps of the approach are specified. Finally, a visual proof verifies that GRP is a form of LSH.
 
-% cosine distance
-cosine distance makes sense in spaces that have dimensions, including euclidean spaces and discrete versions of euclidean spaces \cite[95]{leskovec_rajaraman_ullman_2014}
-
-calculate the cosine distance by first computing the cosine of the angle, and then applying the arc-cosine function to translate an angle in the 0-180 degree range \cite[95]{leskovec_rajaraman_ullman_2014}
-cosine distance between two points is the angle that the angle of that vectors to those points make; this angle is in the range 0 to 180 degrees, regardless of the dimensionality of the Space
+The cosine distance can be applied in euclidean spaces and discrete versions of euclidean spaces \cite[95]{leskovec_rajaraman_ullman_2014}. For two real vectors $p_1$ and $p_2$, the cosine distance between is equal to the the angle between $p_1$ and $p_2$, regardless of the dimensionality of the space. Note, that by applying the arc-cosine function, the result is in the range $[0, 180]$. The following definition formalizes what has been stated so far.
 
 \begin{definition}[Cosine Distance]
     Given two vectors $p_1$ and $p_2$, the cosine distance $\theta(p_1, p_2)$ is the dot product of $p_1$ and $p_2$ divided by their euclidean distances from the origin ($L_2$-norm):
     \begin{equation}
-        \theta(\bm{p}_1, \bm{p}_2) = \text{cos}^{-1} \bigg( \frac{\bm{x}_1 \cdot \bm{x}_2}{||\bm{p}_1|| \: ||\bm{p}_2||} \Bigg).
+        \theta(\bm{p}_1, \bm{p}_2) = \text{cos}^{-1} \bigg( \frac{\bm{p}_1 \cdot \bm{p}_2}{||\bm{p}_1|| \: ||\bm{p}_2||} \Bigg).
     \end{equation}
 \end{definition}
 
-$\theta$ can be divided by $\pi$ to have a distance in the range $[0,1]$.
+The angle $\theta$ can be normalized to the range $[0, 1]$ by dividing it by $\pi$. This way, the cosine similarity is simply given by the following definition.
 
 \begin{definition}[Cosine Similarity]
-    Opposed to the cosine distance, the cosine similarity is defined as
+    The cosine similarity is computed as
     \begin{equation}
-        1- \theta(\bm{p}_1, \bm{p}_2)
+        1- \frac{\theta(\bm{p}_1, \bm{p}_2)}{\pi}
     \end{equation}
 \end{definition}
 
+Introduced in \cite{charikar2002similarity}, the GRP is defined as follows. Given a message $\bm{x} \in A = \{x \in \mathbb{R}^D : 0 \leq x \leq 1 \}$ and a randomly selected hyperplane defined as $\bm{M}=(a_{ij}) \in \mathbb{R}^{D \times K}$ where $a \sim \mathcal{N}(0, I)$, a \textit{gaussian random projection (GRP)} aims to (\RomanNumeralCaps{1}) reduce the dimensionality from $D$ to $L$ dimensions and (\RomanNumeralCaps{2}) provide a binary encoding by first projecting $\bm{x}$ onto $\bm{M}$ and subsequently applying the sign function to each element of the result, which can be formalized as
 
-
-Introduced in \cite{charikar2002similarity}
-Given a message $\bm{x} \in A = \{x \in \mathbb{R}^d : 0 \leq x \leq 1 \}$ and a randomly selected hyperplane defined as $\bm{M}=(a_{ij}) \in \mathbb{R}^{d \times k}$ where $a \sim \mathcal{N}(0, I)$, a \textit{gaussian random projection (GRP)} aims to (\RomanNumeralCaps{1}) reduce the dimensionality from $d$ to $l$ dimensions and (\RomanNumeralCaps{2}) provide a binary encoding by first projecting $\bm{x}$ onto $\bm{M}$ and subsequently applying the sign function to each element of the result, i.e. :
-
-\begin{align*}
+\begin{gather}
     h(\bm{x}) = [h(\bm{x}, a_1), \dots, h(\bm{x}, a_k)] \text{ with } h(\bm{x}, a) = sign(\bm{x}^Ta) \\
     \text{with } sign(x) = \Biggl\{ \begin{array}{lc}
-        0 & \text{if } x < 0 \\
-        1 & \text{if } x \geq 0
-    \end{array}.
-\end{align*}
+        0 & \text{if } x < 0, \\
+        1 & \text{if } x \geq 0.
+    \end{array}
+\end{gather}
 
-The resulting digest is a binary vector $h(\bm{x}) = \bm{u} \in B = \{0, 1\}^l$ that is commonly used as bucket index for storing $\bm{x}$ in a hash table. For any two messages $\bm{x}_1, \bm{x}_2$, the probability of being hashed to the same bucket increases with a decreasing distance, which is given by the angular distance as
+An illistration of a random hyperplane that dissects the three-dimensional space and partitions the data space is given in Figure \ref{subfig:rp_3d}. The resulting digest $h(x)$ is a binary vector $h(\bm{x}) = \bm{u} \in B = \{0, 1\}^l$ that is used as bucket index for storing $\bm{x}$ in a hash table. For any two messages $\bm{x}_1, \bm{x}_2$, the probability of being hashed to the same bucket increases with a decreasing distance, given as
 
 \begin{equation}\label{eq:rp_proba}
-    P[h(\bm{x}_1) = h(\bm{x}_2)] = 1 - \frac{\theta(\bm{x}_1, \bm{x}_2)}{\pi}
+    P[h(\bm{x}_1) = h(\bm{x}_2)] = 1 - \frac{\theta(\bm{x}_1, \bm{x}_2)}{\pi}.
 \end{equation}
 
-\begin{figure}
+\begin{figure}[b]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering

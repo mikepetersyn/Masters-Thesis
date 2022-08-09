@@ -1,11 +1,8 @@
-\documentclass{standalone}
+% \documentclass{standalone}
 
-\usepackage{pgfplots}
+% \usepackage{pgfplots}
 
-\begin{document}
-
-
-\pgfplotsset{colormap={cool}{rgb255(0cm)=(255,255,255); rgb255(1cm)=(0,128,255); rgb255(2cm)=(255,0,255)}}%
+% \begin{document}
 \begin{tikzpicture}[
     declare function={mu1=1;},
     declare function={mu2=2;},
@@ -14,9 +11,10 @@
     declare function={normal(\m,\s)=1/(2*\s*sqrt(pi))*exp(-(x-\m)^2/(2*\s^2));},
     declare function={bivar(\ma,\sa,\mb,\sb)=
         1/(2*pi*\sa*\sb) * exp(-((x-\ma)^2/\sa^2 + (y-\mb)^2/\sb^2))/2;}]
+    \pgfplotsset{colormap={cool}{rgb255(0cm)=(255,255,255); rgb255(1cm)=(0,128,255); rgb255(2cm)=(255,0,255)}}%
 \begin{axis}[
     colormap name=cool,
-    width=15cm,
+    width=10cm, height=9cm,
     view={45}{45},
     enlarge x limits,
     enlarge y limits,
@@ -43,12 +41,9 @@
 \addplot3 [surf, shader=faceted, very thin] {bivar(mu1,sigma1,mu2,sigma2)};
 \addplot3 [domain=-0.5:2.5,samples=31, samples y=0, thick, smooth] (x,4,{normal(mu1,sigma1)});
 \addplot3 [domain=0:4,samples=31, samples y=0, thick, smooth] (-0.5,x,{normal(mu2,sigma2)});
-
-\draw [black, thick] (axis cs:-0.5,2,0) -- (axis cs:2.5,2,0);
-% \draw [black!50] (axis cs:0,-1,0) -- (axis cs:0,4,0);
-
+% \addplot3 [domain=0:4,samples=31, samples y=0, thick, smooth] (x,2,{normal(mu1,0.95)});
 \node at (axis cs:-0.4,1,0.18) [pin=165:$p(x_N)$] {};
 \node at (axis cs:1.45,4,0.32) [pin=-15:$p(x_M)$] {};
 \end{axis}
 \end{tikzpicture}
-\end{document}
+% \end{document}
