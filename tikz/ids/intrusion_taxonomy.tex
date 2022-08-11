@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+    [
+        root/.style = {draw, black},
+        level 1/.style = {draw, black, sibling distance = 4cm},
+        edge from parent/.style={->,black,draw}, 
+        edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode.north)},
+        >=latex, node distance=5.2cm, edge from parent fork down
+    ]%
+    \node[root] {\textbf{Intrusion Type}}
+        child {node[level 1, rounded corners=3pt, align=center, text width=2cm] (method) {Probing}}
+        child {node[level 1, rounded corners=3pt, align=center, text width=2cm] (scope) {DoS}}
+        child {node[level 1, rounded corners=3pt, align=center, text width=2cm] (scope) {R2L}}
+        child {node[level 1, rounded corners=3pt, align=center, text width=2cm] (scope) {U2R}};
+    \end{tikzpicture}

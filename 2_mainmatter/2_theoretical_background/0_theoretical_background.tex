@@ -3,31 +3,11 @@
 % Darstellung der theoretischen Grundlagen
 % Definition der verwendeten Begriffe
 % allgemeine Konzepte und Ansätze
-
-\input{2_mainmatter/2_theoretical_background/1_collaborative_intrusion_detection.tex}
 \newpage
-\input{2_mainmatter/2_theoretical_background/2_0_gaussian_mixture_models.tex}
+\input{2_mainmatter/2_theoretical_background/1_0_intrusion_detection.tex}
 \newpage
-\input{2_mainmatter/2_theoretical_background/3_0_locality_sensitive_hashing.tex}
-
-
-
-% We define a hash function as $h: A \rightarrow B : \bm{p} \mapsto \bm{u}$ where $A \subset \mathbb{R}^d$ with $d \in \mathbb{N}$ is the set of real input data points and $B=\{0, 1\}^l$ with $l \in \mathbb{N}$ the set of all bit sequences of fixed size $l$, with $l < d$. Inputs $\bm{p}$ to hash functions are called \textit{messages} and outputs $\bm{u}$ are called \textit{digests}. 
-% A collision occurs when two messages $\bm{p}_1 \neq \bm{p}_2$ are projected onto the same digest $\bm{u} = h(\bm{p}_1) = h(\bm{p}_2)$. We further refer to a \textit{family} of hash functions $\mathcal{H}: A \rightarrow B$ as a collection of hash functions that have the same domain and range, share a basic structure and are only differentiated by constants.
-
-% \subsection{Cryptographic Hash Functions}
-
-% In order to be suitable for cryptographic applications, a hash function $h$ should have, among others, three basic properties. The \textit{first preimage resistance} defines, that for any given $\bm{u} \in B$ it is infeasible to determine any $\bm{p} \in A$ such that $h(\bm{p})=\bm{u}$, allowing $h$ to be effectively one-way only. Furthermore, the \textit{second preimage resistance} defines, that for any given $\bm{p} \in A$ it is infeasible to determine any other $\bm{p}' \in A,\; \bm{p} \neq \bm{p}$ which produces the same output, i.e. $h(\bm{p})=h(\bm{p}')$. Lastly, the \textit{strong collision resistance} states, that is infeasible to determine any two distinct $\bm{p} \neq \bm{p}' \in A$ such that $h(\bm{p})=h(\bm{p}')$.
-
-% \subsection{Non-Cryptographic Hashes} \label{subsubsec:non-cryptographic-hashes}
-% Applications that do not require the hash function to be resistant against adversaries, e.g. hash tables, caches or de-duplication, are usually implemented by using a hash function that exhibits relaxed guarantees on the properties defined before in \ref{subsubsec:cryptographic_hashes} in exchange for significant performance improvements.
-
-% \subsection{Locality Sensitive Hash Functions}
-% Introduced as an algorithm that solves the $cR$-near neighbour problem, locality-sensitive hashing (LSH) \cite{indyk_approximate_1998} maps similar messages to the same digest with higher probability than dissimilar messages. More formally, given a threshold $R \in \mathbb{R}^{>0}$, an approximation factor $c \in \mathbb{R}^{>1}$ and probabilities $P_1, P_2 \in \mathbb{R}^{\geq 0}$, a family $\mathcal{H}: A \rightarrow B$ is called $(R, cR, P_1, P_2)$-sensitive if for any two points $\bm{p}_1, \bm{p}_2 \in A$ and any hash function $h$ chosen uniformly at random from $\mathcal{H}$ the following conditions are satisfied:
-
-% \begin{itemize}
-%     \item if $|| \bm{p}_1 - \bm{p}_2 || \leq R$ then $P[h(\bm{p}_1)=h(\bm{p}_2)] \geq P_1$,
-%     \item if $|| \bm{p}_1 - \bm{p}_2 || \geq cR$ then $P[h(\bm{p}_1)=h(\bm{p}_2)] \leq P_2$.
-% \end{itemize}
-
-% In order for a $\mathcal{H}$ to be applicable for the $cR$-near neighbour problem, it has to satisfy the inequality $P_1 > P_2$.
+\input{2_mainmatter/2_theoretical_background/2_0_locality_sensitive_hashing.tex}
+\newpage
+\input{2_mainmatter/2_theoretical_background/3_0_gaussian_mixture_models.tex}
+\newpage
+\input{2_mainmatter/2_theoretical_background/4_0_principal_component_analysis.tex}
