@@ -8,11 +8,12 @@
  
     \input{1_frontmatter/titlepage.tex}%
     % Preface
-    % \input{abstract.tex}
+    \input{1_frontmatter/abstract.tex}
     % \include{dedication.tex}
     % \include{formal_declaration.tex}
-    \tableofcontents%
-    \input{1_frontmatter/acronyms.tex}
+    \begin{spacing}{1.15}
+        \tableofcontents%
+    \end{spacing}
 
 
 \mainmatter
@@ -35,10 +36,17 @@
 \backmatter
 
     % \include{appendix.tex}
+    \addcontentsline{toc}{chapter}{Bibliography}
     \printbibliography%
-    % \include{abbreviations.tex}
-    % \include{list_of_abbreviations.tex}
-    % \include{list_of_tables.tex}
+    \cleardoublepage
+    \input{3_backmatter/acronyms.tex}
+    \clearpage
+    \printglossary[type=\acronymtype, title=List of Abbreviations, toctitle=List of Abbreviations]
+    \listoftables
+    \listoffigures
+    \addcontentsline{toc}{chapter}{List of Algorithms}
+    \listofalgorithms
+
 
 
 \end{document}
