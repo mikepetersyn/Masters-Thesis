@@ -1,4 +1,7 @@
-\newacronym{ids}{IDS}{Intrusion Detection System}
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\newacronym[shortplural={IDSs},longplural=Intrusion Detection Systems]{ids}{IDS}{Intrusion Detection System}
 
 \newacronym{cids}{CIDS}{Collaborative Intrusion Detection System}
 
@@ -40,5 +43,174 @@
 
 \newacronym{cidsm}{CIDSM}{Collaborative Intrusion Detection System Message}
 
-\newacronym{pii}{PII}{Personally Identifiable Information }
+\newacronym{nn}{NN}{nearest-neighbour search problem}
 
+\newacronym{cnn}{$c$-ANN}{$c$-approximate nearest-neighbour problem}
+
+\newacronym{crnn}{$cr$-ANN}{$cr$-approximate nearest-neighbour problem}
+
+\newacronym{lsh}{LSH}{locality-sensitive hashing}
+
+\newacronym{grp}{GRP}{gaussian random projection}
+
+
+
+% List of Symbols
+
+\newglossaryentry{general}{name={General Mathematical Notation}, description={\nopostdesc}}
+
+\newglossaryentry{naturals}{
+      name=\ensuremath{\mathbb{N}},
+      description=natural numbers,
+      parent=general
+    }
+
+\newglossaryentry{reals}{
+      name=\ensuremath{\mathbb{R}},
+      description=real numbers,
+      parent=general,
+    }
+
+\newglossaryentry{ndim}{
+  name=\ensuremath{\mathbb{R}^n},
+  description=$n$-dimensional vector space of real numbers,
+  parent=general
+}
+
+\newglossaryentry{scalars}{     
+      name=\ensuremath{a, b, c},
+      description=scalars are lowercase,
+      parent=general
+    }
+
+\newglossaryentry{vectors}{
+      name=\ensuremath{\bm{x}, \bm{y}, \bm{z}},
+      description=vectors are bold lowercase,
+      parent=general
+    }
+
+\newglossaryentry{matrices}{
+      name=\ensuremath{\bm{A}, \bm{B}, \bm{C}},
+      description=matrices are bold uppercase,
+      parent=general
+    }
+
+\newglossaryentry{set}{
+  name=\ensuremath{\mathcal{A}, \mathcal{B}, \mathcal{C}},
+  description=sets,
+  parent=general
+}
+
+\newglossaryentry{transpose}{
+  name=\ensuremath{\bm{x}^\top, \bm{A}^\top},
+  description=transpose of a vector or matrix,
+  parent=general
+}
+
+\newglossaryentry{inverse}{
+  name=\ensuremath{\bm{A}^{-1}},
+  description=inverse of a matrix,
+  parent=general
+}
+
+\newglossaryentry{dot}{
+  name=\ensuremath{\bm{x}^\top \bm{y}},
+  description=dot product of $\bm{x}$ and $\bm{y}$,
+  parent=general
+}
+
+\newglossaryentry{tuples}{
+  name=\ensuremath{B = (\bm{b_1}, \bm{b_2}, \bm{b_3})},
+  description=(ordered) tuple,
+  parent=general
+}
+
+\newglossaryentry{matrix_colvecs}{
+  name=\ensuremath{\bm{B} = [\bm{b_1}, \bm{b_2}, \bm{b_3}]},
+  description=matrix of column vectors stacked horizontally,
+  parent=general
+}
+
+\newglossaryentry{set_vecs}{
+  name=\ensuremath{\mathcal{B} = \{\bm{b_1}, \bm{b_2}, \bm{b_3}\}},
+  description=set of vectors,
+  parent=general
+}
+
+\newglossaryentry{element}{
+  name=\ensuremath{a \in \mathcal{A}},
+  description=$a$ is element of the set $\mathcal{A}$,
+  parent=general
+}
+
+\newglossaryentry{notelement}{
+  name=\ensuremath{a \notin \mathcal{A}},
+  description=$a$ is not element of the set $\mathcal{A}$,
+  parent=general
+}
+
+\newglossaryentry{set_cond}{
+  name=\ensuremath{\{ a \in \mathcal{A} \, | \, \phi \}},
+  description=set containing all $a \in \mathcal{A}$ meeting condition $\phi$,
+  parent=general
+}
+
+\newglossaryentry{cardinality}{
+  name=\ensuremath{|\mathcal{A}|},
+  description=cardinality of the set $\mathcal{A}$,
+  parent=general
+}
+
+\newglossaryentry{much_greater}{
+  name=\ensuremath{a \gg b},
+  description=$a$ is much greater than $b$,
+  parent=general
+}
+
+
+
+
+\newglossaryentry{specific}{name={Architecture Specification}, description={\nopostdesc}}
+
+\newglossaryentry{num_samples}{
+  name=\ensuremath{N \in \mathbb{N}},
+  description=number of data points; indexed by \ensuremath{n = 1, \dots, N},
+  parent=specific
+}
+
+\newglossaryentry{num_dimensions}{
+  name=\ensuremath{D \in \mathbb{N}},
+  description=number of dimensions; indexed by \ensuremath{d = 1, \dots, D},
+  parent=specific
+}
+
+\newglossaryentry{num_infrastructures}{
+  name=\ensuremath{M \in \mathbb{N}},
+  description=number of members in the CIDS; indexed by \ensuremath{m = 1, \dots, M},
+  parent=specific
+}
+
+\newglossaryentry{data}{
+  name=\ensuremath{\mathcal{X}},
+  description=input space,
+  parent=specific
+}
+
+\newglossaryentry{targets}{
+  name=\ensuremath{\mathcal{Y}},
+  description={space of true targets, i.e., classes},
+  parent=specific
+}
+
+\newglossaryentry{dataset}{
+  name=\ensuremath{\mathcal{D}},
+  description=training dataset,
+  parent=specific
+}
+
+
+
+  
+
+
+\end{document}

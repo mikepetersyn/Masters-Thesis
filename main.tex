@@ -1,0 +1,38 @@
+\documentclass[a4paper, 12pt, twoside]{book}
+\input{preamble.tex}
+\subfile{3_backmatter/acronyms.tex}
+\begin{document}
+
+\frontmatter
+    \subfile{1_frontmatter/titlepage}
+    \subfile{1_frontmatter/abstract}
+    % \subfile{dedication.tex}
+    % \subfile{formal_declaration.tex}
+    \begin{spacing}{1.35}
+        \tableofcontents%
+    \end{spacing}
+
+\mainmatter
+    \subfile{2_mainmatter/1_introduction/introduction}
+    \subfile{2_mainmatter/2_preliminaries/preliminaries}
+    \subfile{2_mainmatter/3_state_of_the_art/state_of_the_art}
+    \subfile{2_mainmatter/4_generative_pattern_database/generative_pattern_database.tex}
+    \subfile{2_mainmatter/5_experimental_evalution/experimental_evaluation}
+    \subfile{2_mainmatter/6_conclusion/conclusion}
+
+\backmatter
+%     % \include{appendix.tex}
+    \addcontentsline{toc}{chapter}{Bibliography}
+    \printbibliography%
+    \glsaddall
+    \printnoidxglossary[title=List of Abbreviations, type=acronym, sort=letter, style=mylong]
+    \printnoidxglossary[title=List of Symbols, sort=def, style=alttree]
+    \listoftables
+    \listoffigures
+    \addcontentsline{toc}{chapter}{List of Algorithms}
+    \listofalgorithms
+
+    
+
+    
+\end{document}

@@ -48,8 +48,8 @@ Two types of data are extracted within individual regions. First, metadata of lo
     \label{fig:global_view}
 \end{figure}
 
-\subsection{Creation}
+
 As shown in Figure \ref{fig:global_view}, each view is partitioned by a common projection function into an identical set of regions. Each local view contains original datapoints from its respective dataset. In this example, there exist three different classes globally, which occur differently in each local dataset. Examining a specific region, the combination of unique classes within all local views determines its complexity on a global level. If a region contains more than one class, it potentially exhibits a non-linear decision boundary, hence it is called complex. Otherwise, a region is called simple. Attack data within a complex region, seperated by its label, is used as training data for a generative algorithm. Subsequently, the resulting model is transferred to the global view. 
 
-\subsection{Usage}
+
 A synchronization process disseminates the region complexity estimations and the generative models to all local views. By sampling data from multiple generative models, a synthetic dataset is assembled, which is blended into the respective local datasets for enhancing the subsequent training of a discriminative model.

@@ -1,0 +1,253 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+
+\subsection{Generative Fitting} \label{sec:generative_fitting}
+
+The generative fitting service is the most demanding procedure in the context of processing resources. The service represents the filtering and compression operations presented in Section \ref{sec:high_level_overview}. There are two scenarios based on the region's complexity. If the region is not complex, no further actions are taken except it formally was complex. Then, existing models have to be deleted, since they are not longer used. And if the region is complex, generative models are provided, which represent the exchange medium for information. More specifically, multiple \gls{gmm} are fitted on each label-subset of a region's data, which was stored in the indexing step in Section~\ref{sec:local_indexing}. According to a model selection process that evaluates the efficacy of each GMM, the best model is stored in the global pattern database, accessible to every member in the CIDS. 
+
+The purpose of that elaborate process is that synthetic data can be sampled from these models. This way, every member has access to the global knowledge from all local infrastructures in order to enhance the local dataset that is used for fitting a classifier. Thus, this service is the key for providing \textit{privacy} and \textit{minimal overhead} while exchanging information. Considering the length and complexity of the complete algorithm, the main procedure is outlined first in Algorithm~\ref{alg:generative_fitting} and then the details on important sub-routines are elaboreted subsequently. 
+
+Regions that have been updated are received as events $r \in \mathcal{R}_\text{in}$. As the data is further organized per label within a region, the labels for a region are retrieved. Then, if the region is not complex, no model fitting is executed. Instead, potentially existing models are deleted from storage. This is the case, if the complexity status of the has been changed from complex to simple. But if the region is complex, the generative model fitting procedure is triggered. Even if there are already models for the corresponding combination of region and label, an update of these models is initialized. For that, every hash table within a region, each containing data with a common label, is collected and added to a list. Subsequently, preprocessing operations prepare the collected region data for the model fitting. Details on the data preparation are described in Algorithm \ref{alg:data_preprocessing}. After that, the Model Selection process is started sequentially for each available label in the region. That way, the models are only fitted on data with the label in focus but evaluated with the complete region data. Specifics on the model selection are elaborated in Algorithm~\ref{alg:model_selection}. Finally, the best fitted model is stored in the global pattern database. 
+
+\begin{algorithm}
+    \caption{Retrieve Dataset from Region (Main Procedure)}
+    \label{alg:generative_fitting}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE Regions $\mathcal{R}_{\text{in}}$
+        \ENSURE Regions $\mathcal{R}_{\text{out}}$
+
+        \STATE $m \leftarrow$ getID()
+        \FORALL{$r$ in $\mathcal{R}_{\text{in}}$}
+
+            \STATE $\kappa \leftarrow \text{concatenate}(p_c, r)$
+            \STATE $\delta \leftarrow \text{concatenate}(p_y, r, m)$
+
+            \STATE $c_r \leftarrow PDB_G[\kappa]$
+            \STATE $\mathcal{S}_r \leftarrow PDB_G[\delta]$ % get label set of region from global PDB
+
+            \IF{$c_r = 0$}
+                \FORALL{$y$ in $\mathcal{S}_r$}
+                    \STATE $\omega \leftarrow \text{concatenate}(p_d, r, y, m)$ 
+                    \STATE delete model in $PDB_G[\omega]$
+                \ENDFOR
+            \ELSE
+                \STATE $L \leftarrow$ new List
+                \FORALL{$y$ in $\mathcal{S}_r$}
+                    \STATE $\alpha \leftarrow \text{concatenate}(p_x, r, y)$
+                    \STATE $H \leftarrow PDB_{L_m}[\alpha]$
+                    \STATE append $H$ to $L$
+                \ENDFOR
+
+                \STATE $D \leftarrow \text{preprocessing}(L)$
+
+                \FORALL{$y$ in $\mathcal{S}_r$}
+                    \STATE $\text{GMM} \leftarrow \text{modelSelection}(D, y)$
+                    \STATE $\omega \leftarrow \text{concatenate}(p_d, r, y, m)$ 
+                    \STATE $PDB_G[\omega] \leftarrow \text{GMM}$
+                \ENDFOR
+            \ENDIF
+            
+
+
+        \ENDFOR
+    \end{algorithmic}
+ \end{algorithm}
+
+
+ \begin{algorithm}
+    \caption{Preprocess Data}
+    \label{alg:data_preprocessing}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE List of HashMaps $L$
+        \ENSURE Dataset $D$
+        
+        \STATE $D \leftarrow \text{getValues(L)}$
+        \FORALL{label in $D$}
+            \IF{label $\neq 0$}
+                \STATE \COMMENT{split into binary}
+                \STATE $(X_a, y_a) \leftarrow (X, y)$ where $y=\text{label}$ 
+                \STATE $(X_b, y_b) \leftarrow (X, y)$ where $y \neq \text{label}$
+                \IF{$X.\text{shape}[0] < X.\text{shape}[1]$}
+                    \STATE $X_a, y_a \leftarrow \text{upsample}(X_a, y_a)$
+                \ENDIF
+            \ENDIF
+        \ENDFOR
+        \RETURN $(X_a, y_a), (X_b, y_b)$
+    \end{algorithmic}
+ \end{algorithm}
+
+
+ So far, the main procedure has been outlined. Next, the details on the data preprocessing and the model selection are elaborated.
+ Starting with the preprocessing.
+
+ Splitting the dataset into a binary problem, such that the label that is currently in focus is the normal class and all other classes are attack classes. That way, the generative model can be evaluated using the machine learning efficacy method in the later course. 
+
+ The upsampling process ensures that the fitting algorithm for the GMM is able to work. In practice, the number of samples has to be at least equal to the number of components. As some label subsets of a region may exhibit a low number of samples, in extreme cases only a single sample, an upsampling process is implemented. In particular, a set of nearest neighbours is generated per sample. First, the number of samples to generate is determined by the difference of the dimensionality of the data and the number of data points. Then, in order to generate from each data point equivalently, the number of nearest neighbours to sample is determined per data points. That is, the complete number of points to resample divided by the number of samples with an interger division (resulting in an integer). In case, the result of the interger division is zero, one is added to the result. Then for each data point $x$ in the set $X$, nearest neighbours are generated by sampling from a uniform distribution. This is done by considering each feature value of $x$ individually, such that the nearest neighbour is the concatenation of the sampled feature values as $x^* = [p(x_1), p(x_2), \dots, p(x_M)]$, where $p(x_m)=\frac{1}{b-a}$ within the interval $[x_m-\delta, x_m+\delta)$. The value $\delta$ controls the interval of the uniform distribution. The larger the value for $\delta$, the further the newly generated values deviate from the orginal feature values. In Figure \ref{subfig:hist_nn} the value for a single feature $x_m$ is drawn uniformly at random. The original value of the feature was $x_m=4$, which was extended by $\delta=1\cdot10^{-2}$. By choosing a relatively small value for $\delta$, it is ensured that the generated nearest neighbours do not alter the original data distribution significantly, while enabling the subsequent fitting of the GMM for that set of data points.
+
+
+ \begin{figure}%
+    \centering%
+    \begin{subfigure}[b]{0.49\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/uniform_distribution}%
+        \caption{The pdf of a uniform distribution is $p(x) = \frac{1}{b-a}$ within the interval $[a, b)$, and zero elsewhere.}%
+        \label{subfig:uniform_dist}%
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[b]{0.49\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/histogram_nearest_neighbour}%
+        \caption{Histogram of \numprint{1000} samples drawn uniformly over the interval $[x-\delta, x+\delta)$ where $x=0.4$ and $\delta=1 \cdot 10^{-2}$.}%
+        \label{subfig:hist_nn}%
+    \end{subfigure}%
+    \caption{Nearest neighbours are generated by sampling each feature value from a the uniform distribution.}%
+    \label{fig:uniform_dist_nn}%
+\end{figure}%
+
+ \begin{algorithm}
+    \caption{Upsampling}
+    \label{alg:upsampling}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE Collection of datapoints $X$
+        \ENSURE Upsampled collection of datapoints $X_{up}$
+        \STATE nResample $\leftarrow X.\text{shape}[1] - X.\text{shape}[0]$ \COMMENT{Difference of dim($X$) and num($X$) to fill}
+        \STATE nResamplePerX $\leftarrow$ nResample $// X.\text{shape}[0] + 1$
+        \STATE $X^* \leftarrow \emptyset$
+        \FORALL{$x$ in $X$}
+            \STATE $x^* \leftarrow$ new Array
+            \FORALL{$x_m$ in $x$}
+                \STATE sample a new $x_m^*$ from $p(x_m)$ and insert into $x^*$
+            \ENDFOR
+            \STATE add $x^*$ to $X^*$
+        \ENDFOR
+        \STATE $X_{up} \leftarrow X \cup X^*$
+        \RETURN $X_{up}$
+
+    \end{algorithmic}
+ \end{algorithm}
+
+ In the next phase of the algorithm, one or more GMMS are selected for a region's data, depending on the number of unique labels within. For each label subset, multiple models are fitted within a selection process. Since the resource demands of the EM algorithm for fitting a GMM are relatively complex, the data's dimensionality is reduced by applying a principal component analysis. Later in the course, when sampling data, the inverse operation using the same PCA parameters is applied on the synthetic data and bring it back into the original dimenions. Therefore, for each label subset of a region, both the parameters of a GMM and a PCA model is stored in the global pattern database.
+
+ Apply PCA on $X_a$, such that $99.9 \%$ of the variance of the data is preserved, then fit multiple GMM with the same data but with different parameters by the following rules; collect a list of different parameters for the number of components $C = \{2k+1: k \in \mathbb{N}, 1 \leq k \leq K\}$ with $K=\lfloor M / 2 \rfloor$, the different number of components is heuristically determined; in general, there is no exact method to determine the optimal number of components for a given dataset before fitting the model; thus, different parameters have to be tried out in a model selection method; Moreover, as stated in Section (section of GMM), the runtime of a single step of the EM algorithm in this setting is asymptotically $O(NKd^3)$ or $O(NKd^2)$ by using the incremental algorithm proposed in \cite{pinto2015fast} ($N$ data points, $K$ components and $d$ dimensions); therefore, this curse of dimensionality that is encountered in calculating the covariance matrix while fitting the GMM is coped by approximation; using the diagonal covariance matrix as approximation to the regular covariance matrix; moreover, the full covariance matrix can result in overfitting, especially on small datasets, whereas the diagonal approximation acts as a type of regularization to the model. Since the focus of this algorithm is mainly focused on providing the best model, the runtime is treated as a secondary factor; thus, both types of covariances are used within the model selection process cov$=\{\text{``full''}, \text{``diagonal''}\}$.
+
+ After fitting a model on $X'_a = \text{PCA}(X_a)$, the first metric for the selection is calculated. Precisely, the bayesian information criterion (BIC) is calculated as in Equation(X). Note, that for the case of a diagonal covariance matrix, the number of parameters to estimate change from $\frac{d(d+1)}{2}$ to $d$, such that the BIC is given as 
+
+\begin{equation}
+    \text{BIC}(M|D) = (Kd + d +K-1) \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}).
+\end{equation}
+
+After that, another evaluation metric is calculated. This process is called adversary evaluation and is based on the principles of generative adversarial networks, where a discriminator function, i.e., classifier, tries to distinguish between the original and synthetic data. In other words, the generative algorithm synthesizes fake data, which resembles the original data. Then, a dataset is assembled by combining fake data with class labels 0 and original data with class labels 1. This dataset is shuffled and split into a training and test proportion Then, a discriminative model is trained on the training proportion, trying to find distinguishing features within both classes, allowing a distinction to be made. Within the evaluation step, the discriminator is tested on its ability to separate fake and original data. The lower the score of the discriminator, the better the generative model. Figure \ref{fig:adversary_evaluation} illustrates two scenarios. In the first scenario (\subref{subfig:adversary_evaluation_bad}), the generative model has been fitted poorly, because the synthetic data can be easily separated from the original data with a decision boundary (dashed line). In the second scenario (\subref{subfig:adversary_evaluation_bad}), the generative model does a good job by creating synthetic data that could not be seperated from the original data.
+
+ \begin{algorithm}
+    \caption{Model Selection}
+    \label{alg:model_selection}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE Dataset $D$ with $X_a, y_a, X_b, y_b$
+        \ENSURE Tuple $(\text{GMM}, \text{PCA})$ containing model parameters
+
+        \STATE $X'_a \leftarrow \text{PCA}(X_a)$
+        \STATE $C \leftarrow \{2k+1: k \in \mathbb{N}, 1 \leq k \leq K\}$ with $C=\lfloor M / 2 \rfloor$
+        \STATE $B \leftarrow$ new Array
+        \STATE COV $\leftarrow \{ \text{``full''}, \text{``diagonal''} \}$
+
+        \FORALL{$k$ in $C$}
+            \FORALL{cov in COV}
+                \STATE GMM $\leftarrow \text{fitGMM}(X'_a)$
+                \STATE GMMs$[kC] \leftarrow$ GMM
+                \STATE $b_{kC} \leftarrow \text{BIC}(\text{GMM}|X'_a)$
+                \STATE acc $\leftarrow$ AdversaryEvaluation$(X, y, \text{GMM}, \text{PCA})$
+                \STATE $B[kC] \leftarrow (b_{kC}, \text{acc})$
+            \ENDFOR
+        \ENDFOR
+        \STATE sort $B$ by $b_{kC}$ in $B[0]$
+        \STATE sort $B$ by acc in $B[1]$
+        \STATE $b_{kC} \leftarrow B[-1]$
+        \RETURN $(\text{GMMs}[kC], \text{PCA}[kC])$
+    \end{algorithmic}
+ \end{algorithm}
+
+ In order to quantify the performance of the discriminator, a classification metric is calculated. Since the original and synthetic data is equal in size and the posed problem is binary, the accuracy score is a precise metric, calculated as
+
+ \begin{equation}
+    a = \frac{TP + TN}{TP + TN + FP + FN}
+ \end{equation}
+
+ For each iteration in the model selection process, both the BIC and the accuracy score is stored. After all models have been trained on all parameter combinations, a combined metric is calculated from the stored metrics. In order to combine BIC and accuracy, the BIC scores have to be normalized into the range $[0, 1]$ by applying the min-max-normalization from Equation \ref{eq:normalization} to the set of BIC scores. After that, the mean is calculated for each metric pair as
+ 
+ \begin{equation}
+    m = \frac{BIC + a}{2}.
+ \end{equation}
+
+ Finally, the model with the lowest combined metric $m$ is selected. This way, both metrics are equally utilized leading to a balanced theoretical (BIC) and practical (accuracy) guarantee of model fitness. Both the GMM and the PCA parameters are stored in the global pattern database. In numbers, these can range, depending on which type of covariance matrix is chosen for the GMM as already shown in Equation X for the full covariance matrix and in Equation X for the diagonal case. PCA on the other hand, requires a $D \times M$ projection matrix, with $D$ being the dimensions of the original data space and $M$ being the number of dimensions in the projected subspace, leading to a number of $D \times M$ elements to store. Therefore, per region, the number of parameters to store is at least
+ 
+ \begin{equation}
+    n_{y_r} * ( Kd + d +K-1 + Md  )
+ \end{equation}
+
+ and at most
+
+ \begin{equation}
+    n_{y_r} * ((Kd + K(d(d+1)/2)+K-1) + Md  ).
+ \end{equation}
+
+ % store the number of original samples 
+
+
+ \begin{algorithm}
+    \caption{Adversary Evaluation}
+    \label{alg:ml_efficacy}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE $X_r, y_r, \text{GMM}, \text{PCA}$
+        \ENSURE acc from DecisionTree Model $DT$
+
+        \STATE $X'_s \leftarrow$ sample $|X_r|$ data points from $GMM$
+        \STATE $X_s \leftarrow \text{PCA}(X'_s)^{-1}$  
+
+        \STATE $y_s \leftarrow \{ 1 \}$ \COMMENT{as many 0s as the number of $X_b$}
+
+        \STATE $y_r \leftarrow 0$ \COMMENT{setting all real labels to 0}
+        
+        \STATE $X, y \leftarrow \text{concatenate}(X_s, X_r, y_s, y_r)$
+        
+        \STATE $X_{\text{train}}, y_{\text{train}}, X_{\text{test}}, y_{\text{test}} \leftarrow \text{shuffleSplit}(X,y)$
+
+        \STATE DT $\leftarrow \text{fitDecisionTree}(X_{\text{train}}, y_{\text{train}})$
+
+        \STATE $\tilde{y} = \{\text{DT}(x_1), \dots, \text{DT}(x_n)\} \leftarrow$ predict $X_{\text{test}}$ with DT
+
+        \STATE F1 $\leftarrow \text{f1}(y_{\text{test}}, \tilde{y})$
+        \RETURN F1
+    \end{algorithmic}
+ \end{algorithm}
+
+
+ \begin{figure}%
+    \centering%
+    \begin{subfigure}[b]{0.49\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/adversary_evaluation_2}%
+        \caption{A poor fitted generative model: The original data (triangles) and the synthetic data (circles) can be easily separated by a classifier.}%
+        \label{subfig:adversary_evaluation_bad}%
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[b]{0.49\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/adversary_evaluation}%
+        \caption{A well fitted generative model: The synthetic data resemble the original data well, such that a separation is not easy.}%
+        \label{subfig:adversary_evaluation_good}%
+    \end{subfigure}%
+    \caption{Adversary evaluation: separation of original and synthetic data.}%
+    \label{fig:adversary_evaluation}%
+\end{figure}%
+
+\end{document}

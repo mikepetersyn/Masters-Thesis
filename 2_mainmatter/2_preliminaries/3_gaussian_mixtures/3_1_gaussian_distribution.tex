@@ -1,0 +1,189 @@
+\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+\subsection{The Gaussian Distribution}
+
+The Gaussian normal distribution forms the basic building block for \acrshort{gmm}s. Depending on the observed random variable, different types of normal distributions exist. In particular, the multivariate normal distribution is focused on when considering statistical flow features, which are typically continuous and high dimensional. In the following, different definitions for the normal distribution are introduced and important properties are presented that are essential for calculations during the learning phase of \acrshort{gmm}s.
+
+Let be a multivariate random variable $\bm{X} = (X_1, \dots, X_D)^T$, where each element $X_d$ with $d \in \{1, \dots, D\}, D \in \mathbb{N}$ is a univariate random variable that follows a normal distribution, which is referred to as $X_d \sim \mathcal{N}(\mu, \sigma^2)$.
+
+\begin{definition}[Univariate Gaussian Distribution] \cite[p. 175]{dei_2020}
+A continuous, univariate random variable $X$ is said to follow a normal distribution, if it exhibits a probability density function
+\begin{equation*}
+p(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} exp\bigg(- \frac{(x-\mu)^2}{2\sigma^2}\bigg),
+\end{equation*}
+\end{definition}
+
+with $x \in \mathbb{R}$ and where $\mu$ refers to the mean and $\sigma^2$ is the variance of the distribution. Then, if $\bm{X}$ follows a normal distribution, this is expressed as a multivariate Gaussian distribution, denoted by $\bm{X} \sim \mathcal{N}_D(\bm{\mu}, \bm{\Sigma})$, which is fully described by its mean vector $\bm{\mu}$ and its covariance matrix $\bm{\Sigma}$.
+
+\begin{definition}[Multivariate Gaussian Distribution]\label{def:multivariate_pdf} \cite[175]{dei_2020}
+A multivariate random variable $\bm{X}$ follows a normal distribution, if it is described by a probability density function
+\begin{equation*}
+    p(\bm{x} | \bm{\mu}, \bm{\Sigma}) = (2\pi)^{-\frac{D}{2}} |\bm{\Sigma}|^{-\frac{1}{2}}exp\left(-\frac{1}{2}(\bm{x}-\bm{\mu})^T \bm{\Sigma}^{-1}(\bm{x}-\bm{\mu})\right),
+\end{equation*}
+\end{definition}
+
+with $\bm{x} \in \mathbb{R}^D$. The mean vector specifies the estimate of the expected value of the distribution, with each of its components describing the mean $\mu$ of the corresponding dimension. The empirical covariance $\bm{\Sigma}$ models the estimate of the variance along each dimension as well as the correlation between the different dimensions. The diagonal elements of $\bm{\Sigma}$ describe the variance of the random variable corresponding to the respective dimension and the off-diagonal elements describe the covariance relationship between the respective random variables. 
+
+An illustration of the influence of the described parameters on the location and shape of a multivariate distribution is given in Figure \ref{fig:multiple_bivariate}. Specifically, three bivariate normal distributions are considered, whose random variables each have different values with respect to their correlation, while the mean vector is the same for all distributions.
+ 
+\begin{figure}%
+    \centering%
+    \begin{subfigure}[b]{0.25\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/contour_plot_neg.tex}%
+        \caption{}%
+        \label{subfig:bivariate_neg}%
+    \end{subfigure}%
+    % \hfill%
+    \begin{subfigure}[b]{0.33\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/contour_plot.tex}%
+        \caption{}%
+        \label{subfig:bivariate_neutral}%
+    \end{subfigure}%
+    % \hfill%
+    \begin{subfigure}[b]{0.33\textwidth}%
+        \centering\captionsetup{width=.8\linewidth}%
+        \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/contour_plot_pos.tex}%
+        \caption{}%
+        \label{subfig:bivariate_pos}%
+    \end{subfigure}%
+    \caption{Bivariate gaussian distributions exhibit different shapes with a changing correlation value between the random variables $x_1$ and $x_2$: (\subref{subfig:bivariate_neg}) negative, (\subref{subfig:bivariate_neutral}) zero and (\subref{subfig:bivariate_pos}) positive correlation}%
+    \label{fig:multiple_bivariate}%
+\end{figure}%
+
+Having introduced the basic definition of Gaussian distributions, it is now examined how they can be manipulated to obtain information necessary for parameter learning of Gaussian mixture models. Two practical algebraic properties of normal distributions, namely closure under \textit{conditioning} and \textit{marginalization} are detailed for this purpose. Being closed under conditioning and marginalization in this case means that when one or more components of a Gaussian distribution is marginalized out or conditioned on, that the resulting distribution is still Gaussian. This not only distinguishes Gaussian distributions from other distributions, but also makes them easier to handle mathematically. Since both marginalization and conditioning act on subsets of the original distribution, the following notation is introduced first. Considering a multivariate Gaussian random variable $\bm{X} \sim \mathcal{N}(\bm{\mu}, \bm{\Sigma})$, we partition $\bm{X}$ according to 
+
+\begin{equation*}
+    \bm{X} = \left[ \begin{array}{c}
+        \bm{X}_M \\
+        \bm{X}_N
+    \end{array} \right],
+\end{equation*}
+
+with $\bm{X}_M \in \mathbf{R}^M$, where $M < N$, and $\bm{X}_N \in \mathbf{R}^N$, where $N=D-M$. In general, $\bm{X}_M$ is chosen to be the first $M$ elements of $\bm{X}$ and $\bm{X}_N$ the rest. Accordingly, $\bm{\mu}$ and $\bm{\Sigma}$ are partitioned as
+\begin{equation*}
+    \left[ \begin{array}{c}
+        \bm{X}_M \\
+        \bm{X}_N
+    \end{array} \right] \sim \mathcal{N} \left( \left[\begin{array}{c}
+         \bm{\mu}_M \\
+         \bm{\mu}_N
+    \end{array}\right], \left[\begin{array}{cc}
+        \bm{\Sigma}_{MM} & \bm{\Sigma}_{MN} \\
+        \bm{\Sigma}_{NM} & \bm{\Sigma}_{NN}
+    \end{array}\right] \right).
+\end{equation*}
+
+With this form, it is now possible to express the extraction of partial information from multivariate probability distributions by means of marginalization. 
+
+\begin{definition}[Marginal of a Gaussian Distribution]\label{def:marg_gaussian} \cite[p. 177]{dei_2020}
+Given $\bm{X} \sim \mathcal{N}_D(\bm{\mu}, \bm{\Sigma})$, with partitions $\bm{X}_M, \bm{X}_N$, the distributions of $\bm{X}_M$ and $\bm{X}_N$ are called marginals and their corresponding probability density function can be obtained by
+\begin{equation*}
+    p(\bm{x}_M) = \int p(\bm{x}_M,\bm{x}_N)d\bm{x}_N.
+\end{equation*}
+\end{definition}
+
+Furthermore, each partition $\bm{X}_M, \bm{X}_N$ only depend on its corresponding entries in $\bm{\mu}$ and  $\bm{\Sigma}$, which leads to the following theorem. 
+
+\begin{theorem} \cite[p. 177]{dei_2020}
+The marginal distribution of a Gaussian distribution is also a Gaussian and determined by
+\begin{equation*}
+    \bm{X}_M \sim \mathcal{N}(\bm{\mu}_M, \bm{\Sigma}_{MM}).
+\end{equation*}
+\end{theorem}
+
+The conditional Gaussian is typically utilized in the context of posterior distributions, such as in the process of density estimation of \acrshort{gmm}s, and is defined as follows.
+
+\begin{definition}[Conditional of a Gaussian Distribution] \cite[p. 177]{dei_2020}
+Given $\bm{X} \sim \mathcal{N}_D(\bm{\mu}, \bm{\Sigma})$, with partitions $\bm{X}_M, \bm{X}_N$, the conditional distribution is defined as
+\begin{align*}
+    p(\bm{x}_M | \bm{x}_N) &= \mathcal{N}(\bm{\mu}_{M | N}, \bm{\Sigma}_{M | N}), \\
+    \bm{\mu}_{M | N} &= \bm{\mu}_M + \bm{\Sigma}_{M N} + \bm{\Sigma}^{-1}_{N N}(\bm{x}_N - \bm{\mu}_N),\\
+    \bm{\Sigma}_{M | N} &= \bm{\Sigma}_{M M} - \bm{\Sigma}_{M N} \bm{\Sigma}^{-1}_{N N}\bm{\Sigma}_{N M}.\\
+\end{align*}
+\end{definition}
+
+\begin{theorem} \cite[p. 177]{dei_2020}
+The conditional distribution of a Gaussian distribution is also a Gaussian and defined by 
+\begin{equation*}
+    \bm{X}_{M | N} \sim \mathcal{N}(\bm{\mu}_{M | N}, \bm{\Sigma}_{M | N}).
+\end{equation*}
+\end{theorem}
+
+A line of arguments proving the stated theorems can be found in section 2.3 in \cite{bis_2006}. An example for marginal and conditional Gaussians can be found in Figure \ref{fig:marginal_conditional_gaussian}. The functions of $p(x_M)$ and $p(X_N)$ are plotted on the side grids. The conditional cuts through the plot of the joint distribution $p(x_M, x_N)$.
+
+\begin{figure}[b!]
+    \centering
+    \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/marginal.tex}
+    \caption{Marginals $p(x_M)$, $p(x_N)$ and Conditional Gaussian $p(x_{M|N})$}
+    \label{fig:marginal_conditional_gaussian}
+\end{figure}
+
+% \begin{figure}[ht!]
+% \begin{example}{Examples on the closure properties of Gaussians}{closure_examples}
+
+% Considering the random variable $\bm{X}_a$ from Example \ref{ex:bivariate_gaussian}, the marginalization and conditioning operations are applied and the respective results are visualized . \\
+
+% First, $\bm{X}_a$ is partitioned as
+% \begin{equation*}
+%     \bm{X}_a = 
+%     \left[ \begin{array}{c}
+%         X_M \\
+%         X_N
+%     \end{array} \right] \sim \mathcal{N} \left( \left[\begin{array}{c}
+%          0 \\
+%          0
+%     \end{array}\right], \left[\begin{array}{cc}
+%         1.5 & -1.0 \\
+%         -1.0 & 0.75
+%     \end{array}\right] \right).
+% \end{equation*}
+
+% The marginal distributions can be obtained by taking the corresponding values directly from the original distribution, which are
+% \begin{align*}
+%     p(x_M) = \mathcal{N}(0, 1.5), \\
+%     p(x_N) = \mathcal{N}(0, 1.5).
+% \end{align*}
+
+% Now, the conditional distribution $p(\bm{x}_M | \bm{x}_N)$ for $\bm{x}_N = 1$ is obtained as
+% \begin{align*}
+%     \overline{x}_{M | N} &= 0 - 1 + \frac{1}{0.75} \cdot (1-0) = \frac{1}{3}\\
+%     \sigma^2_{M | N} &= 1.5 + \frac{1}{0.75} = \frac{17}{6}  \\
+%     p(x_{M | N}) &= \mathcal{N}\left(\frac{1}{3} , \frac{17}{6}\right).
+% \end{align*}
+
+% \vspace{1cm}
+
+% \begin{minipage}{0.65\textwidth}
+%     \centering
+%         \begin{subfigure}[t]{\linewidth}
+%         \centering
+%         \includegraphics[width=0.99\linewidth]{figures/joint_gaussian.png}
+%         \subcaption{}
+%         \label{fig:joint_gaussian_with_marg}
+
+%         \end{subfigure}
+% \end{minipage}
+% \begin{minipage}{0.34\textwidth}
+%     \centering
+%     \begin{subfigure}[t]{\linewidth}
+%         %\centering
+        
+%         \includegraphics[width=0.99\linewidth]{figures/contour_gaussian_conditioned_example.png}
+%         \subcaption{}
+%         \label{fig:contour_cond_gaussian}
+%     \end{subfigure}
+%     \begin{subfigure}[t]{\linewidth}
+%         %\centering
+%         \includegraphics[width=0.99\linewidth]{figures/cond_gaussian.png}
+%         \subcaption{}
+%         \label{fig:cond_gaussian}
+        
+%     \end{subfigure}
+% \end{minipage}
+% \caption[Plots of a joint Gaussian distribution and its corresponding marginal and conditional distributions]{The 3D-plot on the left (\ref{fig:joint_gaussian_with_marg}) shows the joint distribution $p(x_M, x_N)$ with their corresponding marginals. The contour plot on the upper right (\ref{fig:contour_cond_gaussian}) visualizes $p(x_M, x_N)$ with the conditioning value. The plot on the lower right (\ref{fig:cond_gaussian}) illustrates the conditional distribution $p(x_M | x_N)$ with $x_N=1$.}
+% \end{example}
+% \end{figure}
+
+\end{document}

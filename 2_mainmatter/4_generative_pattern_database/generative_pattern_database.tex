@@ -1,0 +1,20 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+\chapter{Generative Pattern Database}
+% TODO: investigate the effect of clustering data into regions before applying gen model
+Three main challenges in the context of data dissemination in CIDS were identified. First, intrusion related data is usually of sensitive nature. Thus, the exchange mechanism must not compromise any policies and regulations related to data \textit{privacy}. At the same time, the usability of the data has to be preserved. Second, the data that is subject of the exchange may exhibit large volumes. That constitutes a challenge, since the dissemination is desired to be executed with \textit{minimal overhead} in a timely and scalable fashion. Lastly, the \textit{interoperability} of the CIDS with existing local IDS is an important aspect that influences the practical adoption into security architectures. In summary, existing approaches for data dissemination mainly provide mechanisms for exchanging alert data or single attributes, e.g. IP addresses, as they focus on the correlation of intrusion detection incidents that originate from different sensors. The exchange of actual training data is neglected, possibly due to high data volumes. Thus, these systems lack of mechanisms for the extraction and global persistence of novel attack patterns, e.g. from zero day exploits, that can be used for the training of an intrusion detection sensor.
+
+The approach that is presented in this chapter exchanges attack patterns by sharing generative machine learning models that have been trained on partitions of similar data points. Such a model-based dissemination enables the receiving side to sample a synthetic dataset that enhances existing local datasets. This provides two main advantages. First, no original data leaves a local network and therefore does not violate any privacy restrictions. Second, the data is compressed considerably by representing it in form of a generative model. In order to make that mechanism scalable, the monitored data is clustered using random projections. This way, similar data points are partitioned into globally common clusters, which is exploited as a data parallelism mechanism. Given that, bursty workloads can be served effectively in a cloud deployment. Furthermore, this mechanism enables a similarity-based correlation of distributed intrusion events. The integration of both a similarity based correlation of intrusion incidents and a mechanism for sharing attack knowledge makes it possible to extract novel patterns of distributed attacks and provide them globally within the CIDS, resulting in an improved attack detection.
+
+Section \ref{sec:high_level_overview} introduces the idea and key concepts of the approach. After that, Section \ref{sec:architecture_specification} specifies the proposed architecture in detail. A comprehensive description of algorithms and processing steps are described in Section \ref{sec:service_specification}.
+
+\subfile{1_high_level_overview}
+
+\subfile{2_architecture_specification}
+
+\subfile{3_service_specification}
+
+\subfile{4_summary}
+
+\end{document}
+

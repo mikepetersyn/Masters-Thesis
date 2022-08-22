@@ -1,0 +1,83 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{fontawesome}
+\usepackage{amsmath, amssymb, bm}
+
+\usetikzlibrary{arrows.meta, automata, calc, positioning, quotes, calc, shadings, shadows, shapes.arrows}
+
+\begin{document}
+    \tikzstyle{index} = [rectangle, minimum width=0.5cm, minimum height=0.5cm, inner xsep=0pt, outer sep=0pt, align=flush center, draw=black]%
+    \tikzstyle{arrow} = [-{Latex[length=1.5mm, width=1mm]},align=flush center, font=\tiny, semithick]% 
+    \definecolor{indexcolor}{RGB}{100,100,100}
+    \begin{tikzpicture}
+
+        \foreach \i in {1, ..., 15}{
+            \node[index, fill=black!10] (\i) at (\i/1.5, 0.5) {};
+        }
+
+        \foreach \j in {1, ..., 15}{
+            \node[index, fill=black!10] (\j*) at (\j/1.5, -2.5) {};
+        }
+
+        
+
+        \node (very similar file 1) at (1, -1) {$\bm{m}_1$};
+        \node[right=-0.225cm of very similar file 1] (very similar)  {$\approx$};
+        \node[right=0.1cm of very similar file 1] (very similar file 2)  {$\bm{m}_2$};
+
+        \node (similar file 1) at (5, -1) {$\bm{m}_3$};
+        \node[right=-0.225cm of similar file 1] (very similar)  {$\sim$};
+        \node[right=0.1cm of similar file 1] (similar file 2)  {$\bm{m}_4$};
+
+        \node (non similar file 1) at (9, -1) {$\bm{m}_5$};
+        \node[right=-0.225cm of non similar file 1] (very similar)  {$\not\sim$};
+        \node[right=0.1cm of non similar file 1] (non similar file 2)  {$\bm{m}_6$};
+
+        % cryptographic hashes
+        \draw[arrow] (very similar file 1.north) -- (3);
+        \node[index, fill=indexcolor] (1.75) at (3) {};
+        \draw[arrow] (very similar file 2.north) -- (7.south west);
+        \node[index, fill=indexcolor] (1.75) at (7) {};
+        \draw[arrow] (similar file 1.north) -- (5.south east);
+        \node[index, fill=indexcolor] (1.75) at (5) {};
+        \draw[arrow] (similar file 2.north) -- (10);
+        \node[index, fill=indexcolor] (1.75) at (10) {};
+        \draw[arrow] (non similar file 1.north) -- (11);
+        \node[index, fill=indexcolor] (1.75) at (11) {};
+        \draw[arrow] (non similar file 2.north) -- (15);
+        \node[index, fill=indexcolor] (1.75) at (15) {};
+
+
+
+        % locality sensitive hashes
+        \draw[arrow] (very similar file 1.south) -- (2*);
+        \draw[arrow] (very similar file 2.south) -- (2*);
+        \node[index, fill=indexcolor] (1.75) at (2*) {};
+        \draw[arrow] (similar file 1.south) -- (6*);
+        \node[index, fill=indexcolor] (1.75) at (6*) {};
+        \draw[arrow] (similar file 2.south) -- (7*);
+        \node[index, fill=indexcolor] (1.75) at (7*) {};
+        \draw[arrow] (non similar file 1.south) -- (14*);
+        \node[index, fill=indexcolor] (1.75) at (14*) {};
+        \draw[arrow] (non similar file 2.south) -- (10*.north east);
+        \node[index, fill=indexcolor] (1.75) at (10*) {};
+
+
+        \node[rectangle, minimum width=10cm, minimum height=0.75cm, fill opacity=0.25, fill=indexcolor] (conventional hash) at (5.325,-0.35) {};
+        \node[rectangle, minimum width=10cm, minimum height=0.75cm, fill opacity=0.25, fill=indexcolor] (lsh) at (5.325,-1.65) {};
+
+        \node[left=0cm of 1] (dots1) {$\Bigl(\cdots$};
+        \node[right=0cm of 15] (dots2) {$\cdots\Bigr)$};
+        \node[left=0cm of 1*] (dots3) {$\Bigl(\cdots$};
+        \node[right=0cm of 15*] (dots4) {$\cdots\Bigr)$};
+
+        \node[left=0cm of dots1] (hahstable1) {$T_1$};
+        \node[left=0cm of dots3] (hahstable2) {$T_2$};
+
+        \node[left=0cm of conventional hash, xshift=-0.55cm] (conventional){$h$};
+        \node[left=0cm of lsh] (locality sensitive){$h_{\text{LSH}}$};
+
+        
+
+    \end{tikzpicture}
+\end{document}

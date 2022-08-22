@@ -1,0 +1,83 @@
+\documentclass{standalone}
+
+\usepackage{amsmath,amssymb,amsfonts, bm, amsthm} 
+\usepackage{tikz,pgf}
+\usetikzlibrary{fit, bayesnet, arrows.meta, positioning, trees, decorations.pathreplacing,calligraphy, backgrounds, shapes}
+\begin{document}
+
+
+\tikzstyle{pdb_component} = [rectangle, minimum width=1.75cm, minimum height=0.65cm, inner xsep=5pt, outer sep=0pt, align=flush center, draw=black, fill=white, font=\normalsize]%
+
+\tikzstyle{ht_component} = [rectangle, minimum width=1.75cm, minimum height=0.65cm, inner xsep=5pt, outer sep=0pt, align=flush center, draw=black, fill=white, font=\normalsize]%
+
+\tikzstyle{group} = [rectangle, minimum width=0.5cm, minimum height=0.5cm, align=flush center, draw=black, line width=0.2mm, inner sep=0.15cm, font=\large]%
+
+\tikzstyle{arrow} = [-{Latex[length=1.5mm, width=1.0mm]},align=flush center]%
+
+\definecolor{mygreen}{RGB}{68,170,153}%
+\definecolor{mysand}{RGB}{221,204,119}%
+\definecolor{mybrown}{RGB}{103,89,73}%
+
+\pgfdeclarelayer{foreground}%
+\pgfdeclarelayer{background}%
+\pgfsetlayers{background, main, foreground}%
+
+\begin{tikzpicture}[scale=3.0]
+
+    \begin{pgfonlayer}{foreground}
+
+    % Pattern Database
+    \node (u_1) [pdb_component, minimum width=1.7cm] {$\alpha$};
+    \node (t_1) [pdb_component, right=0cm of u_1] { $H$};
+
+    \node (u_2) [pdb_component, below=0cm of u_1, minimum height=0.25cm, minimum width=1.7cm] { $\dots$};
+    \node (t_2) [pdb_component, below=0cm of t_1, minimum height=0.25cm] {$\dots$};
+
+    \node (u_0) [pdb_component, above=0cm of u_1, minimum height=0.25cm, minimum width=1.7cm] { $\dots$};
+    \node (t_0) [pdb_component, above=0cm of t_1, minimum height=0.25cm] { $\dots$};
+
+    % Hash Table within Database
+
+    \node (v_2) [ht_component, right=2.5cm of u_1] {$\beta$};
+    \node (x_2) [ht_component, right=0cm of v_2] {$(\bm{x}', y)$};
+
+    \node (v_1) [ht_component, above= 0cm of v_2, minimum height=0.25cm] {$\dots$};
+    \node (x_1) [ht_component, right=0cm of v_1, minimum height=0.25cm] {$\dots$};
+
+
+    \node (v_j) [ht_component, below=0cm of v_2, minimum height=0.25cm] {$\dots$};
+    \node (x_j) [ht_component, below=0cm of x_2, minimum height=0.25cm] {$\dots$};
+
+    \end{pgfonlayer}
+
+
+    \begin{pgfonlayer}{background}
+
+    \node (local pattern database) [
+        group, 
+        fit={(u_0)(t_0)(u_2)(t_2)},
+        fill=mygreen!40,
+        fill opacity=0.95,
+        label={[xshift=-1.285cm, yshift=-0.075cm]$PDB_{L_m}$}] {};
+
+
+        \node (hash table 1) [
+        group, 
+        fit={(v_1)(x_1)(v_j)(x_j)},
+        fill=mygreen!20,
+        fill opacity=0.95,
+        label={[xshift=-1.75cm, yshift=0cm]$H$} ] {};
+
+    \end{pgfonlayer}
+
+
+    \draw[arrow] (t_1.east) -- (hash table 1.west);
+
+
+
+
+
+\end{tikzpicture}
+
+
+\end{document}

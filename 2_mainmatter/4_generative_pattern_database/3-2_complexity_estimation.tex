@@ -1,0 +1,55 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+
+\subsection{Complexity Estimation} \label{sec:complexity_estimation}
+
+\begin{figure}[b!]
+   \centering
+   \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/complexity_estimation}
+   \caption{Illustration of the complexity estimation algorithm with two local infrastructures. Each local label set at $PDB_{L_m}[\kappa]$ is synchronized into the global pattern database at $PDB_G[\delta]$, where $\delta$ is constructed with $m$. Per region, the union operation is applied on the global label sets, whereupon the complexity is derived from.}  \label{fig:complexity_estimation}
+\end{figure}
+
+As described in Section~\ref{subsec:global_view}, a region is said to be complex if it contains more than one unique label. Otherwise, a region is simple. Since the data within a region already represents a cluster created by a locality-sensitive hashing function $h$, the existence of multiple classes within a single region indicates a non-linear decision boundary. On that basis we differentiate how a region is processed in the subsequent services of the pipeline. Furthermore, the complexity state of a region may vary, depending on the scope it is observed. Note that since the projection matrix $\bm{M}$ that is used to construct $h$ is initialized with the same values in every $L_m$, all hashes that were computed by $h$ are globally comparable. This means that similar data points from different datasets, e.g., $\bm{x}_i \in D_1$ and $\bm{x}_j \in D_2, \; \bm{x}_i \sim \bm{x}_j$ may be hashed to the same region $h(\bm{x}_i) = h(\bm{x}_j)$. However, it is also possible that that the corresponding labels $y_i \in D_1$ and $y_j \in D_2$ are not equal. Thus, a certain region may contain only a single unique label in both local scopes but multiple unique labels in the global scope and therefore lead to a different global view on that region's complexity state. Given that, the complexity estimation service acts as a bridge between the local and global components and answers the question, which regions are considered to be complex in a global scope.
+
+First, a set of incoming regions $\mathcal{R}_{\text{in}}$ is received on the $C_{L_m}$. Then, for each region $r \in \mathcal{R}_{\text{in}}$ the following operations are executed (see Algorithm~\ref{alg:complexity_estimation}). The set of unique labels $\mathcal{S}_r$ for a particular region within a local scope has been stored in Algorithm~\ref{alg:indexing} as auxiliary metadata, which is now retrieved from the $PDB_{L_m}$ by constructing the correspoding key $\gamma$. In the next step, $\mathcal{S}_r$ has to be stored in the $PDB_G$. Therefore, another key $\delta$ is constructed by concatenating the prefix constant $p_y$, the region $r$ and the current local infrastructure identifier $m$, which prevents the collision of information from different infrastructures. After $\mathcal{S}_r$ is stored on a global level at $PDB_G[\delta]$, the label set information for that region from all members in the CIDS is aggregated. That aggregated view is essentially the global complexity state for that region. By iterating over all member identifiers in the CIDS, multiple keys $\delta$ are constructed. Each key retrieves the specific label set $\mathcal{S}_r$ of a member and inserts its content into the temporary set $\mathcal{S}_t$, collecting the local label sets. 
+
+After collecting all label sets in $\mathcal{S}_t$, the complexity state is obtained by simply evaluating the cardinality $|\mathcal{S}_t|$. If there is more than one class in a region on a global scope, that is $|S| > 1$, then assign a true value to the global complexity variable $c_r$. Otherwise, assign a false value. In order to store $c_r$, the key $\kappa$ is created by concatenating the prefix constant $p_c$ and the region $r$. Note, that $PDB_G[\kappa]$ is only updated, if storing $c_r$ changes the state that is already persisted. This is because, if an update is executed, this information has to be propagated to the next service. Thus, in that case, the region $r$ is inserted into $\mathcal{R}_{\text{out}}$, which is subsequently sent into the global event channel $C_G$ in order to inform services in all local infrastructures about the update.
+
+
+
+\begin{algorithm}
+   \caption{Creating a global complexity state by combining local complexity states}
+   \label{alg:complexity_estimation}
+   \algsetup{indent=2em}
+
+   \begin{algorithmic}[1]
+         \REQUIRE Regions $\mathcal{R}_{\text{in}}$
+         \ENSURE Regions $\mathcal{R}_{\text{out}}$
+         \STATE $\mathcal{R}_{\text{out}} \leftarrow $ new Set
+         \STATE $m \leftarrow$ getID() \COMMENT{current local infrastructure identifier}
+         \FORALL{$r$ in $\mathcal{R}$}
+            \STATE $\gamma \leftarrow \text{concatenate}(p_y, r)$
+            \STATE $\mathcal{S}_r \leftarrow PDB_{L_m}[\gamma]$
+            \STATE $\delta \leftarrow \text{concatenate}(p_y, r, m)$
+            \STATE $PDB_G[\delta] \leftarrow \mathcal{S}_r$
+            \STATE $\mathcal{S}_t \leftarrow \emptyset$
+            \FORALL{$m$ in $\{1, \dots, M\}$}
+               \STATE $\delta \leftarrow \text{concatenate}(p_y, r, m)$
+               \STATE $\mathcal{S}_t \leftarrow \mathcal{S}_t \cup PDB_G[\delta]$
+            \ENDFOR
+            \IF{$|\mathcal{S}_t| > 1$} 
+               \STATE $c_r \leftarrow 1$ 
+            \ELSE 
+               \STATE $c_r \leftarrow 0$ 
+            \ENDIF
+            \STATE $\kappa \leftarrow \text{concatenate}(p_c, r)$
+            \IF{$PDB_G[\kappa] \neq c_r$}
+               \STATE $PDB_G[\kappa] \leftarrow c_r$
+               \STATE add $r$ to $\mathcal{R}_{\text{out}}$
+            \ENDIF
+         \ENDFOR
+         \RETURN $R_{\text{out}}$
+   \end{algorithmic}
+\end{algorithm}
+
+\end{document}

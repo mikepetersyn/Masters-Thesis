@@ -1,0 +1,79 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\chapter{State of the Art}
+
+\section{Data Dissemination in Collaborative Intrusion Detection}
+
+% \subsection{Requirements}
+
+% \subsection{Centralized and Hierarchical CIDS}
+
+% \subsection{Distributed Architectures}
+
+% The key components for designing a CIDS architecture are described in \cite[p. 34]{vasilomanolakis_collaborative_2016}. Among them, data dissemination is particularly noteworthy as one of the fundamental components for the communication between members. A central aspect is the communication \textit{overhead} that is introduced with the dissemination of alerts and knowledge within a CIDS, which in turn is heavily influenced by the CIDS architecture \cite[p.39]{vasilomanolakis_collaborative_2016}, that can be primarily categorized into centralized, hierarchical and decentralized approaches \cite{Zhou2010} (see Figure \ref{fig:architectures}). Centralized architectures, consisting of multiple monitoring units and a central analysis unit \cite{Cuppens2002}\cite{Miller2003}, suffer from a Single Point of Failure (SPoF) and are limited in their scalability due to a bottleneck, which is introduced by the central analysis unit. However, the SPoF problem can be mitigated if individual components in such a system are implemented redundantly and form a centralized architecture only at the logical level. A bottleneck, on the other hand, is usually avoided by a distributed implementation, which can also logically be regarded as a central data repository. Hierarchical designs exhibit multiple monitoring and analysis units organized in a tree-based topology \cite{Phillip1997,Zhang2001,Nguyen2019}. These systems are restricted in their scalability by the respective instances on higher levels, whose failure results in a malfunction of the respective sub-trees \cite{Zhou2010}. Again, such disadvantages only play a major role in non-redundantly implemented systems. Additionally, there exist approaches that are inherently distributed. Distributed architectures \cite{Vasilomanolakis2015SkipMon,Perez2013,Bye2008,Fung2008,Janakiraman2003}, wherein each participating system has a monitoring and analysis feature and where the communication is based on some form of data distribution protocol, are considered as scalable by design. However, they depend on effective and consistent data dissemination and the data attribute selected for correlation may affect load distribution among participants~\cite{Zhou2010}.
+
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.75\textwidth, trim = 1cm 3cm 1cm 5cm ,clip]{img/architectures.pdf}
+%     \caption{Overview of centralized (a), hierarchical (b) and distributed (c) CIDS architectures that consist of monitoring units (M) and analysis units (A) or a combination of both (MA).}
+%     \label{fig:architectures}
+% \end{figure}
+
+% The flow of information in centralized and hierarchical architectures is governed by the logical arrangement of components and their specific role. In centralized architectures, there is usually a central entity that controls communication. In hierarchical systems, the communication paths are mainly governed by the topological structure. In contrast to that, different techniques exist in distributed approaches. Whereas flooding refers to unfiltered data distribution to all members, selective techniques reduce the overhead by using, e.g., random walks \cite{Vishnumurthy2006}, gossipping approaches \cite{Dash2006}\cite{Ganesh2003} or publish-subscribe mechanisms. The latter provide flexible organization options and guarantee delivery. For example, subscriptions utilized in \cite{Janakiraman2003} are based on special attack forms.
+
+% The data dissemination strategy of a CIDS not only defines the communication paths as described above, but also influences what kind of data is exchanged between the CIDS members while also specifying format and level of granularity. This also includes the central aspects of \textit{data privacy}, realized by utilization of, e.g., bloom filters \cite{Vasilomanolakis2015SkipMon}\cite{Locasto2005}, and \textit{interoperability} that can be obtained by standardized formats, such as the Intrusion Detection Message Exchange Format \cite{Cuppens2002}\cite{Duma2006}.
+
+% In particular, there are two approaches to mention, that directly address the problems of communication overhead an privacy in this context. In \cite{Locasto2005}, the authors present an approach for the efficient and privacy aware distribution of alert data in a distributed CIDS. Before exchanging information, the respective data is compressed by the utilization of a bloom filter data structure. Upon an alert, the relevant information, e.g. IP address, is inserted ino the bloom filter. Since the bloom filter contains information on suspicious hosts, it is called \textit{watchlist}. The watchlist is shared among peers, which are selected by a network scheduling algorithm called \textit{whirlpool}, that dynamically creates an overlay that defines peer relationships.
+
+% The authors state, that within data dissemination, there two challenges. First, the disclosure of sensitive data, e.g. IP addresses, to collaborative entities renders participation in the collaboration not an option. Second, the tradeoff between latency and accuracy of the information exchange and the required bandwidth. Centralized approaches disseminate information reliable and predictable, but they constitute a bottleneck. While distributed approaches scale well, information can be lost or delayed by partitioning the data among the peers.
+
+% In the context of reducing communication overhead, this approach addresses this challenge twofold. First, alert data is compressed when inserted into the bloom filter by hashing. Second, only peers exchange data, which reduces overhead significantly, when compared to a complete distribution. However, bloom filters are probabilistic data structure, which exhibit increasing false positive matches with increasing filling degree. Thus, when scaling this approach, the probability that innocent hosts are considered as malicious, increases. 
+
+% Also, the authors in \cite{Vasilomanolakis2015SkipMon} state, that a CIDS needs to provide \textit{scalability}, minimal message \textit{overhead}, \textit{privacy} of the exchanged alert data, an \textit{domain awareness}, which describes the ability to constrain alert disseminatation to specific sub-domains of a network. Instead of randomly creating sub-domains as in \cite{Locasto2005}, the authors suggest to incorporate network traffic similarities into account for this process. 
+
+% data dissemination: extract specific features from alerts and add data into bloom filter; then utilize data disseminatation technique (e.g. flooding, partial flooding, gossipping) for sending bloom filters to other nodes (peers)
+
+% similarity (alert) correlation: when nodes receive data from other nodes, they compute their similarity value by performing logical operations on the bloom filters
+
+% similarity (alert) correlation: when nodes receive data from other nodes, they compute their similarity value by performing logical operations on the bloom filters, after calculating the similarity value, nodes will make use of a threshold value t to determine wheteher the similarity value is enough for joining a group (community creation)
+
+% Community formation: After the successful dissemination and correlation of the alert data, each sensor creates a matrix with its local knowledge of other sensors. Based on this knowledge and along with the utilized threshold, sensors can identify others and form a community with them to, afterwards, exchange more fine-grained alert data.
+
+% The problem of finding an optimal threshold value (golden standard) heavily depends on the network that is to be monitored.
+
+
+% To sum up, the following challenges in the context of data dissemination are found to be critical for the success of the overall system. 
+% \begin{description}
+
+%     \item[Minimal Overhead] Detection latency can be affected by various factors, some of which are encountered in conventional IDS and others that are specifically relevant in the CIDS context. With regards to the data dissemination in CIDS, the computational overhead introduced by the communication of multiple monitors in the CIDS needs to be minimized, such that potential knowledge gains are available fast enough.
+
+%     \item[Privacy] Members may not want to disclose data that contains information on system- and network states of their infrastructure, as it constitutes a privacy and security problem. This includes, among other things, legal aspects when it comes to sharing log and network data. Nonetheless, the exchange of this information is crucial for the effective operation of a CIDS.
+    
+%     \item[Interoperability] The individual components of the overall system, which were deployed in different system and network environments, should be able to interact with each other in the context of the CIDS. In addition to system-wide standards for data collection, processing and exchange, there exists a trade-off between interoperability and privacy.
+    
+%     \item[Domain Awareness] t.b.d. (a feature that increases scalability by reducing overhead and contributes to privacy by partially constraining communication; also increases accuracy, because only those alerts are shared that are relevant for w.r.t. to similarity of data etc.)
+
+% \end{description}
+
+\section{Similarity Hashing in Malware Detection}
+
+% \subsection{Motivation}
+
+% \subsection{Approximate Matching}
+
+% \subsection{Locality-Sensitive Hashing in IDS}
+
+% % Das Thema Patterns/Similarity Patterns/Pattern Detection umreißen und in den Kontext von ID
+
+% Searching for similar objects in large data sets is a fundamental challenge that has found important applications in many fields. An important subclass of similarity search is the nearest neighbour search problem, which becomes hard in the high dimensional case, when relying on exact algorithms like a linear scan ($O(n)$) as the best solution. However, many applications do not require an exact solution, such that in these cases a randomized algorithm can be used, which provides the correct solution with high probability in sublinear time \cite{datar_locality-sensitive_2004}. Therefore, approximate and randomized solution algorithms are widely used in practice. There is  popular approach known as locality-sensitive hashing (LSH) that allows searching in large databases for similar items in a randomized manner. This technique hashes similar input onto the same hash code with high probability for the purpose of populating a hash table. Since similar items are placed into the same buckets, this approach is suitable for data clustering or nearest neighbour search.
+
+
+% Also the field of cyber security has adopted methods suitable for similarity search, mainly for the analysis of polymorphic malware. This type of malware poses a significant challenge, since it changes its appearance over time in order to stay undetectable from antivirus software \cite[p.91]{whitman_principles_2018}. 
+% Traditional antivirus software uses cryptographic hash functions (SHA-256) to create file signatures. Such signatures are well suited to search for identical files in a knowledge database. However, due to the property of cryptographic diffusion, even minimal changes to the malware result in large differences in the resulting hash value. With the rapid evolution and proliferation of polymorphic malware, detection based on unique signatures no longer seems effective. 
+
+% Based on these developments, detection schemes based on approximate matching algorithms have initially become the focus of research. In contrast to LSH, approximate matching functions are designed for producing digests of objects and a subsequent comparison of such digests, which yields a confidence value reflecting the similarity of two objects \cite{moia_similarity_2017}. Popular approaches in this area are for example \textit{ssdeep}, which implements context triggered piecewise hashing (CTPH) \cite{kornblum_identifying_2006} or \textit{sdhash}, that makes use of bloom filters for the digest creation and comparison \cite{chow_data_2010}.
+
+\section{Generative Algorithms and Intrusion Detection}
+
+\end{document}

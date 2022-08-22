@@ -43,12 +43,12 @@ shrink=10]{microtype}
 \usepackage{eso-pic}
 
 \usepackage[noend]{algorithmic}
-\usepackage{algorithm}
+\usepackage[plain]{algorithm}
 
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \renewcommand{\algorithmicforall}{\textbf{for each}}
-\renewcommand{\algorithmiccomment}[1]{// #1}
+\renewcommand{\algorithmiccomment}[1]{\hspace*{\fill} $\blacktriangleright$ #1}
 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -80,9 +80,9 @@ sorting=ynt
 \newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}
 
 \usepackage{tikz}
-\usetikzlibrary{external, trees,positioning,shapes,shadows,arrows, arrows.meta}
+\usetikzlibrary{trees,positioning,shapes,shadows,arrows, arrows.meta}
+\usepackage{tikzscale}
 
-\tikzexternalize[prefix=tikz/]
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17}
 
@@ -90,12 +90,26 @@ sorting=ynt
   \tikzsetnextfilename{#1}%
   \input{#1.tex}%
 }
+\usepackage[bottom]{footmisc}
 
-\usepackage[toc, acronym]{glossaries}
-\makeglossaries
+\usepackage[acronym, nonumberlist, nogroupskip, toc, nopostdot]{glossaries}
+\glssetwidest[1]{\hspace{3cm}}
+
+
+\newglossarystyle{mylong}{%
+  \setglossarystyle{long}%
+  \renewenvironment{theglossary}%
+     {\begin{longtable}[l]{@{}p{\dimexpr 3cm-\tabcolsep}p{0.8\hsize}}}% <-- change the value here
+     {\end{longtable}}%
+ }
+
+
+\makenoidxglossaries
+
+
+
 \usepackage[nottoc]{tocbibind}
 \usepackage{setspace}
 
-
-
-
+\usepackage[mode=buildnew]{standalone}
+\usepackage{subfiles}

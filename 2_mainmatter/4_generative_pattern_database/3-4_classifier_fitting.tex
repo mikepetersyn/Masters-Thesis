@@ -1,0 +1,39 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+
+\subsection{Classifier Fitting} \label{sec:classifier_fitting}
+
+The objective of the classifier fitting service is to provide the local IDS with the latest classification model trained on both original local data and synthetic global data. After each change to the generative models in the global pattern database made by the previous service, an event is sent into the communication channel. Within a defined time window, all such events are collected. If at least a single event was collected, the classifier fitting service is initiated and begins with assembling a training dataset. For this task, all original data are first loaded from the local PDB. Then, all generative models are loaded sequentially from the PDB and provided. n the process, synthetic data is generated in the amount that was also originally found in the corresponding region. After each sampling, the synthetic data is transferred from the lower-dimensional subspace to the original data space by the inverse function of the original PCA operation. Subsequently, the normalization operation is also reversed for both the original and the synthetic data by loading the corresponding parameters that were used to normalize a batch from the PDB. 
+
+\begin{algorithm}
+    \caption{Dataset Assembly and Classifier Fitting}
+    \label{alg:classifier_fitting}
+    \algsetup{indent=2em}
+ 
+    \begin{algorithmic}[1]
+        \REQUIRE Region Update Event $r$
+        \ENSURE Model Update Notification
+
+        
+
+
+    \end{algorithmic}
+ \end{algorithm}
+
+
+
+% load the local dataset
+
+% iterate through all regions and retrieve the respective model parameters
+
+%       rebuild GMM and PCA models by deserialization and putting in parameters
+%       sample as many samples per (GMM,PCA) as originally indexed into the respective region-label-infrastructure combination
+%       collect (sample,label)-pairs in a collection
+
+% combine local dataset and synthetic dataset
+% shuffle, split
+% fit Ensemble of DecisionTrees (RandomForest) on combined dataset
+% serialize DecisionTree model and put into PDB
+% put an event into local communication channel
+% local IDS receives Event and retrieves lates DT-Model and puts it into the decision pipeline
+\end{document}
