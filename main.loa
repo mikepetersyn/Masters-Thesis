@@ -7,14 +7,12 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {algorithm}{\numberline {4}{\ignorespaces Creating a global complexity state by combining local complexity states\relax }}{37}{algorithm.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {5}{\ignorespaces Retrieve Dataset from Region (Main Procedure)\relax }}{38}{algorithm.5}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Generative Fitting (Main Procedure)\relax }}{38}{algorithm.5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {6}{\ignorespaces Preprocess Data\relax }}{39}{algorithm.6}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Binary Splitting and Upsampling of Region Data\relax }}{39}{algorithm.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Upsampling\relax }}{40}{algorithm.7}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Model Selection\relax }}{41}{algorithm.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {8}{\ignorespaces Model Selection\relax }}{42}{algorithm.8}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Adversary Evaluation\relax }}{42}{algorithm.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {9}{\ignorespaces Adversary Evaluation\relax }}{43}{algorithm.9}%
-\defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {10}{\ignorespaces Dataset Assembly and Classifier Fitting\relax }}{44}{algorithm.10}%
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Dataset Assembly and Classifier Fitting\relax }}{44}{algorithm.9}%
