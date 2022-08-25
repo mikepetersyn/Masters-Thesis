@@ -1,0 +1,55 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{positioning, arrows.meta, trees}
+\begin{document}
+    \begin{tikzpicture}
+        [
+            root/.style = {draw, black},
+            level 1/.style = {draw, black, sibling distance = 2.9cm, minimum height=1cm, inner sep=1pt},
+            edge from parent/.style={->,black,draw}, 
+            edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode.north)},
+            >=latex, node distance=5.2cm, edge from parent fork down
+        ]%
+        \node[root] {\textbf{CIDS Components}}
+            child {node[level 1, rounded corners=3pt, align=center, text width=2.5cm] (local) {Local \\ Monitoring}}
+            child {node[level 1, rounded corners=3pt, align=center, text width=2.5cm] (membership) {Membership Management}}
+            child {node[level 1, rounded corners=3pt, align=center, text width=2.5cm] (correlation) {Correlation and Aggregation}}
+            child {node[level 1, rounded corners=3pt, align=center, text width=2.5cm] (dissemination) {Data \\ Dissemination}}
+            child {node[level 1, rounded corners=3pt, align=center, text width=2.5cm] (global) {Global \\ Monitoring}};
+
+
+
+        \node [below = 0.25cm of local, xshift=20pt, text width=2.8cm] (active) {Active};
+        \node [below = 0.1cm of active, text width=2.8cm] (passive) {Passive};
+        \draw[->] (local.205) |- (active.west);
+        \draw[->] (local.205) |- (passive.west);
+
+
+        \node [below = 0.25cm of membership, xshift=20pt, text width=2.8cm] (dynamic) {Dynamic};
+        \node [below = 0.1cm of dynamic, text width=2.8cm] (manual) {Non-Dynamic};
+        \draw[->] (membership.205) |- (dynamic.west);
+        \draw[->] (membership.205) |- (manual.west);
+
+
+        \node [below = 0.25cm of correlation, xshift=20pt, text width=2.8cm] (similarity) {Similarity};
+        \node [below = 0.1cm of similarity, text width=2.8cm] (attack) {Attack};
+        \node [below = 0.1cm of attack, text width=2.8cm] (multistage) {Multistage};
+        \node [below = 0.1cm of multistage, text width=2.8cm] (filter) {Filter};
+        \draw[->] (correlation.205) |- (similarity.west);
+        \draw[->] (correlation.205) |- (attack.west);
+        \draw[->] (correlation.205) |- (multistage.west);
+        \draw[->] (correlation.205) |- (filter.west);
+
+        \node [below = 0.25cm of dissemination, xshift=20pt, text width=2.8cm] (centralized) {Centralized};
+        \node [below = 0.1cm of centralized, text width=2.8cm] (hierarchical) {Hierarchical};
+        \node [below = 0.1cm of hierarchical, text width=2.8cm] (distributed) {Distributed};
+        \draw[->] (dissemination.205) |- (centralized.west);
+        \draw[->] (dissemination.205) |- (hierarchical.west);
+        \draw[->] (dissemination.205) |- (distributed.west);
+
+        \node [below = 0.25cm of global, xshift=20pt, text width=2.8cm] (generalized) {Generalized};
+        \node [below = 0.1cm of generalized, text width=2.8cm] (specialized) {Specialized};
+        \draw[->] (global.205) |- (generalized.west);
+        \draw[->] (global.205) |- (specialized.west);
+
+        \end{tikzpicture}
+\end{document}
