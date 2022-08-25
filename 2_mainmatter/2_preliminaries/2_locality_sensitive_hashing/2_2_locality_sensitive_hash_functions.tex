@@ -5,7 +5,11 @@
 
 Introduced by Indyck and Motwani in 1998 \cite{indyk_approximate_1998} as an algorithm that solves the \gls{cnn}, \gls{lsh} has since been extensively researched and is now considered among the state of the art for approximate searches in high-dimensional spaces.\footnote{See \cite{nagarkar2021exploring} for an exhaustive survey of \gls{nn} Techniques.} The basic idea of the approach is to partition the input data using a hash function that is sensitive to the location of the input within the metric space. This way, similar inputs collide with a higher probability than inputs that are far apart. Thus, \gls{lsh} exhibits fundamental differences to conventional hash functions.\footnote{Cryptographic and non-cryptograhpic hash functions are referred to as conventional hashing.}
 
-A hash function is a function that maps a large input set to a smaller target set. The elements of the input set are called \textit{messages} or \textit{keys} and may be of arbitrary different lengths. The elements of the target set are called \textit{digests} or \textit{hash values} and are of fixed size length. We define a conventional hash function as $h: \mathcal{M} \rightarrow \mathcal{B}$ where $\mathcal{M} \subset \mathcal{X}$ is the input set and $\mathcal{B}=\{0, 1\}^K$ with $K \in \mathbb{N}$ the target set of all bit sequences of fixed size $K$, with $K < D$. It follows that messages $\bm{m} \in \mathcal{M}$ can only be mapped to $2^K$ different binary strings $\bm{b} \in \mathcal{B}$. The probability that a given $\bm{m}$ hashes to $\bm{b} = h(\bm{m})$ is $\frac{1}{K^2}$. Typically, conventional hashing is used for the realization of, e.g., hash tables, data integrity checks, error correction methods or database indexes. Such applications require a randomly uniform distribution of messages on hashes. Thus, a conventional hash function should therefore ideally assign hash values uniformly distributed with probability $\frac{1}{K^2}$ for all $\bm{m}$ and all $\bm{b}$. A related property in this context is the probability of a \textit{collision}. A collision occurs when two messages $\bm{m}_1 \neq \bm{m}_2$ are projected onto the same hash value $h(\bm{m}_1) = h(\bm{m}_2)$. For example, cryptographic hash functions are used in systems, where adversaries try to break such systems. Thus, different security requirements are defined for cryptograhpic hash functions \cite[349]{williamcryptography}. In particular, these hash functions are designed to be resistant against collisions. Applications that do not require the hash function to be resistant against adversaries, e.g., hash tables, caches or de-duplication, are usually implemented by using a non-cryptographic hash function that exhibits relaxed guarantees on the security properties in exchange for significant performance improvements. However, both cryptographic and non-cryptographic hash functions behave relatively similar with respect to the distribution of messages on hashes and the probability of a collision. In contrast, locality-sensitive hash functions behave more or less inversely as illustrated in Figure~\ref{fig:hashing_differences}. A conventional hashing function $h$ does not incorporate the similarity of messages into the calculation of the hash value. As a result, the messages are hashed evenly distributed into the slots of $T_1$. A locality-sensitive hashing function $h_{\text{LSH}}$ on the other hand, hashes more similar messages into the same slot or neighbouring slots of $T_2$ as the hashes reflect the similarity of the input messages. In this regard, the notation of a hash table is introduced. A hash table is defined as a tuple $T=(\bm{m}_{h(\bm{m})} \, | \, \bm{m} \in \mathcal{M})$ where $\mathcal{M}$ is the set of all messages that are selected to be stored in $T$. Thus, we simply say that a message $\bm{m}$ hashes to a slot $\bm{b} = h(\bm{m})$. Additionally, we define that the subset $h^{-1}(\bm{b})$ is made up of all the values associated with the key $\bm{b}$. Additionally, within an algorithm description the notation $T[\bm{b}]$ refers to the slot $\bm{b}$ of the hash table $T$, which enables a clearer expression for accessing nested hash table data structures.
+A hash function is a function that maps a large input set to a smaller target set. The elements of the input set are called \textit{messages} or \textit{keys} and may be of arbitrary different lengths. The elements of the target set are called \textit{digests} or \textit{hash values} and are of fixed size length. 
+
+We define a conventional hash function as $h: \mathcal{M} \rightarrow \mathcal{B}$ where $\mathcal{M} \subset \mathcal{X}$ is the input set and $\mathcal{B}=\{0, 1\}^K$ with $K \in \mathbb{N}$ the target set of all bit sequences of fixed size $K$, with $K < D$. It follows that messages $\bm{m} \in \mathcal{M}$ can only be mapped to $2^K$ different binary strings $\bm{b} \in \mathcal{B}$. The probability that a given $\bm{m}$ hashes to $\bm{b} = h(\bm{m})$ is $\frac{1}{K^2}$. Typically, conventional hashing is used for the realization of, e.g., hash tables, data integrity checks, error correction methods or database indexes. Such applications require a randomly uniform distribution of messages on hashes. Thus, a conventional hash function should therefore ideally assign hash values uniformly distributed with probability $\frac{1}{K^2}$ for all $\bm{m}$ and all $\bm{b}$. A related property in this context is the probability of a \textit{collision}. A collision occurs when two messages $\bm{m}_1 \neq \bm{m}_2$ are projected onto the same hash value $h(\bm{m}_1) = h(\bm{m}_2)$. 
+
+For example, cryptographic hash functions are used in systems, where adversaries try to break such systems. Thus, different security requirements are defined for cryptograhpic hash functions \cite[349]{williamcryptography}. In particular, these hash functions are designed to be resistant against collisions. Applications that do not require the hash function to be resistant against adversaries, e.g., hash tables, caches or de-duplication, are usually implemented by using a non-cryptographic hash function that exhibits relaxed guarantees on the security properties in exchange for significant performance improvements. However, both cryptographic and non-cryptographic hash functions behave relatively similar with respect to the distribution of messages on hashes and the probability of a collision. In contrast, locality-sensitive hash functions behave more or less inversely as illustrated in Figure~\ref{fig:hashing_differences}. A conventional hashing function $h$ does not incorporate the similarity of messages into the calculation of the hash value. As a result, the messages are hashed evenly distributed into the slots of $T_1$. A locality-sensitive hashing function $h_{\text{LSH}}$ on the other hand, hashes more similar messages into the same slot or neighbouring slots of $T_2$ as the hashes reflect the similarity of the input messages. In this regard, the notation of a hash table is introduced. A hash table is defined as a tuple $T=(\bm{m}_{h(\bm{m})} \, | \, \bm{m} \in \mathcal{M})$ where $\mathcal{M}$ is the set of all messages that are selected to be stored in $T$. Thus, we simply say that a message $\bm{m}$ hashes to a slot $\bm{b} = h(\bm{m})$. Additionally, we define that the subset $h^{-1}(\bm{b})$ is made up of all the values associated with the key $\bm{b}$. Additionally, within an algorithm description the notation $T[\bm{b}]$ refers to the slot $\bm{b}$ of the hash table $T$, which enables a clearer expression for accessing nested hash table data structures.
 
 \begin{figure}[t!]
     \centering
@@ -18,7 +22,7 @@ As a locality-sensitive hashing function can be constructed as a general concept
 
 \begin{enumerate}
     \item Close pairs of input should be hashed into the same bucket with higher probability than distant pairs.
-    \item Different functions within a family need to be statistically independent from one another, such that the FPR and FNR can be improved by combining two or more functions.
+    \item Functions within a family need to be statistically independent from one another, such that the FPR and FNR can be improved by combining two or more functions.
     \item Functions need to be efficient, i.e., be faster compared to an exhaustive search.
 
 \end{enumerate}
@@ -37,7 +41,10 @@ The first step is to define LSH generally. Applied on the $cr$-ANN, the first re
         \]
 \end{definition}
  
-Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicted in Figure \ref{subfig:exact_probability}, which in fact represents an exact search. This is, as already discussed, no option due to its time and space requirements. Considering a single locality-sensitive function as shown in Figure \ref{subfig:lsh_probability}, where the probability gap between $p_1$ and $p_2$ is relatively close, the false negative rate would be relatively high. Increasing the gap would require to increase $c$ and lead to a high number of false positives. Therefore, a single function would provide only a tradeoff. But it is possible to increase $p_1$ close to $1$ and decrease $p_2$ close to $1/N$ while keeping $r$ and $cr$ fixed as shown in Figure \ref{subfig:lsh_probability_boosted} by introducing a process called \textit{amplification}. Two different forms, namely the AND-construction and the OR-construction, can be applied.
+Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicted in Figure \ref{subfig:exact_probability}, which in fact represents an exact search. This is, as already discussed, no option due to its time and space requirements. Considering a single locality-sensitive function as shown in Figure \ref{subfig:lsh_probability}, where the probability gap between $p_1$ and $p_2$ is relatively close, the false negative rate would be relatively high. Increasing the gap would require to increase $c$ and lead to a high number of false positives. Therefore, a single function would provide only a tradeoff. But it is possible to increase $p_1$ close to $1$ and decrease $p_2$ close to $1/N$ while keeping $r$ and $cr$ fixed as shown in Figure \ref{subfig:lsh_probability_boosted} by introducing a process called \textit{amplification}. Two different forms, namely the AND-construction and the OR-construction, can be applied. By applying a logical AND-construction on $\mathcal{H}$ the threshold $p_2$ is reduced. For that, $K$ hash functions are sampled indepedently from $\mathcal{H}$ and each point $\bm{p}$ is hashed to a $K$-dimensional vector with a new constructed function $g \in \mathcal{H}^K$ as
+\begin{equation}\label{eq:or_construction}
+    g(p) = [h_1(\bm{p}), h_2(\bm{p}), \dots, h_K(\bm{p})].
+\end{equation}
 
 \begin{figure}
     \centering
@@ -65,30 +72,19 @@ Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicte
     \label{fig:lsh_probability}
 \end{figure}
    
-By applying a logical AND-construction on $\mathcal{H}$ the threshold $p_2$ is reduced. For that, $K$ hash functions are sampled indepedently from $\mathcal{H}$ and each point $\bm{p}$ is hashed to a $K$-dimensional vector with a new constructed function $g \in \mathcal{H}^K$ as
-
-\begin{equation}\label{eq:or_construction}
-    g(p) = [h_1(\bm{p}), h_2(\bm{p}), \dots, h_K(\bm{p})].
-\end{equation}
-
 Since all hash functions $\{h_1, \dots, h_K\} \in \mathcal{H}$ are statistically independent the product rule applies and for any two points $\bm{p}$ and $\bm{q}$, a collision occurs if and only if $h_k(\bm{p})=h_k(\bm{q})$ for all $k \in \{1, \dots, K\}$. The probability gap is then defined as follows:
-
 \begin{align*}
     P[h_k(\bm{p})=h_k(\bm{q})] \geq p_1 \implies P[g(\bm{p})=g(\bm{q})] \geq p_1^K \\
     P[h_k(\bm{p})=h_k(\bm{q})] \leq p_2 \implies P[g(\bm{p})=g(\bm{q})] \leq p_2^K.
 \end{align*}
 
-Thus, by increasing $K$ the threshold $p_2$ can be arbitrarily decreased and approaches zero. However, the AND-construction lowers both $p_1$ and $p_2$. In order to improve $p_1$, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $\{g_1, \dots, g_L\}$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. Therefore, hashing a point $\bm{p}$ with each $g_l$ results in the following probability for collision.
-
+Thus, by increasing $K$ the threshold $p_2$ can be arbitrarily decreased and approaches zero. However, the AND-construction lowers both $p_1$ and $p_2$. In order to improve $p_1$, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $\{g_1, \dots, g_L\}$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. Therefore, the collision probability is given by
 \begin{align*}
     P[\exists l, g_l(\bm{p})=g_l(\bm{q})] &= 1 - P[\forall l, g_l(\bm{p}) \neq g_l(\bm{q})] \\
                                 &= 1 - P[g_l(\bm{p}) \neq g_l(\bm{q})]^L \\
-                                &\geq 1 - (1-p_1^K)^L
+                                &\geq 1 - (1-p_1^K)^L.
 \end{align*}
-
 As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-construction rises both thresholds. By choosing $K$ and $L$ judiciously, $p_2$ approaches zero while $p_1$ approaches one. Both constructions may be concatenated in any order to manipulate $p_1$ and $p_2$. Of course, the more constructions are used and the higher the values for the parameters $K$ and $L$ are picked, the more time is considered for the application of the function. 
-
-The general algorithm for solving the \gls{crnn} using \gls{lsh} consists of two consecutive steps. First, a set of points is required for the construction of the data structure as described in Algorithm \ref{alg:lsh_preprocess}. For each function $g_l$ a corresponding hash table $T_l$ is initialized that will store all data points $\bm{p}_n$. In other words, all data points are preprocessed and stored $L$ times.The resulting data structure represents the database, which is searched through, when answering a query. Note, that a common collision handling method, such as seperate chaining for example, is applied if a certain slot is already occupied.
 
 \begin{algorithm}
     \caption{LSH Preprocessing}
@@ -110,7 +106,9 @@ The general algorithm for solving the \gls{crnn} using \gls{lsh} consists of two
     \end{algorithmic}
  \end{algorithm}
 
- Answering a query point $\bm{q}$ is done by hashing it multiple times for each $g_l$ as in the preprocessing step (see Algorithm \ref{alg:lsh_query}). Each time, the set of points $\mathcal{P}$, stored in the correspoding hash table $T_l$ at the slot $g_l(\bm{q})$, are retrieved. That is, identify all $\bm{p}_n$, such that $g_l(\bm{p}_n) = g_l(\bm{q})$. For each identified $\bm{p}_n$, a distance function evaluates if the distance $d(\bm{p}_n, \bm{q})$ is within the search perimeter $cr$. If positive, the point is added to the result set $\mathcal{S}$, which is returned at the end of the algorithm.
+ The general algorithm for solving the \gls{crnn} using \gls{lsh} consists of two consecutive steps. First, a set of points is required for the construction of the data structure as described in Algorithm \ref{alg:lsh_preprocess}. For each function $g_l$ a corresponding hash table $T_l$ is initialized that will store all data points $\bm{p}_n$. 
+ 
+ In other words, all data points are preprocessed and stored $L$ times.The resulting data structure represents the database, which is searched through, when answering a query. Note, that a common collision handling method, such as seperate chaining for example, is applied if a certain slot is already occupied.
 
  \begin{algorithm}
     \caption{LSH Query}
@@ -133,6 +131,8 @@ The general algorithm for solving the \gls{crnn} using \gls{lsh} consists of two
         \RETURN $\mathcal{S}$
     \end{algorithmic}
  \end{algorithm}
+
+ Answering a query point $\bm{q}$ is done by hashing it multiple times for each $g_l$ as in the preprocessing step (see Algorithm \ref{alg:lsh_query}). Each time, the set of points $\mathcal{P}$, stored in the correspoding hash table $T_l$ at the slot $g_l(\bm{q})$, are retrieved. That is, identify all $\bm{p}_n$, such that $g_l(\bm{p}_n) = g_l(\bm{q})$. For each identified $\bm{p}_n$, a distance function evaluates if the distance $d(\bm{p}_n, \bm{q})$ is within the search perimeter $cr$. If positive, the point is added to the result set $\mathcal{S}$, which is returned at the end of the algorithm.
 
  With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, resulting in the following theorem.
 

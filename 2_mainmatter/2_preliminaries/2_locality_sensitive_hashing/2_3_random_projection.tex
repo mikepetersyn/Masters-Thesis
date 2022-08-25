@@ -18,7 +18,7 @@ The angle $\theta$ can be normalized to the range $[0, 1]$ by dividing it by $\p
 \begin{figure}[t!]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/2_locality_sensitive_hashing/tikz/random_projection.tex}
-    \caption{Illustration of a random hyperplane (red) partitioning the space}
+    \caption{Illustration of a random hyperplane partitioning the space}
     \label{fig:rp_3d}
 \end{figure}
 
@@ -30,7 +30,6 @@ The angle $\theta$ can be normalized to the range $[0, 1]$ by dividing it by $\p
 \end{definition}
 
 Introduced in \cite{charikar2002similarity}, the \gls{grp} is defined as follows. Given a point $\bm{p} \in \mathcal{P} \subset \mathbb{R}^D$ and a randomly selected hyperplane defined as $\bm{M}=(a_{ij}) \in \mathbb{R}^{D \times K}$ where $a \sim \mathcal{N}(0, I)$, a \textit{gaussian random projection (GRP)} aims to (\RomanNumeralCaps{1}) reduce the dimensionality from $D$ to $K$ dimensions and (\RomanNumeralCaps{2}) provide a binary encoding by first projecting $\bm{p}$ onto $\bm{M}$ and subsequently applying the sign function to each element of the result, which can be formalized as
-
 \begin{gather}\label{eq:grp_sign}
     h(\bm{p}) = [h(\bm{p}, a_1), \dots, h(\bm{p}, a_k)] \text{ with } h(\bm{p}, a) = sign(\bm{p}^\top a) \\
     \text{with } sign(x) = \Biggl\{ \begin{array}{lc}
@@ -38,9 +37,7 @@ Introduced in \cite{charikar2002similarity}, the \gls{grp} is defined as follows
         1 & \text{if } x \geq 0.
     \end{array}
 \end{gather}
-
 An illistration of a random hyperplane that dissects the three-dimensional space and partitions the data space is given in Figure \ref{fig:rp_3d}. The resulting digest is a binary vector $h(\bm{p}) = \bm{b} \in \mathcal{B}$ with $\mathcal{B} = \{0, 1\}^K$ that is used as bucket index for storing $\bm{p}$ in a hash table. For any two messages $\bm{p}_1, \bm{p}_2$, the probability of being hashed to the same bucket increases with a decreasing distance, given as
-
 \begin{equation}\label{eq:rp_proba}
     P[h(\bm{p}_1) = h(\bm{p}_2)] = 1 - \frac{\theta(\bm{p}_1, \bm{p}_2)}{\pi}.
 \end{equation}
