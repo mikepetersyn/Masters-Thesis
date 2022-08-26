@@ -136,9 +136,6 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
 
  With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, resulting in the following theorem.
 
-\begin{theorem}
-    Let $(\mathcal{X},d)$ be a metric on a subset of $\mathbb{R}^D$. Let be a $(r, cr, p_1, p_2)$-locality sensitive hash family $\mathcal{H}$ and write $\rho = \frac{\text{log}(1/p_1)}{\text{log}(1/p_2)}$. Then for $\mathcal{P} \subset \mathcal{X}$ and $N = |\mathcal{P}|$ and for any $N \geq \frac{1}{p_2}$ there exists a solution to \gls{crnn} with space complexity $O(DN+N^{1+\rho})$ and query time of $O(N^{\rho})$.
-\end{theorem}
 
-Therefore, it follows that the query time of LSH can only be sublinear, if $\rho < 1$, which is the case if the inequality $p_1 > p_2$ is satisfied.
+ The algorithm maintains a number of $L$ hash tables. In each hash table $N$ hash values are stored, where each hash value is a vector with $K$ dimensions. Therefore, the space complexity of the algorithm is 
 \end{document}
