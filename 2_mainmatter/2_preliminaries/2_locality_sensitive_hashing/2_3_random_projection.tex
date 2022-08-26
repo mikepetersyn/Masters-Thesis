@@ -3,7 +3,7 @@
 \subsection{Random Projection}\label{subsec:random_projection}
 
 This section presents a specific technique that is a locality-sensitive hashing function. The algorithm that bases on this technique is known as Gaussian Random Projection (GRP). This approach utilizes the cosine similarity of two real vectors in order to determine their similarity. In the course of this section, basic definitions for Cosine Distance and Cosine Similarity are introduced. Then, the individual calculation steps of the approach are specified. Finally, a visual proof verifies that \gls{grp} is a form of \gls{lsh}.
-
+\newpage
 The cosine distance can be applied in euclidean spaces and discrete versions of euclidean spaces \cite[95]{leskovec_rajaraman_ullman_2014}. For two real vectors $\bm{p}_1$ and $\bm{p}_2$, the cosine distance between is equal to the the angle between $\bm{p}_1$ and $\bm{p}_2$, regardless of the dimensionality of the space. Note, that by applying the arc-cosine function, the result is in the range $[0, 180]$. The following definition formalizes what has been stated so far.
 
 \begin{definition}[Cosine Distance]
@@ -30,6 +30,7 @@ The angle $\theta$ can be normalized to the range $[0, 1]$ by dividing it by $\p
 \end{definition}
 
 Introduced in \cite{charikar2002similarity}, the \gls{grp} is defined as follows. Given a point $\bm{p} \in \mathcal{P} \subset \mathbb{R}^D$ and a randomly selected hyperplane defined as $\bm{M}=(a_{ij}) \in \mathbb{R}^{D \times K}$ where $a \sim \mathcal{N}(0, I)$, a \textit{gaussian random projection (GRP)} aims to (\RomanNumeralCaps{1}) reduce the dimensionality from $D$ to $K$ dimensions and (\RomanNumeralCaps{2}) provide a binary encoding by first projecting $\bm{p}$ onto $\bm{M}$ and subsequently applying the sign function to each element of the result, which can be formalized as
+
 \begin{gather}\label{eq:grp_sign}
     h(\bm{p}) = [h(\bm{p}, a_1), \dots, h(\bm{p}, a_k)] \text{ with } h(\bm{p}, a) = sign(\bm{p}^\top a) \\
     \text{with } sign(x) = \Biggl\{ \begin{array}{lc}
@@ -37,6 +38,7 @@ Introduced in \cite{charikar2002similarity}, the \gls{grp} is defined as follows
         1 & \text{if } x \geq 0.
     \end{array}
 \end{gather}
+
 An illistration of a random hyperplane that dissects the three-dimensional space and partitions the data space is given in Figure \ref{fig:rp_3d}. The resulting digest is a binary vector $h(\bm{p}) = \bm{b} \in \mathcal{B}$ with $\mathcal{B} = \{0, 1\}^K$ that is used as bucket index for storing $\bm{p}$ in a hash table. For any two messages $\bm{p}_1, \bm{p}_2$, the probability of being hashed to the same bucket increases with a decreasing distance, given as
 \begin{equation}\label{eq:rp_proba}
     P[h(\bm{p}_1) = h(\bm{p}_2)] = 1 - \frac{\theta(\bm{p}_1, \bm{p}_2)}{\pi}.
@@ -46,7 +48,7 @@ For a visual proof of the claim in Equation \ref{eq:rp_proba} consider Figure \r
 
 The opposite scenario is illustrated by a random normal vector $r'_0$ that is normal to the hyperplane $r'$, which is represented by the blue dashed line. Both $\bm{p}_1^\top r'_0$ and  $\bm{p}_2^\top r'_0$ will have the same sign. This in turn is interpreted as a notion of similarity, since both points are clustered into the same set. All angles between the intersection line of the random hyperplane and the plane spanned by $\bm{p}_1$ and $\bm{p}_2$ are equally likely. Thus, the probability that the hyperplane looks like the red line is $\theta / \pi$ and like the blue line $1 - \theta / \pi$.
 
-Therefore, \gls{grp} is a $(r, cr, (1-r/\pi), (1-cr/\pi))$-sensitive family for any $r$ and $cr$. As already explained in Section \ref{subsec:locality-sensitive-hashes}, such a family can be amplified as desired. The AND-construction is refers to the selection of a number of $K$ different random hyperplanes $r_k$. According to the construction in Equation \ref{eq:grp_sign}, all projections $\bm{p}_n^\top r_k$ for a single point are concatenated into a $K$-bit vector. Likewise, the OR-construction refers to the initialization of a number of $L$ such AND-constructions. The algorithmic procedures for preprocessing and queries from Algorithm \ref{alg:lsh_preprocess} and Algorithm \ref{alg:lsh_query} can be applied withoud change. 
+Therefore, \gls{grp} is a $(r, cr, (1-r/\pi), (1-cr/\pi))$-sensitive family for any $r$ and $cr$. As already explained in Section \ref{subsec:locality-sensitive-hashes}, such a family can be amplified as desired. The AND-construction is refers to the selection of a number of $K$ different random hyperplanes $r_k$. According to the construction in Equation \ref{eq:grp_sign}, all projections $\bm{p}_n^\top r_k$ for a single point are concatenated into a $K$-bit vector. Likewise, the OR-construction refers to the initialization of a number of $L$ such AND-constructions. The algorithmic procedures for preprocessing and queries from Algorithm \ref{alg:lsh_preprocess} and Algorithm \ref{alg:lsh_query} can be applied without change. 
 
 \begin{figure}[t]
     \centering

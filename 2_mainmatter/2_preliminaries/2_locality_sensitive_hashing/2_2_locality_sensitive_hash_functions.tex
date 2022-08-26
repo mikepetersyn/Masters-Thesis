@@ -78,13 +78,15 @@ Since all hash functions $\{h_1, \dots, h_K\} \in \mathcal{H}$ are statistically
     P[h_k(\bm{p})=h_k(\bm{q})] \leq p_2 \implies P[g(\bm{p})=g(\bm{q})] \leq p_2^K.
 \end{align*}
 
-Thus, by increasing $K$ the threshold $p_2$ can be arbitrarily decreased and approaches zero. However, the AND-construction lowers both $p_1$ and $p_2$. In order to improve $p_1$, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $\{g_1, \dots, g_L\}$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. Therefore, the collision probability is given by
+Thus, by increasing $K$ the threshold $p_2$ can be arbitrarily decreased and approaches zero. However, the AND-construction lowers both $p_1$ and $p_2$. In order to improve $p_1$, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $g_1, \dots, g_L$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. For $d(\bm{p}, \bm{q}) \leq r$, the following probability for a collision follows as %is given by
+
 \begin{align*}
-    P[\exists l, g_l(\bm{p})=g_l(\bm{q})] &= 1 - P[\forall l, g_l(\bm{p}) \neq g_l(\bm{q})] \\
+    P[\exists l \, | \, g_l(\bm{p})=g_l(\bm{q})] &= 1 - P[\forall l, g_l(\bm{p}) \neq g_l(\bm{q})] \\
                                 &= 1 - P[g_l(\bm{p}) \neq g_l(\bm{q})]^L \\
                                 &\geq 1 - (1-p_1^K)^L.
 \end{align*}
-As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-construction rises both thresholds. By choosing $K$ and $L$ judiciously, $p_2$ approaches zero while $p_1$ approaches one. Both constructions may be concatenated in any order to manipulate $p_1$ and $p_2$. Of course, the more constructions are used and the higher the values for the parameters $K$ and $L$ are picked, the more time is considered for the application of the function. 
+
+As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-construction rises both thresholds. By choosing $K$ and $L$ judiciously, $p_2$ approaches zero while $p_1$ approaches one. Both constructions may be concatenated in any order to manipulate $p_1$ and $p_2$. Of course, the more constructions are used and the higher the values for the parameters $K$ and $L$ are picked, the more time is considered for the application of the function. The algorithm for solving the \gls{crnn} using \gls{lsh} consists of two consecutive steps, namely the preprocessing (Algorithm~\ref{alg:lsh_preprocess}) and the query (Algorithm~\ref{alg:lsh_query}).
 
 \begin{algorithm}
     \caption{LSH Preprocessing}
@@ -106,9 +108,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
     \end{algorithmic}
  \end{algorithm}
 
- The general algorithm for solving the \gls{crnn} using \gls{lsh} consists of two consecutive steps. First, a set of points is required for the construction of the data structure as described in Algorithm \ref{alg:lsh_preprocess}. For each function $g_l$ a corresponding hash table $T_l$ is initialized that will store all data points $\bm{p}_n$. 
- 
- In other words, all data points are preprocessed and stored $L$ times.The resulting data structure represents the database, which is searched through, when answering a query. Note, that a common collision handling method, such as seperate chaining for example, is applied if a certain slot is already occupied.
+ First, a set of points $\mathcal{P}$ is required for the construction of the data structure $\mathcal{T}$ as described in Algorithm \ref{alg:lsh_preprocess}. For each function $g_l$ a corresponding hash table $T_l$ is initialized that will store all data points $\bm{p}_n$.  In other words, all data points are preprocessed and stored $L$ times.The resulting data structure represents the database, which is searched through, when answering a query. Note, that a common collision handling method, such as seperate chaining for example, is applied if a certain slot is already occupied.
 
  \begin{algorithm}
     \caption{LSH Query}
@@ -134,8 +134,45 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
 
  Answering a query point $\bm{q}$ is done by hashing it multiple times for each $g_l$ as in the preprocessing step (see Algorithm \ref{alg:lsh_query}). Each time, the set of points $\mathcal{P}$, stored in the correspoding hash table $T_l$ at the slot $g_l(\bm{q})$, are retrieved. That is, identify all $\bm{p}_n$, such that $g_l(\bm{p}_n) = g_l(\bm{q})$. For each identified $\bm{p}_n$, a distance function evaluates if the distance $d(\bm{p}_n, \bm{q})$ is within the search perimeter $cr$. If positive, the point is added to the result set $\mathcal{S}$, which is returned at the end of the algorithm.
 
- With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, resulting in the following theorem.
+ With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, from which the optimization of the parameters $K$ and $L$ can be derived. The corresponding findings are summarized below.
+
+ Choose $K$ such that $p_2^k = \frac{1}{N}$. Let $\rho$ be the main parameter that determines the running time and space consumption of the algorithm. Assume that
+
+\begin{align*}
+    p_1 = p_2^\rho,
+\end{align*}
+
+for some $\rho < 1$ and choose $L \propto N ^{-\rho} \, \text{ln} \, N$. Then, by fixing a query point $q$ it follows by linearity of expectation that for any $l$,
+
+\begin{align*}
+    P[\exists \bm{p} \, | \, d(\bm{p}, \bm{q}) > cr, g_l(\bm{p}) = g_l(\bm{q})] = N p_2^K \leq 1.
+\end{align*}
+
+By taking the sum over all $l$, in expectation there are $L$ points $\bm{p} \in \mathcal{P}$ where $g_l(\bm{p}) = g_l(\bm{q})$ for some $l$, which implies an overhead of $O(L)$ in the query time. Conversely, if $d(\bm{p}, \bm{q}) \leq r$, then
+
+\begin{align*}
+    P[\exists l \, | \, g_l(\bm{p} = g_l(\bm{q})] &\geq 1 - (1-p_1^K)^L \\
+                                                  &= 1-(1-p_2^{\rho K})^L \\
+                                                  &= 1-(1-n^{-\rho})^L \\
+                                                  &\approx 1-e^{LN^{-\rho}} \\
+                                                  &= 1 - \frac{1}{N}.
+\end{align*}
+
+Thus, for any point $\bm{q}$ whose distance is at most $r$, the algorithm finds $\bm{p}$ with a probability of at least $1-\frac{1}{N}$. In expectation, the algorithm exhibits an overhead of $O(LD)$ for checking $L$ points whose distance from $\bm{q}$ is at least $cr$.
+
+The algorithm maintains a number of $L$ hash tables. In each hash table $N$ hash values are stored, where each hash value is a vector with $K$ dimensions. Therefore, the space complexity of the algorithm is 
+
+\begin{align*}
+    O(LNK) = O(N^{1+\rho} \, \text{log} \, \frac{N}{p_2}).
+\end{align*}
+
+The query time for computing $g_l(\bm{q})$ for all $1 \leq l \leq L$ is $O(LK)$. For any candidate $\bm{p}$ the time to compute $d(\bm{p}, \bm{q})$ is $O(D)$. Let $|O|$ be the number of points whose distance from $\bm{q}$ is $cr$. In expectation, a number of $L$ points are examined that are not returned by the algorithm, which results in a query time of $O(D(L + |O|))$ in expectation. Combined, the query time is
+
+\begin{align*}
+    O(D(L + |O|) LK) = O(N^\rho (D + \text{log} \frac{N}{p_2}) + |O| D).
+\end{align*}
+
+By ignoring lower order terms, the algorithm exhibits a query time of $O(N^\rho)$ and a space complexity of $O(N^{1+\rho})$. Thus, the query time and space consumption improves significantly as $\rho$ is decreased. In practice, the parameter $\rho$ is based on the available resources.
 
 
- The algorithm maintains a number of $L$ hash tables. In each hash table $N$ hash values are stored, where each hash value is a vector with $K$ dimensions. Therefore, the space complexity of the algorithm is 
 \end{document}
