@@ -79,48 +79,42 @@ So far, it was assumed that the dataset consists of a single data point $\bm{x}$
 
 The posterior $r_{nk}$ can be interpreted, from the perspective of a generative model, as the proportion with which a component is involved in the generation of the point $\bm{x}_n$.
 
-% \subsubsection{Maximum Likelihood Estimates}
+The central question is how to fit the set of unknown parameters $\bm{\theta}$ to a given set of data $\mathcal{X}$ and therefore finding a good approximation for the unknown distribution $p(x)$. For estimation problems based on i.i.d. data points, the \gls{mle} is an applicable method \cite[p. 317]{dei_2020}. By doing this, the likelihood of each data point $\bm{x} \in \mathcal{X}$ given a specific parametrization $\bm{\theta}$ is maximized. To do so, the likelihood function, and the log-likelihood function respectively, must first be constructed, where each individual likelihood term is a Gaussian mixture density as
 
-% The central question is how to fit the set of unknown parameters $\theta$ to a given set of data $\bm{X}$ and therefore finding a good approximation for the unknown distribution $p(x)$. For estimation problems based on i.i.d. data points, the \acrfull{mle} is an applicable method. \cite[p. 317]{dei_2020} By doing this, the likelihood of each data point $\bm{x} \in \bm{X}$ given a specific parametrization $\theta$ is maximized. 
+\begin{equation*}
+    \begin{aligned}
+        p(\mathcal{X}|\theta) &= \prod\limits_{n=1}^Np(\bm{x}_n|\bm{\theta}), \quad p(\bm{x}_n|\bm{\theta})=\sum\limits^K_{k=1}\pi_k\mathcal{N}(\bm{x}_n| \bm{\mu}, \bm{\Sigma}),\\[5pt]
+        \mathrm{log} \, p(\mathcal{X}|\bm{\theta}) &= \sum\limits_{n=1}^N \mathrm{log} \, p(\bm{x}_n|\bm{\theta}) = \underbrace{ \sum\limits_{n=1}^N \mathrm{log} \sum\limits_{k=1}^K \pi_k \mathcal{N}(\bm{x}_n | \bm{\mu}, \bm{\Sigma})}_{=:\mathcal{L}}.
+    \end{aligned}
+\end{equation*}
 
-% \newpage
+The common solution scheme that would follow would be to calculate the gradient $\partial{\mathcal{L}}/\partial{\bm{\theta}}$, set it to zero and solve for $\bm{\theta}$. Unfortunately, there is no closed form solution for a \gls{mle} in this form, because the summation over the $K$ components prevents the logarithm from being applied to the Gaussian densities within \cite[p. 435]{bis_2006}. That means that each of the partial derivatives of the model parameters depends on all $K$ parameters of the GMM through $r_{nk}$, which prohibits a closed form solution. 
 
-% To do so, the likelihood function, and the log-likelihood function respectively, must first be constructed, where each individual likelihood term is a Gaussian mixture density as
+However, a solution can be found using the \gls{ema}. The key idea here is to update one model parameter at a time while keeping the others fixed. For that, the ML estimators for the individual parameters of the \gls{gmm} are required first, which will be applied in the \gls{ema} in the following step. The following necessary conditions are established:
 
-% \begin{equation*}
-%     \begin{aligned}
-%         p(\bm{X}|\theta) &= \prod\limits_{n=1}^Np(\bm{x}_n|\theta), \quad p(\bm{x}_n|\theta)=\sum\limits^K_{k=1}\pi_k\mathcal{N}(\bm{x}_n| \overline{\bm{x}}, \bm{\mathrm{C}}),\\[5pt]
-%         \mathrm{log}p(\bm{X}|\theta) &= \sum\limits_{n=1}^N \mathrm{log} p(\bm{x}_n|\theta) = \underbrace{ \sum\limits_{n=1}^N \mathrm{log} \sum\limits_{k=1}^K \pi_k \mathcal{N}(\bm{x}_n | \overline{\bm{x}}, \bm{\mathrm{C}})}_{=:\mathcal{L}}.
-%     \end{aligned}
-% \end{equation*}
+\begin{equation*}
+    \begin{aligned}
+    &\frac{\partial{\mathcal{L}}}{\partial{\bm{\mu}_k}} = \bm{0}^T \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\bm{\mu}_k}} = \bm{0}^\top\\[5pt]
+    &\frac{\partial{\mathcal{L}}}{\partial{\bm{\Sigma}_k}} = \bm{0} \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\bm{\Sigma}_k}} = \bm{0}\\[5pt]
+    &\frac{\partial{\mathcal{L}}}{\partial{\pi_k}} = 0 \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\pi_k}} = 0.\\
+    \end{aligned}
+\end{equation*}
 
-% The common solution scheme that would follow would be to calculate the gradient $\partial{\mathcal{L}}/\partial{\theta}$, set it to zero and solve for $\theta$. Unfortunately, there is no closed form solution for a \acrshort{mle} in this form, because the summation over the $K$ components prevents the logarithm from being applied to the Gaussian densities within \cite[p. 435]{bis_2006}. That means that each of the partial derivatives of the model parameters depends on all $K$ parameters of the GMM through $r_{nk}$, which prohibits a closed form solution. 
+In the following only the partial derivatives of the model parameters that will be used in the \acrshort{ema} are presented. A detailed calculation can be found in \cite[pp.319]{dei_2020}.
 
-% However, a solution can be found using the \acrshort{ema}. The key idea here is to update one model parameter at a time while keeping the others fixed. For that, the ML estimators for the individual parameters of the \acrshort{gmm} are required first, which will be applied in the \acrshort{ema} in the following step. The following necessary conditions are established:
-
-% \begin{equation*}
-%     \begin{aligned}
-%     &\frac{\partial{\mathcal{L}}}{\partial{\overline{\bm{x}}_k}} = \bm{0}^T \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\overline{\bm{x}}_k}} = \bm{0}^T\\[5pt]
-%     &\frac{\partial{\mathcal{L}}}{\partial{\bm{\mathrm{C}}_k}} = \bm{0} \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\bm{\mathrm{C}}_k}} = \bm{0}\\[5pt]
-%     &\frac{\partial{\mathcal{L}}}{\partial{\pi_k}} = 0 \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\pi_k}} = 0.\\
-%     \end{aligned}
-% \end{equation*}
-
-% In the following only the partial derivatives of the model parameters that will be used in the \acrshort{ema} are presented. A detailed calculation can be found in \cite[pp.319]{dei_2020}.
-
-% \begin{equation}\label{eq:ml_estimator}
-%     \begin{aligned}
-%     &\overline{\bm{x}}_k' &= \quad &\frac{\sum_{n=1}^N r_{nk}\bm{x}_n}{\sum_{n=1}^N r_{nk}} \\
-%     &\bm{\mathrm{C}}_k' &= \quad &\frac{1}{N_k}\sum\limits_{n=1}^N r_{nk}(\bm{x}_n-\overline{\bm{x}}_k)(\bm{x}_n-\overline{\bm{x}}_k)^T\\
-%     &\pi_k' &= \quad &\frac{N_k}{N}
-%     \end{aligned}
-% \end{equation}
+\begin{equation}\label{eq:ml_estimator}
+    \begin{aligned}
+    &\bm{\mu}_k' &= \quad &\frac{\sum_{n=1}^N r_{nk}\bm{x}_n}{\sum_{n=1}^N r_{nk}} \\
+    &\bm{\Sigma}_k' &= \quad &\frac{1}{N_k}\sum\limits_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top\\
+    &\pi_k' &= \quad &\frac{N_k}{N}
+    \end{aligned}
+\end{equation}
 
 % \subsubsection{Expectation Maximization Algorithm} \label{ch:Expectation_Maximization_Algorithm}
 
-% The \acrshort{ema} is an iterative procedure that starts with an initial estimate of the parameters, which are updated incrementally until convergence is detected. The initial values for the parameters can either be chosen randomly or obtained with an heuristic method, e.g. by using k-means to cluster the data first and subsequently defining the weights based on the resulting k-means memberships \cite[pp. 325]{dei_2020}. 
+The \acrshort{ema} is an iterative procedure that starts with an initial estimate of the parameters, which are updated incrementally until convergence is detected. The initial values for the parameters can either be chosen randomly or obtained with an heuristic method, e.g. by using k-means to cluster the data first and subsequently defining the weights based on the resulting k-means memberships \cite[pp. 325]{dei_2020}. 
 
-% Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expectation step and the Maximization step. A third step is subsequently needed for the calculation of the convergence criterion. First, in the expectation step, the posterior distribution $r_{nk}$ from (\ref{eq:responsibilities}) is calculated for all data points $\bm{x}_n$ with the current set of parameters $\theta^{(t)}$. Then, the posterior from the previous step is used in the maximization step for computing the new parameter values with the Maximum-Likelihood estimators defined in (\ref{eq:ml_estimator}). At the end of each iteration, the log likelihood for the new set of parameters $\theta^{(t+1)}$ and its change from the log likelihood from the previous iteration is computed. Then, the algorithm can test for convergence by comparing $\Delta \mathcal{L}$ with the convergence threshold $\epsilon$ and the algorithm stops if no significant change occur anymore.
+Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expectation step and the Maximization step. A third step is subsequently needed for the calculation of the convergence criterion. First, in the expectation step, the posterior distribution $r_{nk}$ from (\ref{eq:responsibilities}) is calculated for all data points $\bm{x}_n$ with the current set of parameters $\bm{\theta}^{(t)}$. Then, the posterior from the previous step is used in the maximization step for computing the new parameter values with the Maximum-Likelihood estimators defined in (\ref{eq:ml_estimator}). At the end of each iteration, the log likelihood for the new set of parameters $\bm{\theta}^{(t+1)}$ and its change from the log likelihood from the previous iteration is computed. Then, the algorithm can test for convergence by comparing $\Delta \mathcal{L}$ with the convergence threshold $\epsilon$ and the algorithm stops if no significant change occur anymore.
 
 % % \begin{algorithm}[H]
 % % \setstretch{1.75}
