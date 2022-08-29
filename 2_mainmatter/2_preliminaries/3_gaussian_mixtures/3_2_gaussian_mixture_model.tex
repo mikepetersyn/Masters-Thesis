@@ -1,8 +1,8 @@
 \documentclass[../../../main.tex]{subfiles}
 \begin{document}
-\subsection{The Gaussian Mixture Model}
+\subsection{The Gaussian Mixture Model} \label{subsec:gaussian_mixture_model}
 
-% In this section, the \acrshort{gmm} is presented as a model for density estimation. For this purpose, at the beginning a short motivation for the application of the presented model will be given. Then, mixture models in general and \acrshort{gmm} in particular are defined. After that, two main concepts will be explained. First, the \acrshort{gmm} is interpreted in terms of a \acrshort{lvm}. Second, the \acrshort{ema} is presented, which performs the computation of model parameters of latent variable models in an iterative scheme.
+In this section, the \acrshort{gmm} is presented as a model for density estimation. For this purpose, at the beginning a short motivation for the application of the presented model will be given. Then, mixture models in general and \acrshort{gmm} in particular are defined. After that, two main concepts will be explained. First, the \acrshort{gmm} is interpreted in terms of a \acrshort{lvm}. Second, the \acrshort{ema} is presented, which performs the computation of model parameters of latent variable models in an iterative scheme.
 
 % \subsubsection{Motivation}
 % Using statistical estimation techniques, it is possible to estimate an unobservable underlying probability density function from observed data. This allows data to be compactly represented with a density from a parametric family, such as a Gaussian distribution. However, all conventional parametric distributions are limited in their modeling capabilities when confronted with real data. For example, looking at the marginal distribution $p(x_1)$ in Figure \ref{fig:multimodal_dataset}, it is apparent that the data follow a multimodal distribution, i.e., have more than one center. A density estimate using a simple Gaussian distribution is not sufficient to effectively represent such multimodal data. Therefore, a more flexible type of distribution needs to be introduced that can be used for density estimation.
