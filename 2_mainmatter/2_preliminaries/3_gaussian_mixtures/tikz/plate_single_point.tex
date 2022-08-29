@@ -1,0 +1,25 @@
+\documentclass[tikz]{standalone}
+\usepackage{bm}
+\usetikzlibrary{arrows.meta,positioning,calc, bayesnet}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \node[obs] (x) {$\bm{x}$};
+    \node[latent, above=0.5cm of x] (z) {$\bm{z}$};
+    \node[above=0.5cm of z] (pi) {$\bm{\pi}$};
+    
+    \node[left=of x] (cov) {$\bm{\Sigma}_k$};
+    \node[above=of cov, yshift=-1cm] (mean) {$\bm{\mu}_k$};
+    
+    \plate {plate1} {(mean)(cov)} {$k=1, \dots, K$};
+    
+    \edge{pi}{z};
+    \edge{z}{x};
+    \edge{mean}{x.160};
+    \edge{cov}{x.190}
+    
+    
+    \end{tikzpicture}
+
+\end{document}
