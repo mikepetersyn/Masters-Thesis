@@ -91,7 +91,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
 \begin{algorithm}
     \caption{LSH Preprocessing}
     \label{alg:lsh_preprocess}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
     \begin{algorithmic}[1]
         \REQUIRE $N$ points $\bm{p}_n \in \mathcal{P}$ with $n \in \{1, \dots, N\}, N \in \mathbb{N}$
         \ENSURE data structure $\mathcal{T} = \{T_1, \dots, T_L\}$
@@ -104,7 +104,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
             \ENDFOR
             \STATE add $T_l$ to $\mathcal{T}$
         \ENDFOR
-        \RETURN $\mathcal{T}$
+        \STATE \textbf{return} $\mathcal{T}$
     \end{algorithmic}
  \end{algorithm}
 
@@ -113,7 +113,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
  \begin{algorithm}
     \caption{LSH Query}
     \label{alg:lsh_query}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
     \begin{algorithmic}[1]
         \REQUIRE a query point $\bm{q}$ and data structure $\mathcal{T} = \{T_1, \dots, T_L\}$
         \ENSURE a set $\mathcal{S}$ of nearest neighours of $\bm{q}$
@@ -128,7 +128,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
                 \ENDFOR
             \ENDIF
         \ENDFOR
-        \RETURN $\mathcal{S}$
+        \STATE \textbf{return} $\mathcal{S}$
     \end{algorithmic}
  \end{algorithm}
 

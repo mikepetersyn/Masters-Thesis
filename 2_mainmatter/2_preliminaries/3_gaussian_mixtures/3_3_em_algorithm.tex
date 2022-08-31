@@ -105,7 +105,7 @@ In the following only the partial derivatives of the model parameters that will 
 \begin{equation}\label{eq:ml_estimator}
     \begin{aligned}
     &\bm{\mu}_k' &= \quad &\frac{\sum_{n=1}^N r_{nk}\bm{x}_n}{\sum_{n=1}^N r_{nk}} \\
-    &\bm{\Sigma}_k' &= \quad &\frac{1}{N_k}\sum\limits_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top\\
+    &\bm{\Sigma}_k' &= \quad &\frac{1}{N_k}\sum_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top\\
     &\pi_k' &= \quad &\frac{N_k}{N}
     \end{aligned}
 \end{equation}
@@ -116,99 +116,84 @@ The \acrshort{ema} is an iterative procedure that starts with an initial estimat
 
 Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expectation step and the Maximization step. A third step is subsequently needed for the calculation of the convergence criterion. First, in the expectation step, the posterior distribution $r_{nk}$ from (\ref{eq:responsibilities}) is calculated for all data points $\bm{x}_n$ with the current set of parameters $\bm{\theta}^{(t)}$. Then, the posterior from the previous step is used in the maximization step for computing the new parameter values with the Maximum-Likelihood estimators defined in (\ref{eq:ml_estimator}). At the end of each iteration, the log likelihood for the new set of parameters $\bm{\theta}^{(t+1)}$ and its change from the log likelihood from the previous iteration is computed. Then, the algorithm can test for convergence by comparing $\Delta \mathcal{L}$ with the convergence threshold $\epsilon$ and the algorithm stops if no significant change occur anymore.
 
-% % \begin{algorithm}[H]
-% % \setstretch{1.75}
-% % \SetAlgoLined
-% % \textbf{Initialize:} \;
-% % $\qquad t=0$\;
-% % $\qquad \theta^{(t)} := \{\overline{\bm{x}}_k, \bm{\mathrm{C}}_k, \pi_k : k = 1, \dots, K \}$\;
-% % $\qquad \mathcal{L}^{(t)} = \mathrm{log}p(\bm{X}|\theta^{(t)})$\;
-% %  \While{$\Delta \mathcal{L} > \epsilon$ }{
-% %  \BlankLine
-% % 1. \textit{Expectation-Step:}
-% % \BlankLine
-% %     $\qquad r_{nk} = \frac{\pi_k\mathcal{N}(\bm{x}_n | \overline{\bm{x}}_k, \bm{\mathrm{C}}_k)}{\sum_{j=1}^K\pi_j\mathcal{N}(\bm{x}_n) | \overline{\bm{x}}_j, \bm{\mathrm{C}}_j)} \text{ with } \theta^{(t)}$ \;
-% % \BlankLine
-% % 2. \textit{Maximization-Step:}
-% % \BlankLine
-% % $\qquad \pi_k^{(t+1)} \quad = \frac{N_k}{N}$\;
-% % $\qquad \overline{\bm{x}}_k^{(t+1)} = \quad \frac{\sum_{n=1}^N r_{nk}\bm{x}_n}{\sum_{n=1}^N r_{nk}}$\;
-% % $\qquad \bm{\mathrm{C}}_k^{(t+1)} = \quad \frac{1}{N_k}\sum_{n=1}^N r_{nk}(\bm{x}_n-\overline{\bm{x}}_k)(\bm{x}_n-\overline{\bm{x}}_k)^T$\;
-% % \BlankLine
-% % 3. \textit{Convergence Terms:}\;
-% % $\qquad \mathcal{L}^{(t+1)} = \mathrm{log}p(\bm{X}|\theta^{(t+1)})$\;
-% % $\qquad \Delta \mathcal{L} = | \mathcal{L}^{(t+1)} - \mathcal{L}^{(t)} |$\;
-% % $\qquad t = t+1$\;
-% % \BlankLine
-% %  }
-% %  \caption{Expectation Maximization for Gaussian Mixture Models}
-% % \end{algorithm}
+\begin{algorithm}
+    \setstretch{1.5}
+    \caption{\gls{ema} for \gls{gmm}}
+    \label{alg:ema_gmm}
+    % \algsetup{indent=2em}
+    \begin{algorithmic}[1]
+        \STATEx \textbf{Initialize:}
+        \STATE $\qquad t = 0$
+        \STATE $\qquad \bm{\theta}^{(t)} := \{ \bm{\mu}_k, \bm{\Sigma}_k, \pi_k \, | \, k=1,\dots,K \}$
+        \STATE $\qquad \mathcal{L}^{(t)} = \text{log} \, p(\mathcal{X} \, | \, \bm{\theta}^{(t)})$
 
-% Figure \ref{fig:em_algo_gmm} illustrates the EM algorithm for fitting a \acrshort{gmm} with three components to the two-dimensional dataset from Figure \ref{fig:multimodal_dataset}. The resulting \acrshort{gmm} with its component parameters can also be seen in example \ref{ex:gmm_examples}. Each component is represented by an coloured ellipse, that is formed by its mean and covariance matrix. Every single data point $\bm{x}_n$ is associated with an probability vector, that describes each component's responsibility for creating $\bm{x}_n$. This is visualized by coloring each data point according to its probability vector, i.e. a mixed proportion of purple, cyan and orange. At the beginning, the three component parameters are chosen randomly and no posterior $r_{nk}$ is computed yet and thus no data point is colored. With each iteration, the parameters approach the optimum, which they reach after the 21st iteration, and the algorithm converges.
+        \WHILE{$\Delta \mathcal{L} > \epsilon$}
+            \STATEx $\quad$ 1. Expectation-Step:
+            \STATE $\qquad r_{nk} = \frac{\pi_k \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_k, \bm{\Sigma}_k)}{\sum_{j=1}^K \pi_j \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_j, \bm{\Sigma}_j)} \text{ with } \bm{\theta}^{(t)}$
 
-% % \begin{figure}[h!]
-% %     \centering
-% %     \includegraphics[width=1\textwidth]{figures/em_gaussian.pdf}
-% %     \caption{Illustration of the EM algorithm for fitting a GMM with three components on a two-dimensional dataset.}
-% %     \label{fig:em_algo_gmm}
-% % \end{figure}
+            \STATEx $\quad$ 2. Maximization-Step:
+            \STATE $\qquad \pi_k^{(t+1)} = \frac{N_k}{N}$
+            \STATE $\qquad \bm{\mu}^{(t+1)} = \frac{\sum_{n=1}^N r_{nk} \bm{x}_n}{\sum_{n=1}^N r_{nk}}$
+            \STATE $\qquad \bm{\Sigma}_k^{(t+1)} = \frac{1}{N_k}\sum_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top$
 
-% How many components should be chosen for fittin a GMM? A common method is to select the model $M$ with the highest probability given the data $D$. Assuming that the model $M$ is completely described by its set of parameters $\theta$, the maximum likelihood function of the model $M$ is given by 
+            \STATEx $\quad$ Convergence Terms:
+            \STATE $\qquad \mathcal{L}^{(t+1)} = \text{log} \, p(\mathcal{X} \, | \, \bm{\theta}^{(t+1)})$
+            \STATE $\qquad \Delta \mathcal{L} = | \mathcal{L}^{(t+1)} - \mathcal{L}^{(t)} |$
+            \STATE $\qquad t = t+1$
 
-% \begin{equation}
-%     \hat{L} = p(D|\hat{\theta}, M),
-% \end{equation}
-    
-% answers the question of what is the probability that $D$ is explained by $M$. Note, that the carat denotes the parameters that maximize the probability, i.e., the maximum likelihood function. Theoretically, in the case of a $GMM$, one could just increase the number of parameters $K$, e.g., the number of components, arbitrarily until the $K = N$ in order to obtain the maximum likelihood. In practice, this would not only lead to a bad runtime of the algorithm, but also overfit the model. Thus, the maximum likelihood of the model $L$ has to be balanced against the number of model parameters $K$. The Bayesian information criterion (BIC) is considered as a standard criterion for model selection of GMM because of its theoretical consistency in choosing the number of components \cite{keribin2000consistent}.
+        \ENDWHILE
+    \end{algorithmic}
+ \end{algorithm}
 
-% In general, the BIC can be defined as
+ \begin{figure}[b!]
+    \centering
+    \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/em_dataset}
+    \caption{Illustration of the EM algorithm for fitting a GMM with three components on a two-dimensional dataset.}
+    \label{fig:em_algo_gmm}
+\end{figure}
 
-% \begin{equation}
-%     \text{BIC} = K \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}),
-% \end{equation}
+Figure \ref{fig:em_algo_gmm} illustrates the \gls{ema} for fitting a \gls{gmm} with three components on a two-dimensional synthetic dataset with three classes. Each component of the \gls{gmm} is represented by an coloured ellipse, that is formed by its mean and covariance matrix. Every single data point $\bm{x}_n$ is associated with an probability vector, that describes each component's responsibility for creating $\bm{x}_n$. A data point is assigned to the component that exhibits the highest responsibility value. This is visualized by coloring each data point according to their assignment to a component. In this example, the three component parameters are chosen randomly and no posterior $r_{nk}$ is computed in the beginning $(t=0)$ and thus no data point is colored. In this state, the true class labels can bee seen in different grayscales. 
 
-% which derives from the findings in \cite{schwarz1978estimating}. The BIC balances the number of model parameters $K$ and number of data points $N$ against the maximum likelihood function $L$. In the model selection, the optimal number of model parameters $K$ minimizes the BIC, such that the BIC provides a principled way of selecting between multiple different models. More complex models almost always fit the data better, resulting in a lower value of $-2 \, \text{ln}(\hat{L})$. The BIC penalizes extra parameters by introducing the term $K \, \text{ln}(N)$. Beyond penalizing more parameters, it furthermore assists in making a judgement as to how the additional parameters improve the model in the presence of more data.
+With each iteration, the parameters approach the local optimum, which they reach after iteration $21$ $(t=21)$, and the algorithm converges. In this toy example, the three classes can be seperated well by three components. Note that multiple components may describe a single class as well. This raises the question of how many components should be ideally chosen for fitting a \gls{gmm}, when the number of classes are not known beforehand as in this example? 
 
-% Considering a mixture model with $K$ components defined by 
+A common method is to select the model with the highest probability given the data $\mathcal{X}$. Recall that the likelihood $\mathcal{L}$ answers the question of what is the probability that $\mathcal{X}$ is explained by the model. The maximum likelihood $\hat{\mathcal{L}}$ represents the model parameters that maximize that probability. Theoretically, in the case of a \gls{gmm}, one could just increase the number of parameters $K$, e.g., the number of components, arbitrarily until the $K = N$ in order to obtain the maximum likelihood. In practice, this would not only lead to a bad runtime of the algorithm, but also overfit the model. Thus, the maximum likelihood of the model $\hat{\mathcal{L}}$ has to be balanced against the number of model parameters $K$. The \gls{bic} is considered as a standard criterion for \gls{gmm} model selection because of its theoretical consistency in choosing the number of components \cite{keribin2000consistent}. In this context, the \gls{bic} is defined as
+\begin{equation}
+    \text{BIC} = K \, \text{ln} \, (N) - 2 \, \text{ln} \, (\hat{\mathcal{L}}),
+\end{equation}
 
-% \begin{equation}
-%     \begin{aligned}
-%         &p(\bm{x}|\theta) = \sum\limits_{k=1}^K \pi_k \mathcal{N}(x | \theta), \\
-%         &0 \leq \pi_k \leq 1, \sum\limits_{k=1}^K \pi_k = 1, \\
-%         &\theta := \{\overline{\bm{x}}_k, \bm{\mathrm{C}}_k, \pi_k : k = 1, \dots, K \},
-%     \end{aligned}
-% \end{equation}
+which derives from the findings in \cite{schwarz1978estimating}. The BIC balances the number of model parameters $K$ and number of data points $N$ against the maximum likelihood function $\hat{\mathcal{L}}$. In the model selection, the optimal number of model parameters $K$ minimizes the \gls{bic}, such that it provides a principled way of selecting between multiple different models. More complex models almost always fit the data better, resulting in a lower value for the term $-2 \, \text{ln}(\hat{\mathcal{L}})$. The \gls{bic} penalizes extra parameters by introducing the term $K \, \text{ln} \, (N)$. A model selection utilizing the \gls{bic} is described in Algorithm~\ref{alg:gmm_selection_bic}.
 
-% the parameters of $K$ multivariate normal distributions are to learn, with $d$ dimensions, these are $d$ values in the mean vector.  Since a covariance matrix is symmetric, only $d(d+1)/2$ entries in a full covariance matrix have to be computed. Additionaly, $K$ mixture weights have to be determined. Since these sum to one, it is sufficient to determine $K-1$ weights, leading to $Kd + K(d(d+1)/2)+K-1$ parameters. Thus, the BIC for a dataset $D$ with $N$ datapoints of dimensionality $d$ and a GMM $M$ as defined above is stated as 
-
-% \begin{equation}\label{eq:bic}
-%     \text{BIC}(M|D) = (Kd + K(d(d+1)/2)+K-1) \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}).
-% \end{equation}
-
-% A model selection algorithm could look like the following.
-
-% \begin{algorithm}
-%     \caption{GMM Selection with BIC}
-%     \label{alg:gmm_selection_bic}
-%     \algsetup{indent=2em}
- 
-%     \begin{algorithmic}[1]
-%         \REQUIRE Dataset $D$
-%         \ENSURE Gaussian Mixture Model $M$
-%         \STATE $B \leftarrow$ new Array
-%         \STATE GMM $\leftarrow$ new Array
-%         \FORALL{$k$ in $\{1, \dots, K\}$}
-%             \STATE $M_k \leftarrow \text{fitGMM}(D)$
-%             \STATE $b_k \leftarrow \text{BIC}(M|D)$
-%             \STATE GMM$[k] \leftarrow M_k$
-%             \STATE $B[k] \leftarrow b_k$
-%         \ENDFOR
-%         \STATE $\hat{k} \leftarrow \text{argmin}(B)$
-%         \STATE $\hat{M} \leftarrow \text{GMM}[\hat{k}]$
-%         \RETURN $\hat{M}$
+\begin{algorithm}
+    \caption{GMM Selection with BIC}
+    \label{alg:gmm_selection_bic}
+    \begin{algorithmic}[1]
+        \REQUIRE Dataset $\mathcal{X}$
+        \ENSURE Gaussian Mixture Model $M$
+        \STATE $B \leftarrow$ new Array
+        \STATE GMM $\leftarrow$ new Array
+        \FORALL{$k$ in $\{1, \dots, K\}$}
+            \STATE $M_k \leftarrow \text{fitGMM}(D)$
+            \STATE $b_k \leftarrow \text{BIC}(M|D)$
+            \STATE GMM$[k] \leftarrow M_k$
+            \STATE $B[k] \leftarrow b_k$
+        \ENDFOR
+        \STATE $\hat{k} \leftarrow \text{argmin}(B)$
+        \STATE $\hat{M} \leftarrow \text{GMM}[\hat{k}]$
+        \STATE \textbf{return} $\hat{M}$
 
         
-%     \end{algorithmic}
-%  \end{algorithm}
+    \end{algorithmic}
+ \end{algorithm}
+
+
+the parameters of $K$ multivariate normal distributions are to learn, with $d$ dimensions, these are $d$ values in the mean vector.  Since a covariance matrix is symmetric, only $d(d+1)/2$ entries in a full covariance matrix have to be computed. Additionaly, $K$ mixture weights have to be determined. Since these sum to one, it is sufficient to determine $K-1$ weights, leading to $Kd + K(d(d+1)/2)+K-1$ parameters. Thus, the BIC for a dataset $D$ with $N$ datapoints of dimensionality $d$ and a GMM $M$ as defined above is stated as 
+
+\begin{equation}\label{eq:bic}
+    \text{BIC}(M|D) = (Kd + K(d(d+1)/2)+K-1) \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}).
+\end{equation}
+
+A model selection algorithm could look like the following.
+
+
 
 \end{document}

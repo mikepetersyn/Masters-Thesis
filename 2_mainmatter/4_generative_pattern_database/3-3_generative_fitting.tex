@@ -12,14 +12,14 @@ Regions that have been updated in the preceding service are received as events $
 \begin{algorithm}
     \caption{Generative Fitting (Main Procedure)}
     \label{alg:generative_fitting}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
  
     \begin{algorithmic}[1]
         \REQUIRE Regions $\mathcal{R}_{\text{in}}$
         \ENSURE Regions $\mathcal{R}_{\text{out}}$
 
         \STATE $\mathcal{R}_{\text{out}} \leftarrow \emptyset$
-        \STATE $m \leftarrow$ getID()
+
         \FORALL{$r$ in $\mathcal{R}_{\text{in}}$}
 
             \STATE $\kappa \leftarrow \text{concatenate}(p_c, r)$
@@ -51,7 +51,7 @@ Regions that have been updated in the preceding service are received as events $
                 \STATE add $r$ to $\mathcal{R}_{\text{out}}$
             \ENDIF
         \ENDFOR
-        \RETURN $\mathcal{R}_{\text{out}}$
+        \STATE \textbf{return} $\mathcal{R}_{\text{out}}$
     \end{algorithmic}
  \end{algorithm}
 
@@ -68,7 +68,7 @@ Regions that have been updated in the preceding service are received as events $
  \begin{algorithm}
     \caption{Binary Splitting and Upsampling of Region Data}
     \label{alg:upsampling}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
  
     \begin{algorithmic}[1]
         \REQUIRE Hash table $T$ with labels $y$ as keys and sets of flows $\mathcal{X}$ as values
@@ -87,7 +87,7 @@ Regions that have been updated in the preceding service are received as events $
                 \STATE $T[y] \leftarrow T[y] \cup \mathcal{X}_\alpha$ 
             \ENDIF
         \ENDFOR
-        \RETURN $T$
+        \STATE \textbf{return} $T$
     \end{algorithmic}
  \end{algorithm}
  
@@ -138,7 +138,7 @@ Regions that have been updated in the preceding service are received as events $
 \begin{algorithm}
     \caption{Model Selection}
     \label{alg:model_selection}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
  
     \begin{algorithmic}[1]
         \REQUIRE Dataset $\mathcal{X}_1$
@@ -161,7 +161,7 @@ Regions that have been updated in the preceding service are received as events $
             \ENDFOR
         \ENDFOR
         \STATE sort $L$ according to the values of \gls{gms} 
-        \RETURN $(\text{\gls{gms}, \gls{gmm}, \gls{pca}})$ with the lowest value for \gls{gms}
+        \STATE \textbf{return} $(\text{\gls{gms}, \gls{gmm}, \gls{pca}})$ with the lowest value for \gls{gms}
     \end{algorithmic}
  \end{algorithm}
 
@@ -191,7 +191,7 @@ Then, a discriminative model is trained on the training proportion, trying to fi
 \begin{algorithm}
     \caption{Adversary Evaluation}
     \label{alg:adversary_evaluation}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
  
     \begin{algorithmic}[1]
         \REQUIRE $\mathcal{X}_1, \text{GMM}, \text{PCA}$
@@ -215,7 +215,7 @@ Then, a discriminative model is trained on the training proportion, trying to fi
 
         \STATE $ACC \leftarrow ACC(\mathcal{Y}_{\text{test}}, \hat{\mathcal{Y}})$
 
-        \RETURN $ACC$
+        \STATE \textbf{return} $ACC$
     \end{algorithmic}
  \end{algorithm}
 

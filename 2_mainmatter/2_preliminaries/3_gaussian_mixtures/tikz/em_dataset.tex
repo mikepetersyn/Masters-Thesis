@@ -1,0 +1,50 @@
+\documentclass[tikz]{standalone}
+\usepackage{pgf, pgfplots, pgfplotstable}
+\usetikzlibrary{shapes.geometric}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+\begin{document}
+
+    \begin{tikzpicture}
+
+        \begin{groupplot}[
+            group style={group size=4 by 1, horizontal sep=0.1cm, vertical sep=0.75cm},
+            width=5cm, height=5cm,
+            scatter/classes={%
+                0={mark=*,fill=red},
+                1={mark=*,fill=blue},
+                2={mark=*, fill=green},
+                3={mark=*, fill=black!70},
+                4={mark=*, fill=black!50},
+                5={mark=*, fill=black!30}},
+            scatter,
+            scatter src=explicit symbolic
+        ]
+            \nextgroupplot[title={$t=0$}]
+            \addplot[only marks, fill=black!20] table[x=X,y=y,col sep=comma, meta=c] {dataset.csv};
+            
+            
+            \nextgroupplot[title={$t=1$}, yticklabels={}]
+            \addplot[only marks] table[x=X,y=y,col sep=comma, meta=i1] {dataset.csv};
+            \draw[rotate around={96.84011059772833:(2.1247680510962996, 0.2071721016945178)}, red, fill=red, fill opacity=0.1] (2.1247680510962996, 0.2071721016945178) ellipse (1.9220641647036172 and 4.717354120655921);
+            \draw[rotate around={58.70949116828099:(4.195966380158027, 1.0756213480258536)}, blue, fill=blue, fill opacity=0.1] (4.195966380158027, 1.0756213480258536) ellipse (0.7787294961199881 and 4.966507524451185);
+            \draw[rotate around={107.93144822777754:(3.675020546374574, 2.4172020157048264)}, green, fill=green, fill opacity=0.1] (3.675020546374574, 2.4172020157048264) ellipse (0.7497983313556007 and 1.447813553212028);
+
+            
+            \nextgroupplot[title={$t=11$}, yticklabels={}]
+            \addplot[only marks] table[x=X,y=y,col sep=comma, meta=i2] {dataset.csv};
+            \draw[rotate around={96.06339937228992:(0.9776112811936234, -0.16378817741520915)}, red, fill=red, fill opacity=0.1] (0.9776112811936234, -0.16378817741520915) ellipse (1.5795062894325231 and 2.850465855935679);
+            \draw[rotate around={88.46423069156585:(4.407936981479218, 0.20330104647648245)}, blue, fill=blue, fill opacity=0.1] (4.407936981479218, 0.20330104647648245) ellipse (0.3789233541067406 and 1.9749917093532612);
+            \draw[rotate around={119.05367557022332:(2.4188301352455843, 1.6079281980576947)}, green, fill=green, fill opacity=0.1] (2.4188301352455843, 1.6079281980576947) ellipse (0.905445168815025 and 2.8164397028635073);
+            
+            
+            \nextgroupplot[title={$t=21$}, yticklabels={}]
+            \addplot[only marks] table[x=X,y=y,col sep=comma, meta=i3] {dataset.csv};
+            \draw[rotate around={59.81588501851863:(0.6229548507559798, -0.4255586758171591)}, red, fill=red, fill opacity=0.1] (0.6229548507559798, -0.4255586758171591) ellipse (0.5137527218476531 and 2.0257817609412614);
+            \draw[rotate around={88.8171285892551:(4.275732690638393, 0.20234746300366194)}, blue, fill=blue, fill opacity=0.1] (4.275732690638393, 0.20234746300366194) ellipse (0.3981515550046432 and 2.206936549512796);
+            \draw[rotate around={122.99638490927387:(2.047149969591688, 1.273040533672179)}, green, fill=green, fill opacity=0.1] (2.047149969591688, 1.273040533672179) ellipse (1.0257933325654336 and 3.4040543428033514);
+        \end{groupplot}
+
+  \end{tikzpicture}
+
+\end{document}

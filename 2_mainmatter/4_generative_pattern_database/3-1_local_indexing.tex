@@ -25,7 +25,7 @@ In fact, the pairs within a region are further partitioned into disjoint subsets
 \begin{algorithm}
     \caption{Preprocessing and inserting $B \subset D_m$ into $PDB_{L_m}$}
     \label{alg:indexing}
-    \algsetup{indent=2em}
+    % \algsetup{indent=2em}
 
     \begin{algorithmic}[1]
         \REQUIRE Batch $X$
@@ -51,7 +51,7 @@ In fact, the pairs within a region are further partitioned into disjoint subsets
             \STATE $\text{insert } r \text{ into } \mathcal{R}$
             \ENDIF         
         \ENDFOR
-        \RETURN $\mathcal{R}$
+        \STATE \textbf{return} $\mathcal{R}$
     \end{algorithmic}
 \end{algorithm}
 

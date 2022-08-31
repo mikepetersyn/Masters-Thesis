@@ -18,9 +18,9 @@ After collecting all label sets in $\mathcal{S}_t$, the complexity state is obta
 
 
 \begin{algorithm}
-   \caption{Creating a global complexity state by combining local complexity states}
+   \caption{Construction of a global complexity state}
    \label{alg:complexity_estimation}
-   \algsetup{indent=2em}
+   % \algsetup{indent=2em}
 
    \begin{algorithmic}[1]
          \REQUIRE Regions $\mathcal{R}_{\text{in}}$
@@ -48,7 +48,7 @@ After collecting all label sets in $\mathcal{S}_t$, the complexity state is obta
                \STATE add $r$ to $\mathcal{R}_{\text{out}}$
             \ENDIF
          \ENDFOR
-         \RETURN $R_{\text{out}}$
+         \STATE \textbf{return} $R_{\text{out}}$
    \end{algorithmic}
 \end{algorithm}
 
