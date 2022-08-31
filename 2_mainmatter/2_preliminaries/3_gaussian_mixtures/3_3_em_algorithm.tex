@@ -156,44 +156,34 @@ Figure \ref{fig:em_algo_gmm} illustrates the \gls{ema} for fitting a \gls{gmm} w
 
 With each iteration, the parameters approach the local optimum, which they reach after iteration $21$ $(t=21)$, and the algorithm converges. In this toy example, the three classes can be seperated well by three components. Note that multiple components may describe a single class as well. This raises the question of how many components should be ideally chosen for fitting a \gls{gmm}, when the number of classes are not known beforehand as in this example? 
 
-A common method is to select the model with the highest probability given the data $\mathcal{X}$. Recall that the likelihood $\mathcal{L}$ answers the question of what is the probability that $\mathcal{X}$ is explained by the model. The maximum likelihood $\hat{\mathcal{L}}$ represents the model parameters that maximize that probability. Theoretically, in the case of a \gls{gmm}, one could just increase the number of parameters $K$, e.g., the number of components, arbitrarily until the $K = N$ in order to obtain the maximum likelihood. In practice, this would not only lead to a bad runtime of the algorithm, but also overfit the model. Thus, the maximum likelihood of the model $\hat{\mathcal{L}}$ has to be balanced against the number of model parameters $K$. The \gls{bic} is considered as a standard criterion for \gls{gmm} model selection because of its theoretical consistency in choosing the number of components \cite{keribin2000consistent}. In this context, the \gls{bic} is defined as
+A common method is to select the model with the highest probability given the data $\mathcal{X}$. Recall that the likelihood $\mathcal{L}$ answers the question of what is the probability that $\mathcal{X}$ is explained by the model. Theoretically, in the case of a \gls{gmm}, one could just arbitrarily increase the number of components $K$ until $K = N$ in order to obtain the maximum likelihood. In practice, this would not only lead to a bad runtime of the algorithm, but also overfit the model. Thus, the maximum likelihood of the model $\mathcal{L}$ has to be balanced against the number of model parameters. The \gls{bic} is considered as a standard criterion for \gls{gmm} model selection because of its theoretical consistency in choosing the number of components \cite{keribin2000consistent}. Let $|\bm{\theta}|$ be the number of model parameters in general, then the \gls{bic} is defined as
 \begin{equation}
-    \text{BIC} = K \, \text{ln} \, (N) - 2 \, \text{ln} \, (\hat{\mathcal{L}}),
+    \text{BIC} = |\bm{\theta}| \, \text{ln} \, (N) - 2 \, \text{ln} \, (\mathcal{L}),
 \end{equation}
 
-which derives from the findings in \cite{schwarz1978estimating}. The BIC balances the number of model parameters $K$ and number of data points $N$ against the maximum likelihood function $\hat{\mathcal{L}}$. In the model selection, the optimal number of model parameters $K$ minimizes the \gls{bic}, such that it provides a principled way of selecting between multiple different models. More complex models almost always fit the data better, resulting in a lower value for the term $-2 \, \text{ln}(\hat{\mathcal{L}})$. The \gls{bic} penalizes extra parameters by introducing the term $K \, \text{ln} \, (N)$. A model selection utilizing the \gls{bic} is described in Algorithm~\ref{alg:gmm_selection_bic}.
+which derives from the findings in \cite{schwarz1978estimating}. The BIC balances the number of model parameters $|\bm{\theta}|$ and number of data points $N$ against the likelihood function $\mathcal{L}$. In the model selection, the optimal number of model parameters $|\bm{\theta}|$ minimizes the \gls{bic}, such that it provides a principled way of selecting between multiple different models. More complex models almost always fit the data better, resulting in a lower value for the term $-2 \, \text{ln}(\mathcal{L})$. The \gls{bic} penalizes extra parameters by introducing the term $|\bm{\theta}| \, \text{ln} \, (N)$. A model selection utilizing the \gls{bic} is described in Algorithm~\ref{alg:gmm_selection_bic}, with $\bm{\theta}$ being the set of parameter settings for \gls{gmm}.
 
 \begin{algorithm}
     \caption{GMM Selection with BIC}
     \label{alg:gmm_selection_bic}
     \begin{algorithmic}[1]
         \REQUIRE Dataset $\mathcal{X}$
-        \ENSURE Gaussian Mixture Model $M$
-        \STATE $B \leftarrow$ new Array
-        \STATE GMM $\leftarrow$ new Array
-        \FORALL{$k$ in $\{1, \dots, K\}$}
-            \STATE $M_k \leftarrow \text{fitGMM}(D)$
-            \STATE $b_k \leftarrow \text{BIC}(M|D)$
-            \STATE GMM$[k] \leftarrow M_k$
-            \STATE $B[k] \leftarrow b_k$
+        \ENSURE Gaussian Mixture Model \gls{gmm}
+        \STATE $L_{\text{GMM}} \leftarrow$ new List
+        \FORALL{$\theta$ in $\bm{\theta}$}
+            \STATE $\text{GMM}_k \leftarrow \text{fitGaussianMixture}(\mathcal{X}, \theta)$
+            \STATE $\text{BIC}_k \leftarrow \text{computeBIC}(\text{GMM}|\mathcal{X})$
+            \STATE append $(\text{GMM}_k, \text{BIC}_k)$ to $L_{\text{GMM}}$
         \ENDFOR
-        \STATE $\hat{k} \leftarrow \text{argmin}(B)$
-        \STATE $\hat{M} \leftarrow \text{GMM}[\hat{k}]$
-        \STATE \textbf{return} $\hat{M}$
-
-        
+        \STATE sort $L_{\text{GMM}}$ ascending by $\text{BIC}_k$ 
+        \STATE \gls{gmm} $\leftarrow L_{\text{GMM}}[0]$ \COMMENT{get head of the list}
+        \STATE \textbf{return} \gls{gmm} 
     \end{algorithmic}
  \end{algorithm}
 
-
-the parameters of $K$ multivariate normal distributions are to learn, with $d$ dimensions, these are $d$ values in the mean vector.  Since a covariance matrix is symmetric, only $d(d+1)/2$ entries in a full covariance matrix have to be computed. Additionaly, $K$ mixture weights have to be determined. Since these sum to one, it is sufficient to determine $K-1$ weights, leading to $Kd + K(d(d+1)/2)+K-1$ parameters. Thus, the BIC for a dataset $D$ with $N$ datapoints of dimensionality $d$ and a GMM $M$ as defined above is stated as 
-
+To be more precisely, the parameters of $K$ multivariate normal distributions are to learn. With $D = \text{dim}(\mathcal{X})$, these are $D$ values in the mean vector. Since a covariance matrix is symmetric, only $D(D+1)/2$ entries in a full covariance matrix have to be computed. Additionaly, $K$ mixture weights have to be determined, leading to $Kd + K(d(d+1)/2)+K$ parameters. Thus, the \gls{bic} for a dataset $\mathcal{X}$ with $N$ datapoints of dimensionality $D$ and a \gls{gmm} as defined above is stated as 
 \begin{equation}\label{eq:bic}
-    \text{BIC}(M|D) = (Kd + K(d(d+1)/2)+K-1) \, \text{ln}(N) - 2 \, \text{ln}(\hat{L}).
+    \text{BIC}(\text{GMM}|\mathcal{X}) = (KD + K(D(D+1)/2)+K) \, \text{ln}(N) - 2 \, \text{ln} \, (\mathcal{L}).
 \end{equation}
-
-A model selection algorithm could look like the following.
-
-
 
 \end{document}
