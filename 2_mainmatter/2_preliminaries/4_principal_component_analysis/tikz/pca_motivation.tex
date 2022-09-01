@@ -1,0 +1,43 @@
+\documentclass[tikz]{standalone}
+\usepackage{pgf, pgfplots, pgfplotstable}
+\usetikzlibrary{shapes.geometric, arrows.meta}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+\pgfdeclarelayer{foreground}%
+\pgfsetlayers{main, foreground}%
+\begin{document}
+\tikzstyle{arrow} = [-{Latex[length=1.5mm, width=1.0mm]},align=flush center, font=\normalsize, thick]% 
+    \begin{tikzpicture}
+
+        \begin{groupplot}[
+            group style={group size=2 by 1, horizontal sep=2cm},
+            width=7cm, height=5cm,
+            xlabel={$x_1$}, ylabel={$x_2$},
+            scatter/classes={%
+                0={mark=*,fill=red},
+                1={mark=*,fill=blue},
+                2={mark=*, fill=green},
+                3={mark=*, fill=black!70},
+                4={mark=*, fill=black!50},
+                5={mark=*, fill=black!30}},
+            scatter,
+            scatter src=explicit symbolic
+        ]
+            \nextgroupplot[title={(a) uncorrelated data},  title style={yshift=-5.5cm}]
+            \addplot[only marks, fill=black!10] table[x=X,y=Y,col sep=comma] {uncorrelated_data_pca.csv};
+            
+            
+            \nextgroupplot[title={(b) correlated data}, title style={yshift=-5.5cm}]
+            \addplot[only marks, fill=black!10, draw=black!20] table[x=X,y=Y,col sep=comma] {correlated_data_pca.csv};
+            \begin{pgfonlayer}{foreground}
+                \draw[arrow] (3,-1.6) -- (1, -0.3);
+                \node (signal) at (1.25, -1) {signal};
+                \draw[arrow] (3,-1.6) -- (3.3, -1.2);
+                \node (noise) at (3.3, -1) {noise};
+            \end{pgfonlayer}
+
+        \end{groupplot}
+
+  \end{tikzpicture}
+
+\end{document}

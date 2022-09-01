@@ -3,178 +3,142 @@
 
 \subsection{Formal Description}
 
-% Consider a dataset $\bm{X} = \{\bm{x}_1, \dots, \bm{x}_n\} \in \mathbb{R}^D$ with mean $\bm{0} = [0_1, \dots, 0_n]^T$ and covariance matrix
+Consider a dataset $\mathcal{X} = \{\bm{x}_1, \dots, \bm{x}_N\} \in \mathbb{R}^D$ with mean $\bm{0} = [0_1, \dots, 0_N]^\top$ and a covariance matrix
 
-% \begin{equation*}
-%     \bm{C} =\frac{1}{N}\sum_{n=1}^N\bm{x}_n\bm{x}_n^T.
-% \end{equation*}
+\begin{equation*}
+    \bm{\Sigma} =\frac{1}{N}\sum_{n=1}^N\bm{x}_n\bm{x}_n^\top.
+\end{equation*}
 
-% In terms of dimensionality reduction, a compressed representation of the dataset $\bm{X}$ as
+In terms of dimensionality reduction, a compressed representation of the dataset $\mathcal{X}$, where each datapoint is defined as
 
-% \begin{equation*}
-%     \bm{z_n} = \bm{B}^T\bm{x}_n \in \mathbb{R}^M
-% \end{equation*}
+\begin{equation*}
+    \bm{z_n} = \bm{B}^T\bm{x}_n \in \mathbb{R}^M
+\end{equation*}
 
-% is searched for, which retains as much of information as possible (Hotelling 1933). This is done by finding a linear transformation
+is searched for, which retains as much signal as possible \cite{Hotelling1933AnalysisOA}. This is done by finding a linear transformation
 
-% \begin{equation*}
-%     \bm{B}=[\bm{b}_1, \dots, \bm{b}_M] \in \mathbb{R}^{D\times M}
-% \end{equation*}
+\begin{equation*}
+    \bm{B}=[\bm{b}_1, \dots, \bm{b}_M] \in \mathbb{R}^{D\times M}
+\end{equation*}
 
-% that projects $\bm{X}$ onto the subspace that is spanned by the columns of $\bm{B}$. Thus, $\bm{B}$ is an orthonormal basis. 
+that projects $\mathcal{X}$ onto the subspace that is spanned by the columns of $\bm{B}$. Thus, $\bm{B}$ is an orthonormal basis. In order to preserve the most variance of the data, the basis vectors of $\bm{B}$ must point into the direction of maximal variance in the data, which is found by computing the eigenvectors of the covariance matrix $\bm{\Sigma}$ of $\mathcal{X}$. The projection of the data onto a lower-dimensional subspace is equal to the eigenvalue that is associated with the basis vector that spans this subspace. 
 
-% \begin{definition}[Orthonormal Basis]\cite[p.65]{dei_2020}
-% Let $V$ be a $n$-dimensional vector space with a basis $\{ b_1, \dots, b_n \}$. The basis is called an \acrfull{onb} if
-% \begin{align*}
-%      \langle b_i, b_j \rangle &= 0 \text{ for } i \neq j, \\
-%      \langle b_i, b_j \rangle &= 1.
-% \end{align*}
-% \end{definition}
+Therefore, maximizing the variance of the low-dimensional representation requires to choose the basis vector that is associated with the largest eigenvalue of the data covariance matrix. This eigenvector is called the first principal component. All other directions in $\mathbb{R}^M$, which both maximize the variance and are orthogonal to all the other directions are the remaining $M-1$ principal components.
 
-% In order to preserve the most variance of the data, the basis vectors of $\bm{B}$ must point into the direction of maximal variance in the data, which is found by computing the eigenvectors of the covariance matrix $\bm{C}$ of $\bm{X}$. The projection of the data onto a lower-dimensional subspace is equal to the eigenvalue that is associated with the basis vector that spans this subspace. 
+As stated before, the projection matrix $\bm{B}$ is obtained by diagonalizing the covariance matrix $\bm{C}$, which can be done with via eigendecomposition. In the following, it is shown how the eigendecomposition is related to the diagonalization of a matrix and that an eigendecomposition of a covariance matrix is guaranteed to exist.
 
-% Therefore, maximizing the variance of the low-dimensional representation $Z$ requires to choose the basis vector that is associated with the largest eigenvalue of the data covariance matrix. This eigenvector is called the first principal component. All other directions in $\mathbb{R}^M$, which both maximize the variance and are orthogonal to all the other directions are the remaining $M-1$ principal components.
+\begin{theorem}[Matrix Diagonalization] \cite[p.98]{dei_2020}
+A matrix $\bm{A} \in \mathbb{R}^{N \times N}$ is diagonalizable if it is similar to a diagonal matrix, i.e., if there exists an invertible matrix $\bm{P} \in \mathbb{R}^{N \times N}$ such that $\bm{D} = \bm{P}^{-1} \bm{A} \bm{P}$.
+\end{theorem}
 
-% % \begin{figure}
-% %     \centering
-% %     \ \subfile{../../tikz/pca_schema}
-% %     \caption[Graph representation of PCA explaining the dimensional reduction of the data]{After projecting $\bm{X}$ onto the $M$-dimensional subspace $U \subseteq \mathbb{R}^D$ with dimensionality $\mathrm{dim}(U) = M < D$, the compressed representation can be projected back into the original space $D$ by $\tilde{\bm{x}}_n = B\bm{z}_n \in \mathbb{R}^D$. Note, that $\tilde{\bm{x}}_n$ is a $D$-dimensional vector, which can be represented with the coordinates $\bm{z}_n$, thus require only the information from $M$ dimensions.}
-% %     \label{fig:pca_schema}
-% % \end{figure}
+\begin{theorem}[Eigendecomposition]\label{th:eigendecomposition} \cite[p.99]{dei_2020}
+A square matix $\bm{A} \in \mathbb{R}^{N \times N}$ can be factorized into
+\begin{equation*}
+    \bm{A} = \bm{P}\bm{D}\bm{P}^{-1},
+\end{equation*}
+where $\bm{P} \in \mathbb{R}^{N \times N}$ and $\bm{D}$ is a diagonal matrix whose entries are the eigenvalues of $\bm{A}$, if and only if the eigenvectors of $\bm{A}$ form a basis of $\mathbb{R}^n$.
+\end{theorem}
 
-% As stated before, the projection matrix $\bm{B}$ is obtained by diagonalizing the covariance matrix $\bm{C}$, which can be done with via eigendecomposition. In the following, it is shown how the eigendecomposition is related to the diagonalization of a matrix and that an eigendecomposition of a covariance matrix is guaranteed to exist.
+It follows, that only non defective matrices can be diagonalized. In other words, a square matrix that does not have a complete basis of eigenvectors is not diagonalizable. However, the following theorem confirms the existence of such a basis for symmetric matrices.
 
-% \begin{theorem}[Matrix Diagonalization] \cite[p.98]{dei_2020}
-% A matrix $A \in \mathbb{R}^{n \times n}$ is diagonalizable if it is similar to a diagonal matrix, i.e. if there exists an invertible matrix $P \in \mathbb{R}^{n \times n}$ such that $D = P^{-1}AP$.
-% \end{theorem}
+\begin{theorem}[Spectral Theorem] \cite[p.94]{dei_2020}
+If $\bm{A} \in \mathbb{R}^{N \times N}$ is symmetric, there exists an orthonormal basis of the corresponding vector space consisting of eigenvectors of $\bm{A}$, and each eigenvalue is real.
+\end{theorem}
 
-% \begin{theorem}[Eigendecomposition]\label{th:eigendecomposition} \cite[p.99]{dei_2020}
-% A square matix $A \in \mathbb{R}^{n \times n}$ can be factorized into
-% \begin{equation*}
-%     A = PDP^{-1},
-% \end{equation*}
-% where $P \in \mathbb{R}^{n \times n}$ and $D$ is a diagonal matrix whose entries are the eigenvalues of $A$, if and only if the eigenvectors of $A$ form a basis of $\mathbb{R}^n$.
-% \end{theorem}
+From the fact that every covariance matrix is symmetric, the following can be concluded.
 
-% It follows, that only non defective matrices can be diagonalized. In other words, a square matrix that does not have a complete basis of eigenvectors is not diagonalizable. However, the following theorem confirms the existence of such a basis for symmetric matrices.
+\begin{theorem}[Diagonalization of a Symmetric Matrix]
+A symmetric matrix $\bm{S} \in \mathbb{R}^{n \times n}$ can always be diagonalized.
+\end{theorem}
 
-% \begin{theorem}[Spectral Theorem] \cite[p.94]{dei_2020}
-% If $A \in \mathbb{R}^{n \times n}$ is symmetric, there exists an orthonormal basis of the corresponding vector space $V$ consisting of eigenvectors of $A$, and each eigenvalue is real.
-% \end{theorem}
+Therefore, it is assured that an eigendecomposition of a symmetric matrix $\bm{A}$ exists (with real values), and that an \acrshort{onb} of eigenvectors can be found, so that $\bm{A} = \bm{P}\bm{D}\bm{P}^{-1}$, where $\bm{D}$ is diagonal and the columns of $\bm{P}$ contain the eigenvectors. Rewriting the equation from Theorem \ref{th:eigendecomposition} as follows reveals the eigenvalue equations:
 
-% From the fact that every covariance matrix is symmetric, the following can be concluded.
+\begin{equation*}
+        \bm{A} [p_1, \dots, p_N] = [p_1, \dots, p_N] \left[\begin{array}{ccccc}
+            \lambda_1 & 0 & 0 & \cdots & 0 \\
+            0 & \lambda_2 & 0 & \cdots & 0 \\
+            0 & 0 & \lambda_3 & \cdots & 0 \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & 0 & \cdots & \lambda_N
+        \end{array}\right] \Longleftrightarrow \begin{array}{ccc} 
+            \bm{A}p_1 &= &\lambda_1p_1\\
+            \bm{A}p_2 &= &\lambda_2p_2\\
+            \bm{A}p_3 &= &\lambda_3p_3\\
+            & \cdots& \\
+            \bm{A}p_N &= &\lambda_Np_N\\
+        \end{array}
+\end{equation*}
 
-% \begin{theorem}[Diagonalization of a Symmetric Matrix]
-% A symmetric matrix $S \in \mathbb{R}^{n \times n}$ can always be diagonalized.
-% \end{theorem}
+Next, it is shown how the eigenvalue equation shown above is related to the maximization of the variance of the data. For this purpose, the single vector $\bm{b}_1 \in \mathbb{R}^D$ is considered only, which is the first column of the matrix $\bm{B}$ and therefore the first of $M$ orthonormal basis vectors. By exploiting the i.i.d. assumption of the data, the first component of $\bm{z}_n \in \mathbb{R}^M$ of a single data point $\bm{x}_n \in \mathbb{R}^D$ is given by
 
-% Therefore, it is assured that an eigendecomposition of a symmetric matrix $A$ exists (with real values), and that an \acrshort{onb} of eigenvectors can be found, so that $A=PDP^{-1}$, where $D$ is diagonal and the columns of $P$ contain the eigenvectors.
+\begin{equation}\label{eq:single_z}
+    z_{1n} = \bm{b}_1^\top\bm{x}_n.
+\end{equation}
 
-% Rewriting the equation from Theorem \ref{th:eigendecomposition} as follows reveals the eigenvalue equations:
+Thus, $z_{1n}$ is the coordinate of the orthogonal projection of $\bm{x}_n$ onto the one-dimensional subspace spanned by $\bm{b}_1$. Then, the variance of $z_{1n}$ of $\bm{z} \in \mathbb{R}^M$, that is maximized by $\bm{b}_1$, is defined as
 
-% \begin{equation*}
-%         A [p_1, \dots, p_n] = [p_1, \dots, p_n] \left[\begin{array}{ccccc}
-%             \lambda_1 & 0 & 0 & \cdots & 0 \\
-%             0 & \lambda_2 & 0 & \cdots & 0 \\
-%             0 & 0 & \lambda_3 & \cdots & 0 \\
-%             \vdots & \vdots & \vdots & \ddots & \vdots \\
-%             0 & 0 & 0 & \cdots & \lambda_n
-%         \end{array}\right] \Longleftrightarrow \begin{array}{ccc} 
-%             Ap_1 &= &\lambda_1p_1\\
-%             Ap_2 &= &\lambda_2p_2\\
-%             Ap_3 &= &\lambda_3p_3\\
-%             & \cdots& \\
-%             Ap_n &= &\lambda_np_n\\
-%         \end{array}
-% \end{equation*}
+\begin{equation}\label{eq:pca_var}
+    \mathbb{V}_1:= \mathbb{V}[z_1] = \frac{1}{N}\sum_{n=1}^N z_{1n}^2.
+\end{equation}
 
+The relation between the variance and the factorized matrix in Theorem \ref{th:eigendecomposition} becomes evident by substituting equation (\ref{eq:single_z}) into equation (\ref{eq:pca_var}) as
 
-% Next, it is shown how the eigenvalue equation shown above is related to the maximization of the variance of the data. For this purpose, the single vector $\bm{b}_1 \in \mathbb{R}^D$ is considered only, which is the first column of the matrix $\bm{B}$ and therefore the first of $M$ orthonormal basis vectors. By exploiting the i.i.d. assumption of the data, the first component of $\bm{z}_n \in \mathbb{R}^M$ of a single data point $\bm{x}_n \in \mathbb{R}^D$ is given by
+\begin{equation}\label{eq:pca_variance_objective}
+    \begin{aligned}
+        \mathbb{V}_1 &= \frac{1}{N}\sum\limits^N_{n=1}(\bm{b}_1^\top\bm{x}_n)^2 \\
+        &= \frac{1}{N}\sum\limits^N_{n=1} \bm{b}_1^\top \bm{x}_n \bm{x}_n^\top \bm{b}_1 \\
+        &= \bm{b}_1^\top(\frac{1}{N}\sum\limits^N_{n=1} \bm{x}_n \bm{x}_n^\top ) \bm{b}_1 \\
+        &= \bm{b}_1^\top \bm{\Sigma} \bm{b}_1.
+    \end{aligned}
+\end{equation}
 
-% \begin{equation}\label{eq:single_z}
-%     z_{1n} = \bm{b}_1^T\bm{x}_n.
-% \end{equation}
+Maximizing the variance defined in (\ref{eq:pca_variance_objective}) results in finding vector $\bm{b}_1$. But arbitrarily increasing the magnitude of $\bm{b}_1$ increases $\mathbb{V}_1$, which is why restricting all solutions to unit vector size is necessary:
 
-% Thus, $z_{1n}$ is the coordinate of the orthogonal projection of $\bm{x}_n$ onto the one-dimensional subspace spanned by $\bm{b}_1$. Then, the variance of $z_{1n}$ of $\bm{z} \in \mathbb{R}^M$, that is maximized by $\bm{b}_1$, is defined as
+\begin{equation*}
+    || \bm{b}_1 || ^2 = 1 \Leftrightarrow || \bm{b}_1 || = 1.
+\end{equation*}
 
-% \begin{equation}\label{eq:pca_var}
-%     V_1:= \mathrm{Var}[z_1] = \frac{1}{N}\sum_{n=1}^N z_{1n}^2.
-% \end{equation}
+Restricting the solution space results into a constrained optimization problem, given as
+\begin{align*}
+    \mathrm{max} \text{ } \bm{b}_1^\top \bm{\Sigma} \bm{b}_1 \\
+    \text{s.t. } || \bm{b}_1 ||^2 = 1.
+\end{align*}
 
-% The relation between the variance and the factorized matrix in Theorem \ref{th:eigendecomposition} becomes evident by substituting equation (\ref{eq:single_z}) into equation (\ref{eq:pca_var}) as
-% \begin{equation}\label{eq:pca_variance_objective}
-%     \begin{aligned}
-%         V_1 &= \frac{1}{N}\sum\limits^N_{n=1}(\bm{b}_1^T\bm{x}_n)^2 \\
-%         &= \frac{1}{N}\sum\limits^N_{n=1} \bm{b}_1^T \bm{x}_n \bm{x}_n^T b_1 \\
-%         &= \bm{b}_1^T(\frac{1}{N}\sum\limits^N_{n=1} \bm{x}_n \bm{x}_n^T ) \bm{b}_1 \\
-%         &= \bm{b}_1^T \bm{C} \bm{b}_1.
-%     \end{aligned}
-% \end{equation}
+Applying the method of Lagrange multipliers, the new objective function is obtained as
 
-% By maximizing the variance defined in (\ref{eq:pca_variance_objective}) results in finding vector $\bm{b}_1$. But arbitrarily increasing the magnitude of $\bm{b}_1$ increases $V_1$, which is why restricting all solutions to unit vector size is necessary:
+\begin{equation*}
+    \mathcal{L}(\bm{b}_1, \lambda) = \bm{b}_1^\top \bm{\Sigma} \bm{b}_1 + \lambda_1(1-\bm{b}_1^\top\bm{b}_1).
+\end{equation*}
 
-% \begin{equation*}
-%     || \bm{b}_1 || ^2 = 1 \Leftrightarrow || \bm{b}_1 || = 1.
-% \end{equation*}
+The partial derivative of $\mathcal{L}$ with respect to $\bm{b}_1$ gives
 
-% \newpage
+\begin{align*}
+    \frac{\partial{\mathcal{L}}}{\partial{\bm{b}_1}} &= 2\bm{b}_1^\top \bm{\Sigma} - \lambda_1 \bm{b}_1^\top \\
+    0 &= 2\bm{b}_1^\top \bm{\Sigma} - \lambda_1 \bm{b}_1^\top \\
+    \bm{\Sigma} \bm{b}_1 &= \lambda_1 \bm{b}_1.
+\end{align*}
 
-% Restricting the solution space results into a constrained optimization problem :
+By the definition shown above, $\bm{b}_1$ has to be an eigenvector of $\bm{\Sigma}$ with the lagrangian multiplier as corresponding eigenvalue. Then, computing the derivative with respect to $\lambda_1$ results in
+\begin{align*}
+    \frac{\partial{\mathcal{L}}}{\partial{\lambda_1}} &= 1 - \bm{b}_1^\top\bm{b}_1 \\
+    0 &= 1 - \bm{b}_1^\top\bm{b}_1 \\
+    \bm{b}_1^\top\bm{b}_1 &= 1.
+\end{align*}
 
-% \begin{align*}
-%     \mathrm{max} \text{ } \bm{b}_1^T \bm{C} \bm{b}_1 \\
-%     \text{s.t. } || \bm{b}_1 ||^2 = 1.
-% \end{align*}
+Finally, the variance objective from equation (\ref{eq:pca_variance_objective}) can be rewritten as 
+\begin{equation}
+    \mathbb{V}_1 = \bm{b}_1^\top \bm{C} \bm{b}_1 = \lambda_1 \bm{b}_1^\top \bm{b}_1 = \lambda_1. 
+\end{equation}
 
-% By applying the method of Lagrange multipliers, the new objective function is obtained as
+The variance of the projected data equals the eigenvalue that is related to the basis vector $\bm{b}_1$, which spans the subspace the data is projected onto. In other words, the eigenvector that is associated with the biggest eigenvalue $\lambda_1$ is the first principal component.
 
-% \begin{equation*}
-%     \mathcal{L}(\bm{b}_1, \lambda) = \bm{b}_1^T \bm{C} \bm{b}_1 + \lambda_1(1-\bm{b}_1^T\bm{b}_1).
-% \end{equation*}
+Since the vector $\bm{b}_1^\top$ is considered a linear transformation, computing its inverse projects $z_{1n}$ back into the original data space $\mathbb{R}^D$, such that
 
-% The partial derivative of $\mathcal{L}$ with respect to $b_1$ gives
+\begin{equation*}
+    \tilde{\bm{x}}_n = \bm{b}_1z_{1n} = \bm{b}_1 \bm{b}_1^\top \bm{x}_n.
+\end{equation*}
 
-% \begin{align*}
-%     \frac{\partial{\mathcal{L}}}{\partial{\bm{b}_1}} &= 2\bm{b}_1^T \bm{C} - \lambda_1 \bm{b}_1^T \\
-%     0 &= 2\bm{b}_1^T \bm{C} - \lambda_1 \bm{b}_1^T \\
-%     \bm{C} \bm{b}_1 &= \lambda_1 \bm{b}_1.
-% \end{align*}
+So far, only the solution for the first principal component has been derived. Generalizing this schema onto a $M$-dimensional subspace with maximal variance involves some way of mathematical induction. The idea is to subtract the effect of the first $M-1$ principal components $\bm{b}_1, \dots, \bm{b}_{M-1}$ from the data and thereby trying to find the principal components that compress the remaining information. For a detailed investigation of this general case, reference is made to \cite[pp.291]{dei_2020}
 
-% By the definition shown above, $\bm{b}_1$ has to be an eigenvector of $\bm{C}$ with the lagrangian multiplier as corresponding eigenvalue. Then, computing the derivative with respect to $\lambda_1$ results in
-
-% \begin{align*}
-%     \frac{\partial{\mathcal{L}}}{\partial{\lambda_1}} &= 1 - \bm{b}_1^T\bm{b}_1 \\
-%     0 &= 1 - \bm{b}_1^T\bm{b}_1 \\
-%     \bm{b}_1^T\bm{b}_1 &= 1.
-% \end{align*}
-
-% Finally, the variance objective from equation (\ref{eq:pca_variance_objective}) can be rewritten as 
-
-% \begin{equation}
-%     V_1 = \bm{b}_1^T \bm{C} \bm{b}_1 = \lambda_1 \bm{b}_1^T \bm{b}_1 = \lambda_1. 
-% \end{equation}
-
-% The variance of the projected data equals the eigenvalue that is related to the basis vector $\bm{b}_1$, which spans the subspace the data is projected onto. In other words, the eigenvector that is associated with the biggest eigenvalue $\lambda_1$ is the first principal component.
-
-% Since the vector $\bm{b}_1^T$ is considered a linear transformation, computing its inverse projects $z_{1n}$ back into the original data space $\mathbb{R}^D$, such that
-
-% \begin{equation*}
-%     \tilde{\bm{x}}_n = \bm{b}_1z_{1n} = \bm{b}_1 \bm{b}_1^T \bm{x}_n.
-% \end{equation*}
-
-% So far, only the solution for the first principal component has been derived. Generalizing this schema onto a $M$-dimensional subspace with maximal variance involves some way of mathematical induction. The idea is to subtract the effect of the first $M-1$ principal components $\bm{b}_1, \dots, \bm{b}_{M-1}$ from the data and thereby trying to find the principal components that compress the remaining information. For a detailed investigation of this general case, reference is made to \cite[pp.291]{dei_2020}
-
-% \begin{figure}[h!]{}
-
-%     \begin{example}{Steps of PCA in practice}{pca_example}
-    
-%     In this example, a two-dimensional dataset is given, which is projected onto a one-dimensional subspace by applying \acrshort{pca}. First, the data is centered and its variance is standardized to unit length (Figure \ref{fig:pca_visual_example} (b)). By centering the data, the efficiency of the calculation of the covariance matrix is increased. In addition, the standardization prevents a potential bias of the \acrshort{pca} model. After computing the eigenvalues and eigenvectors of the data covariance matrix, the data is projected onto the principal subspace (Figure \ref{fig:pca_visual_example} (c)). Finally, the data is projected back into the original data space and the applied standardization steps are reverted (Figure \ref{fig:pca_visual_example} (d)).
-
-%         \centering
-%         \includegraphics[width=0.9\textwidth]{figures/pca_visual_example.pdf}
-%         \caption[Steps of PCA in practice]{Steps of PCA. (a) Original dataset; (b) Data centered and divided by the standard deviation; (c) Data projection onto the principal subspace; (d) Data projection into original data space and reverse the standardization steps from (b)}
-%         \label{fig:pca_visual_example}
-%     \end{example}
-% \end{figure}
 
 \end{document}

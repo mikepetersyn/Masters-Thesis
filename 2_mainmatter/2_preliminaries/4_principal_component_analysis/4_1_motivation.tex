@@ -1,0 +1,23 @@
+\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+\subsection{Motivation}
+
+Several difficulties arise when analyzing high-dimensional data \cite[p.286]{dei_2020}. For example, it is often not easy to interpret which of the many factors have the most significant influence on the data distribution. In addition, data visualizations are often limited to a few dimensions. And besides the impact on data analysis, there are also influences on data inference. Some machine learning algorithms cannot effectively reason about the underlying structure of the data in high-dimensional space, which can result into a model overfitting. Furthermore, compression of data, in terms of dimensionality reduction, can lead to advantages in processing and persistence of data. Data storage can often come at a high cost and some algorithms do not scale well with increasing numbers of dimensions. For example, when using the \gls{ema} (see Section \ref{subsec:em_algorithm}) an increase of the dimensionality of the data is related to an increase in the probability of the occurrence of (nearly) singular matrices, which can result in a numerical breakdown of the model \cite[p.434]{bis_2006}. For these reasons, dimensionality reduction is often desired within a data preprocessing strategy.
+
+\begin{figure}[b]
+    \centering
+    \includestandalone{2_mainmatter/2_preliminaries/4_principal_component_analysis/tikz/pca_motivation}
+    \caption{Two synthetic datasets illustrating the difference in signal and noise}
+    \label{fig:pca_signal_noise}
+\end{figure}
+
+In general, dimensionality reduction methods make use of the following idea. Measuring data is error prone and associated with both incompleteness and redundancy. This trend increases with the number of dimensions. Thus, many dimensions in multivariate data can be explained by a combination of other dimensions. This underlying structure can be exploited by partitioning the full space into subspaces of signal and noise \cite[217]{sco_2015}. Figure \ref{fig:pca_signal_noise} shows two synthetic datasets each with two features. The plot on the right displays a negative correlation and the direction that carries the largest portion of the signal can be located visually. 
+
+In this two-dimensional example, the direction that is perpendicular to that is the direction that carries the least amount of signal and is referred to as noise. The goal is to discard a significant amount of noise in the data and work with a more compact representation, with losing as little signal as possible.
+
+
+
+
+
+\end{document}

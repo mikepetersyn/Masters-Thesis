@@ -1,0 +1,13 @@
+\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+\subsection{Problem Description}
+
+All data points $\bm{x}_n$ can be represented as a linear combination of the orthonormal basis. The central question associated with \gls{pca} is whether there is another basis, which is a \textit{linear} combination of the original basis, that best represents the data. From this perspective, \gls{pca} can be considered a change-of-basis problem. Recalling the example from Figure \ref{fig:pca_signal_noise}, a better representation of the data is related to a lower amount of noise and redundancy in the data. Further, by assuming linearity, the problem is simplified by restricting the set of potential bases and enabling an efficient solution with matrix decomposition techniques \cite{shl_2014}. Note that it is not always the case that the correlation among variables is not of interest. But in the case of \gls{pca}, correlation represents redundancy, which is desired to be minimized.
+
+To derive a solution approach, some assumptions are made beforehand, which are proven in the following section. It is assumed that data containing more redundancy generally have lower variance and vice versa. Therefore, the dynamics of interest exist in the directions of highest variance. It is further assumed that the canonical basis in which the data was captured is a representation that has inherent redundancies and noise. For this reason, a suitable basis is searched that represents a linear transformation of the canonical basis, such that the base aligns with the axes of maximum variance of the data. By projecting the data onto the axis of maximum variance, which form a lower-dimensional subspace, data redundancy is eliminated.
+
+Finding the directions of maximum variance, which are referred to as principal components, is the central operation of \gls{pca}. One feasible option is to diagonalize the covariance matrix of the data. Recalling that each covariance matrix is a square symmetric matrix whose off-diagonal elements represent the covariances, i.e., reflect the redundancies, a diagonalization of the covariance matrix eliminates the magnitude of the covariance, resulting in a matrix that only contains the variance terms. Finally, each successive dimension in the diagonalized covariance matrix should be rank-ordered according to the values of the variance in order to quantify their importance. It can be shown that the principal components are the eigenvectors of the covariance matrix of the data. A frequently used method for solving \acrshort{pca} is therefore the eigendecomposition, which is mathematically derived in the following in connection with the assumptions made so far.
+
+
+\end{document}
