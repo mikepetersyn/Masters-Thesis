@@ -1,0 +1,46 @@
+\documentclass[../../main.tex]{subfiles}
+\begin{document}
+
+\section{Flow Feature Analysis}
+% data analysis
+    % raw and preprocessed data / before indexing
+        % class distribution for each dataset; before and after regrouping of classes
+        % complete set of features (table within text)
+        % class based tagging visualization with tsne
+
+    % after indexing
+        % how many regions have been created during the indexing service?
+        % how many flows are stored per region (histogram?)
+        % how many complex and non-complex regions?
+
+    % how man features after complexity reduction?
+
+\subsection{Datasets}
+
+
+Since the evaluation of a CIDS is conducted, multiple different datasets have to be selected, each of which representing a single IT-Infrastructure, that is member of the CIDS overlay. The three following datasets are selected, which are from now on referred to by the corresponding roman numeral:
+
+\begin{enumerate}
+    \item[\RomanNumeralCaps{1}] CSE-CIC-IDS2018 \cite{cse-cic-ids-2018},
+    \item[\RomanNumeralCaps{2}] CIC-IDS2017 \cite{sharafaldin_toward_2018},
+    \item[\RomanNumeralCaps{3}] CIC-DoS2017 \cite{jazi2017detecting}.
+\end{enumerate}
+
+When selecting the datasets, it was ensured that the attack classes contained in each case were similar or the same in order to be able to carry out an evaluation in the context of a collaboration. Furthermore, the selection was limited to the available datasets.
+
+\subsection{Feature Extraction and Preprocessing}
+
+In the context of network intrusion detection, network flow data is employed for real time network analysis. Within the context of real time flow feature analysis it is often neglected that flows are exported upon termination of the corresponding communication, which is either triggered by an activity or inactivtiy timeout mechanism. The specific setting of the timeout values is often a tradeoff between low data volume with a high timeout setting on the one side and a fine-grained analysis with low timeout values on the other side. However, especially in the area of network intrusion detection, a low detection latency heavily depends on timely available data. Thus, for a realistic evaluation, only early statistical flow features on the first 10 packets of a communication are considered. 
+
+A flow exporter that is implemented using the Python Framework NFStream is used for tracking and exporting bidirectional network flows. A total of 45 flow features are extracted, including the basic 5-tuple and various statistical values based on the number of packets, packet sizes, and inter-arrival times. An active and inactive timeout of 15s is specified for the flow export. All datasets presented in Section \ref{sec:datasets} are available in the pcap capture file format. Files from the datasets CIC-IDS-2017 and CIC-DoS-2017 were exported directly. In the case of the CIC-IDS-2018 dataset further preparations were required. Some files contained broken headers, which were fixed with the pcapfix repair tool. In addition, the individual days, by which the dataset is structured, were fragmented further into many individual files, which were merged into single files using the pcapmerge tool. Subsequently, these files were exported. The number of the resulting flow samples are shown in Table \ref{tab:num_exported_flows}.
+
+
+The exported data flow samples are labeled based on basic attack knowledge (timestamps, IP addresses) from the respective website from which the datasets can be accessed. Improvements of the labeling process regarding corrected timestamps and further sanity checks, which are described in \cite{engelen2021}, have been taken into account. Table \ref{tab:labeled_flows} shows the number of samples per class of each respective dataset. For the chosen evaluation strategy, the dataset is further preprocessed by grouping and renaming the samples that represent denial of service attacks. More precisely, already existing classes, that are labeled after the name of the specific tool that was used to create that attack, are relabeled by a strategy that is depicted in Table \ref{tab:class_groupings}. Furthermore, specific attacks that are either only represented in a single dataset (e.g. FTP brute force) or are too specific to be compared to (e.g. various infiltration attacks) are removed. The resulting classes and corresponding sample counts are shown in Figure \ref{tab:number_preprocessed_flows}. 
+
+\input{table/number_exported_flows.tex} 
+
+\input{table/number_preprocessed_flows.tex} 
+
+
+
+\end{document}

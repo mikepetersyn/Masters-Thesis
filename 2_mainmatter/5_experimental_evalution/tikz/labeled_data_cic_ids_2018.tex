@@ -1,0 +1,68 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{positioning}
+\usepackage{pgf-pie} 
+\begin{document}
+
+\begin{tikzpicture}[scale=0.5, every node/.style={font=\scriptsize}]
+
+    \pie[
+        pos={0,0},
+        radius=2,
+        color = {
+        cyan!40,
+        red!40},
+        explode = 0.5,
+        hide label=true,
+        hide number=true,
+    ]{  97.77/Benign,
+        2.23/Attack
+    }
+
+    \pie[
+        pos={7,0},
+        radius=3,
+        text=legend,
+        explode=0.5,
+        hide label=false,
+        hide number=true
+    ]{  
+        5.8526/Bot,
+        5.7036/Brute-Force SSH,
+        0.0397/Brute-Force Web,
+        85.1509/DDoS,
+        1.7426/DoS HTTP-High-Vol,
+        1.4807/DoS HTTP-Low-Vol,
+        0.0027/SQL-Injection,
+        0.0272/XSS
+    }
+
+    \node[align=center](benign) at (-1,0.5) {Benign \\ ($97.77\%$)};
+    \node[align=center](benign) at (2.25,0.5) {Attack \\ $(2.23\%)$};
+
+    % \node[align=center](benign) at (6,0.5) {DDoS \\ $(85.15\%)$};
+
+    % \node[align=center](benign) at (7.5,3.5) {Brute-Force Web \\ $(0.04\%)$};
+    % \draw[thin] (9.5,2.25) -- (7.5,3){};
+    
+    % \node[align=center](benign) at (10,3.0) {Brute-Force SSH \\ $(5.70\%)$};
+    % \draw[thin] (9.85,2) -- (10,2.5){};
+
+    % \node[align=center](benign) at (11,2.0) {Bot \\ $(5.85\%)$};
+    % \draw[thin] (10.35,1) -- (10.8,1.6){};
+
+    % \node[align=center](benign) at (12,1.0) {SQL-Injection \\ $(<0.01\%)$};
+    % \draw[thin] (10.5,0) -- (11,1){};
+
+    % \node[align=center](benign) at (12,0.0) {XSS \\ $(0.03\%)$};
+    % \draw[thin] (10.5,0) -- (11.4,0){};
+
+    % \node[align=center](benign) at (12,-1) {DoS Low-Vol. \\ $(1.48\%)$};
+    % \draw[thin] (10.5,-0.2) -- (10.8, -0.75){};
+
+    % \node[align=center](benign) at (11,-2) {DoS High Vol. \\ $(1.74\%)$};
+    % \draw[thin] (10.2,-0.65) -- (10.5, -1.5){};
+
+\end{tikzpicture}
+    
+
+\end{document}

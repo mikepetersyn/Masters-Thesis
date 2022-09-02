@@ -3,24 +3,19 @@
 
 \chapter{Experimental Evaluation}
 
-\section{Flow Feature Analysis}
+% The objectives for the evaluation should reflect the challenges of Data Dissemination in CIDS, mentioned in \ref{sec:introduction}, namely Data Privacy, Data Interoperability and Minimal Overhead. However, within the context of an experimental setup, only the attributed of Minimal Overhead is evaluated. In the case of Data Privacy, a theoretical discussion in Section \ref{sec:results_and_analysis} evaluated the following question: How likely is it for a CIDS member, to recover the original values of a hashed data point? Also the attribute of Data Interoperability is discussed in section \ref{sec:results_and_analysis}, with references to related work in Section \ref{sec:related_work}.
 
-\subsection{Datasets}
+% Within this section, it is elaborated how the attribute of Minimal Overhead is evaluated experimentally with respect to its potential advantages and disadvantages. While its function as a data compression algorithm is advantageous for storing and disseminating data, similarity hashing also leads to loss of information which ultimately leads to drops in classification performance. The remaining questions are, how well does the data compression help with scalability and which exact price is to pay in form of degradation of classication performance. 
 
-\subsection{Feature Extraction and Preprocessing}
+% First, the data that is used for the different experiments and the applied preprocessing strategy is presented in Section \ref{sec:data_and_preprocessing}. After that, the evaluation strategy for testing the compression capabilities in the context of dimensionality reduction, data reduction and dissemination latency is evaluated thoroughly in Section \ref{sec:data_compression_evaluation}. Lastly, the setup for comparing the classification performance of the IDS with either utilizing raw data or hashed data in Section \ref{sec:classification_performance_evaluation} is presented.
 
-\section{Experimental Setup}
+\subfile{1_flow_feature_analysis}
 
-\subsection{Implementation Details}
+\subfile{2_experimental_setup}
 
-\subsection{Methodologies}
+\subfile{3_evaluation_results}
 
-\section{Evaluation Results}
-
-\subsection{Classification Improvement}
-
-\subsection{Overhead Reduction}
-
-\section{Summary and Discussion}
+\subfile{4_summary_and_discussion}
 
 \end{document}
+
