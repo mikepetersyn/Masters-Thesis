@@ -2,23 +2,12 @@
 \begin{document}
 
 \section{Flow Feature Analysis}
-% data analysis
-    % raw and preprocessed data / before indexing
-        % class distribution for each dataset; before and after regrouping of classes
-        % complete set of features (table within text)
-        % class based tagging visualization with tsne
-
-    % after indexing
-        % how many regions have been created during the indexing service?
-        % how many flows are stored per region (histogram?)
-        % how many complex and non-complex regions?
-
-    % how man features after complexity reduction?
+First the employed datasets and the included attacks are presented shortly at the beginning; After that, the feature extraction process is described. Thereby, it is explained, which kind of flow features are extracted and which flow exporter is used; The Preprocessing steps include the labeling of the extracted feature vectors and the splitting into the respective training and testing proportions; the distribution of the different classes within each dataset is described extensively for transparency; a combined analysis of the feature importances for all datasets shows that no further feature selection would be beneficial, which finalizes the data description.
+  
 
 \subsection{Datasets}
 
-
-Since the evaluation of a CIDS is conducted, multiple different datasets have to be selected, each of which representing a single IT-Infrastructure, that is member of the CIDS overlay. The three following datasets are selected, which are from now on referred to by the corresponding roman numeral:
+In the evaluation, multiple IT-infrastructures that are members of the cids are simulated by incorporating different benchmark datasets; The three following datasets are selected, which are from now on referred to by the corresponding roman numeral:
 
 \begin{enumerate}
     \item[\RomanNumeralCaps{1}] CSE-CIC-IDS2018 \cite{cse-cic-ids-2018},
@@ -26,7 +15,41 @@ Since the evaluation of a CIDS is conducted, multiple different datasets have to
     \item[\RomanNumeralCaps{3}] CIC-DoS2017 \cite{jazi2017detecting}.
 \end{enumerate}
 
-When selecting the datasets, it was ensured that the attack classes contained in each case were similar or the same in order to be able to carry out an evaluation in the context of a collaboration. Furthermore, the selection was limited to the available datasets.
+When selecting the datasets, it was ensured that the attack classes contained in each case were similar or the same in order to be able to carry out an evaluation in the context of a collaboration.
+
+Both the CIC-IDS-2018 and CIC-IDS-2017 are very alike from the included scenarios and attacks; they are designed as a diverse and comprehensive benchmark dataset; they are different from the utilized testbed; 
+IDS 2017 attack network with four workstations, victim network three servers and ten workstations
+IDS 2018 used an attack infrastructure consisting of 50 machines and an victim infrastructure consisting of 420 machines and 30 servers;
+DoS2017 is an intrusion detection dataset that contains, beneath benign traffic only traces of application layer DoS attacks; instead of carrying out the DoS on the network layer using a SYN Flood, for example, the malicious client sends traffic either to a listening UDP socket or through a completed TCP connection; 8 different attack tools were used for executing the attacks, attacking 10 web servers; generally, the attacks can be categorized into high and low volume attacks; high volume attacks are characterized by a high volume of application-layer requests, which are transmitted to the victim; in contrast, low volume attacks are characterized by a small volume of attack traffic that has an impact on a service
+
+
+% Description of the attacks
+% CSE-CIC-IDS2018
+
+% infiltration
+sending a malicious pdf via an email to a victim; upon the usage of the file, an application (pdf reader) vulnerability is exploited; after the successful exploitation, a backdoor to the systems of the victim is executed, such that that systems is used for internal network scans (service enumeration using nmap, ip sweep and full range scan of ports using portscan)
+
+% bruteforece attacks
+tries multiple usernames and passwords, test a wide range of combinations (dictionary attack with 90 million entries), until they find the correct login information; it is not described if the login names are known beforehand
+ftp-bruteforece using patator - FTP login
+ssh-patator - SSH Login
+
+% botnet
+
+% DDoS
+
+% PortScan
+
+% DoS
+
+% Web Attack (XSS, Bruteforce)
+
+% Heartbleed
+Exploit of the OpenSSL cryptography library; sending malformed heartbeat request
+allows to read encrypted communication; steal secret keys for certificates; user names and passwords, instant messages 
+
+
+
 
 \subsection{Feature Extraction and Preprocessing}
 
@@ -37,10 +60,82 @@ A flow exporter that is implemented using the Python Framework NFStream is used 
 
 The exported data flow samples are labeled based on basic attack knowledge (timestamps, IP addresses) from the respective website from which the datasets can be accessed. Improvements of the labeling process regarding corrected timestamps and further sanity checks, which are described in \cite{engelen2021}, have been taken into account. Table \ref{tab:labeled_flows} shows the number of samples per class of each respective dataset. For the chosen evaluation strategy, the dataset is further preprocessed by grouping and renaming the samples that represent denial of service attacks. More precisely, already existing classes, that are labeled after the name of the specific tool that was used to create that attack, are relabeled by a strategy that is depicted in Table \ref{tab:class_groupings}. Furthermore, specific attacks that are either only represented in a single dataset (e.g. FTP brute force) or are too specific to be compared to (e.g. various infiltration attacks) are removed. The resulting classes and corresponding sample counts are shown in Figure \ref{tab:number_preprocessed_flows}. 
 
-\input{table/number_exported_flows.tex} 
 
-\input{table/number_preprocessed_flows.tex} 
+\begin{table}
+    \centering
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/number_exported_flows.tex}
+    \caption[Exported Flows]{The number of the exported flows with the name of the respective capture files and the corresponding dataset.}
+    \label{tab:num_exported_flows}
+\end{table}
 
+\begin{table}
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/number_preprocessed_flows.tex} 
+    \caption[Preprocessed Flows]{After the labeling process, the exported flow samples have partitioned to the classes presented.}
+    \label{tab:preprocessed_flows}
+\end{table}
+
+
+\begin{table}
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/flow_features.tex} 
+    \caption[Extracted Flow Features]{After the labeling process, the exported flow samples have partitioned to the classes presented.}
+    \label{tab:flow_features}
+\end{table}
+
+
+permutation importance \cite[125]{rforests_2014}
+mean decrease accuracy (MDA) or, equivalently, the mean increase rror, of the forest when the values of a column of the dataset, i.e. feature, are randomly permutet in the out-of-bag-samples
+"Permutation Importance or Mean Decrease in Accuracy (MDA) is assessed for each feature by removing the association between that feature and the target. This is achieved by randomly permuting the values of the feature and measuring the resulting increase in error. The influence of the correlated features is also removed."
+\begin{figure}[t!]
+    \centering
+    \includestandalone{2_mainmatter/5_experimental_evalution/tikz/feature_importances}
+    \caption{Marginals $p(x_M)$, $p(x_N)$ and Conditional Gaussian $p(x_{M|N})$}
+    \label{fig:marginal_conditional_gaussian}
+\end{figure}
+
+As seen in the plot, when considering all employed datasets combined, there is no common tendency for a subset of significant features that could be selected. Instead, each dataset has its own features that are more or less important for the classification result. Thus, the complete set of extracted features is used for the information exchange within the CIDS; Intuitively that makes sense, because the initial goal was to provide a general knowledge database, which each member of the CIDS can incorporate in its detection pipeline with their individual preprocessing steps for the final classification training
+
+\begin{algorithm}
+    \caption{Permutation Importance}
+    \label{alg:permutation_importance}
+    \begin{algorithmic}[1]
+        \REQUIRE fitted model $M$
+        \ENSURE Feature importances $I$
+
+        \STATE Compute the reference score $s$ of the model $M$ on data $\mathcal{X}$
+        \FORALL{feature column $x_j$}
+            \FORALL{repitition $i$ in $1, \dots K$}
+                \STATE randomly shuffle column $j$ of dataset $\mathcal{X}$ to generate a corrupted version of the data named $\mathcal{\hat{X}_{i,j}}$
+                \STATE compute the score $s_{i,j}$ of model $M$ on $\mathcal{\hat{X}_{i,j}}$
+            \ENDFOR
+            \STATE compute importance $i_j$ for feature $x_j$ $i_j = s - \frac{1}{K} \sum_i=1^K s_ij$
+        \ENDFOR
+        \STATE \textbf{return} $\mathcal{R}_{\text{out}}$
+    \end{algorithmic}
+ \end{algorithm}
 
 
 \end{document}

@@ -1,70 +1,66 @@
-\begin{table}
-    \centering
-    \caption{After the labeling process, the exported flow samples have partitioned to the classes presented.}
-    \label{tab:labeled_flows}
-    \begin{tabular}{llrll} 
+\begin{tabular}{lllrll} 
     \toprule
-    \textbf{Dataset}               & \textbf{Class}                & \multicolumn{1}{c}{\textbf{No. Flows}} & \textbf{Grouped/Renamed}           & \textbf{Label}      \\ 
+    \textbf{Dataset}               &  & \textbf{Class}                                             & \multicolumn{1}{l}{\textbf{No. Flows}}     & \textbf{Grouped/Renamed}             & \textbf{Label}                         \\ 
     \midrule
-    \multirow{16}{*}{CIC-IDS-2018} & Benign                        & \textbf{92351111}                      &                                    & 0                   \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & Bot                           & 95038                                  &                                    & 1                   \\
-                                   & Brute-Force-SSH               & 92618                                  &                                    & 3                   \\
-                                   & Brute-Force-Web               & 644                                    &                                    & 4                   \\
-                                   & DDoS-LOIC-HTTP                & 289328                                 & \multirow{3}{*}{DDoS}              & \multirow{3}{*}{5}  \\
-                                   & DDoS-LOIC-UDP                 & 19013                                  &                                    &                     \\
-                                   & DDoS-HOIC                     & 1074379                                &                                    &                     \\
-                                   & DoS-GoldenEye                 & 28297                                  & DoS HTTP High Vol.                 & 6                   \\
-                                   & DoS-Slowloris                 & 24044                                  & DoS HTTP Low Vol.                  & 7                   \\
-                                   & Web-Attack-SQL-Injection      & 44                                     &                                    & 9                   \\
-                                   & Web-Attack-XSS                & 442                                    &                                    & 10                  \\ 
-    \cmidrule(lr){3-3}
-                                   &                               & \textbf{1623847}                       &                                    &                     \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & DoS-Hulk                      & 479829                                 &                                    & -                   \\
-                                   & DoS-SlowHTTPTest              & 0                                      &                                    & -                   \\
-                                   & Brute-Force FTP               & 0                                      &                                    & -                   \\
-                                   & Infiltration                  & 146                                    &                                    & -                   \\
-    \multicolumn{5}{l}{}                                                                                                                                               \\ 
-    \cmidrule(l){1-5}
-    \multicolumn{5}{l}{}                                                                                                                                               \\
-    \multirow{17}{*}{CIC-IDS-2017} & Benign                        & \textbf{554097}                        &                                    & 0                   \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & Bot                           & 736                                    &                                    & 1                   \\
-                                   & Brute-Force-SSH               & 3003                                   &                                    & 3                   \\
-                                   & Brute-Force-Web               & 295                                    &                                    & 4                   \\
-                                   & DDoS-LOIT                     & 93373                                  & DDoS                               & 5                   \\
-                                   & DoS-GoldenEye                 & 8100                                   & DoS HTTP High Vol.                 & 6                   \\
-                                   & DoS-Slowloris                 & 10591                                  & \multirow{2}{*}{DoS HTTP Low Vol.} & \multirow{2}{*}{7}  \\
-                                   & DoS-SlowHTTPTest              & 3958                                   &                                    &                     \\
-                                   & Web-Attack-SQL-Injection      & 12                                     &                                    & 9                   \\
-                                   & Web-Attack-XSS                & 84                                     &                                    & 10                  \\ 
-    \cmidrule(lr){3-3}
-                                   &                               & \textbf{120152}                        &                                    &                     \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & DoS-Hulk                      & 158645                                 &                                    & -                   \\
-                                   & Brute-Force FTP               & 4003                                   &                                    & -                   \\
-                                   & Infiltration-Cool-Disk-MAC    & 14                                     &                                    & -                   \\
-                                   & Infiltration-Dropbox-Download & 5                                      &                                    & -                   \\
-                                   & Scan                          & 160426                                 &                                    & -                   \\
-                                   & Heartbleed                    & 82                                     &                                    & -                   \\
-    \multicolumn{5}{l}{}                                                                                                                                               \\ 
-    \cmidrule(l){1-5}
-    \multicolumn{5}{l}{}                                                                                                                                               \\
-    \multirow{10}{*}{CIC-DoS-2017} & Benign                        & \textbf{200575}                        &                                    & 0                   \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & DDoS-DDoSSim                  & 7231                                   & DDoS                               & 5                   \\
-                                   & DoS-GoldenEye                 & 1959                                   & DoS HTTP High Vol.                 & 6                   \\
-                                   & DoS-Rudy                      & 3310                                   & \multirow{5}{*}{DoS HTTP Low Vol.} & \multirow{5}{*}{7}  \\
-                                   & DoS-Slowbody                  & 7628                                   &                                    &                     \\
-                                   & DoS-Slowheaders               & 16386                                  &                                    &                     \\
-                                   & DoS-Slowloris                 & 4643                                   &                                    &                     \\
-                                   & DoS-Slowread                  & 2127                                   &                                    &                     \\ 
-    \cmidrule(lr){3-3}
-                                   &                               & \textbf{43284}                         &                                    &                     \\ 
-    \cdashline{2-5}[1pt/1pt]
-                                   & DoS-Hulk                      & 2508                                   &                                    & -                   \\
-    \multicolumn{5}{l}{}                                                                                                                                               \\
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\
+    \multirow{16}{*}{CIC-IDS-2018} & \multicolumn{2}{l}{\textbf{Benign}}                           & \textbf{\numprint{92351111}}                          &                                      & 0                                      \\ 
+    \cmidrule{2-4}
+                                   & \multicolumn{2}{l}{\textbf{Attack}}                           & \textbf{\numprint{1623847}}                           &                                      &                                        \\ 
+    \cmidrule{2-4}
+                                   &  & Bot                                                        & \numprint{95038}                                      &                                      & 1                                      \\
+                                   &  & Brute-Force-SSH                                            & \numprint{92618}                                      &                                      & 3                                      \\
+                                   &  & Brute-Force-Web                                            & \numprint{644}                                        &                                      & 4                                      \\
+                                   &  & DDoS-LOIC-HTTP                                             & \numprint{289328}                                     & \multirow{3}{*}{DDoS}                & \multirow{3}{*}{5}                     \\
+                                   &  & DDoS-LOIC-UDP                                              & \numprint{19013}                                      &                                      &                                        \\
+                                   &  & DDoS-HOIC                                                  & \numprint{1074379}                                    &                                      &                                        \\
+                                   &  & DoS-GoldenEye                                              & \numprint{28297}                                      & DoS HTTP High Vol.                   & 6                                      \\
+                                   &  & DoS-Slowloris                                              & \numprint{24044}                                      & DoS HTTP Low Vol.                    & 7                                      \\
+                                   &  & SQL-Injection                                              & \numprint{44}                                         &                                      & 9                                      \\
+                                   &  & XSS                                                        & \numprint{442}                                        &                                      & 10                                     \\ 
+    \hhline{~~----}
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}DoS-Hulk               & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{479829} & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}DoS-SlowHTTPTest       & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{0}      & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Brute-Force-FTP        & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{0}      & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Infiltration           & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{146}    & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\ 
+    \midrule
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\
+    \multirow{17}{*}{CIC-IDS-2017} & \multicolumn{2}{l}{\textbf{Benign}}                           & \textbf{\numprint{554097}}                            &                                      & 0                                      \\ 
+    \cmidrule{2-4}
+                                   & \multicolumn{2}{l}{\textbf{Attack}}                           & \textbf{\numprint{120152}}                            &                                      &                                        \\ 
+    \cmidrule{2-4}
+                                   &  & Bot                                                        & \numprint{736}                                        &                                      & 1                                      \\
+                                   &  & Brute-Force-SSH                                            & \numprint{3003}                                       &                                      & 3                                      \\
+                                   &  & Brute-Force-Web                                            & \numprint{295}                                        &                                      & 4                                      \\
+                                   &  & DDoS-LOIT                                                  & \numprint{93373}                                      & DDoS                                 & 5                                      \\
+                                   &  & DoS-GoldenEye                                              & \numprint{8100}                                       & DoS HTTP High Vol.                   & 6                                      \\
+                                   &  & DoS-Slowloris                                              & \numprint{10591}                                      & \multirow{2}{*}{DoS HTTP Low Vol.}   & \multirow{2}{*}{7}                     \\
+                                   &  & DoS-SlowHTTPTest                                           & \numprint{3958}                                       &                                      &                                        \\
+                                   &  & SQL-Injection                                              & \numprint{12}                                         &                                      & 9                                      \\
+                                   &  & XSS                                                        & \numprint{84}                                         &                                      & 10                                     \\ 
+    \hhline{~~----}
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}DoS-Hulk               & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{158645} & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Brute-Force-FTP        & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{4003}   & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Infiltr. Cool-Disk-MAC & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{14}     & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Infiltr. Dropbox       & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{5}      & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Scan                   & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{160426} & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}Heartbleed             & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{82}     & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\ 
+    \midrule
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\
+    \multirow{10}{*}{CIC-DoS-2017} & \multicolumn{2}{l}{\textbf{Benign}}                           & \textbf{\numprint{200575}}                            &                                      & 0                                      \\ 
+    \cmidrule{2-4}
+                                   & \multicolumn{2}{l}{\textbf{Attack}}                           & \textbf{\numprint{43284}}                             &                                      &                                        \\ 
+    \cmidrule{2-4}
+                                   &  & DDoS-DDoSSim                                               & \numprint{7231}                                       & DDoS                                 & 5                                      \\
+                                   &  & DoS-GoldenEye                                              & \numprint{1959}                                       & DoS HTTP High Vol.                   & 6                                      \\
+                                   &  & DoS-Rudy                                                   & \numprint{3310}                                       & \multirow{5}{*}{DoS HTTP Low Vol.}   & \multirow{5}{*}{7}                     \\
+                                   &  & DoS-Slowbody                                               & \numprint{7628}                                       &                                      &                                        \\
+                                   &  & DoS-Slowheaders                                            & \numprint{16386}                                      &                                      &                                        \\
+                                   &  & DoS-Slowloris                                              & \numprint{4643}                                       &                                      &                                        \\
+                                   &  & DoS-Slowread                                               & \numprint{2127}                                       &                                      &                                        \\ 
+    \hhline{~~----}
+                                   &  & {\cellcolor[rgb]{0.965,0.961,0.957}}DoS-Hulk               & {\cellcolor[rgb]{0.965,0.961,0.957}}\numprint{2508}   & {\cellcolor[rgb]{0.965,0.961,0.957}} & {\cellcolor[rgb]{0.965,0.961,0.957}}-  \\
+                                   &  &                                                            & \multicolumn{1}{l}{}                       &                                      &                                        \\
     \bottomrule
     \end{tabular}
-    \end{table}
