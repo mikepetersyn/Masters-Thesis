@@ -1,8 +1,8 @@
-\documentclass[../main.tex]{subfiles}
+\documentclass[../../main.tex]{subfiles}
 \begin{document}
 
-\chapter{State of the Art}
-
+\chapter{Related Work}
+\newpage
 \section{Data Dissemination in Collaborative Intrusion Detection}
 
 % \subsection{Requirements}
@@ -56,24 +56,48 @@
 
 % \end{description}
 
+\newpage
 \section{Similarity Hashing in Malware Detection}
 
-% \subsection{Motivation}
 
-% \subsection{Approximate Matching}
-
-% \subsection{Locality-Sensitive Hashing in IDS}
-
-% % Das Thema Patterns/Similarity Patterns/Pattern Detection umreißen und in den Kontext von ID
-
-% Searching for similar objects in large data sets is a fundamental challenge that has found important applications in many fields. An important subclass of similarity search is the nearest neighbour search problem, which becomes hard in the high dimensional case, when relying on exact algorithms like a linear scan ($O(n)$) as the best solution. However, many applications do not require an exact solution, such that in these cases a randomized algorithm can be used, which provides the correct solution with high probability in sublinear time \cite{datar_locality-sensitive_2004}. Therefore, approximate and randomized solution algorithms are widely used in practice. There is  popular approach known as locality-sensitive hashing (LSH) that allows searching in large databases for similar items in a randomized manner. This technique hashes similar input onto the same hash code with high probability for the purpose of populating a hash table. Since similar items are placed into the same buckets, this approach is suitable for data clustering or nearest neighbour search.
+Searching for similar objects in large data sets is a fundamental challenge that has found important applications in many fields. An important subclass of similarity search is the nearest neighbour search problem, which becomes hard in the high dimensional case, when relying on exact algorithms like a linear scan ($O(n)$) as the best solution. However, many applications do not require an exact solution, such that in these cases a randomized algorithm can be used, which provides the correct solution with high probability in sublinear time \cite{datar_locality-sensitive_2004}. Therefore, approximate and randomized solution algorithms are widely used in practice. There is  popular approach known as locality-sensitive hashing (LSH) that allows searching in large databases for similar items in a randomized manner. This technique hashes similar input onto the same hash code with high probability for the purpose of populating a hash table. Since similar items are placed into the same buckets, this approach is suitable for data clustering or nearest neighbour search.
 
 
-% Also the field of cyber security has adopted methods suitable for similarity search, mainly for the analysis of polymorphic malware. This type of malware poses a significant challenge, since it changes its appearance over time in order to stay undetectable from antivirus software \cite[p.91]{whitman_principles_2018}. 
-% Traditional antivirus software uses cryptographic hash functions (SHA-256) to create file signatures. Such signatures are well suited to search for identical files in a knowledge database. However, due to the property of cryptographic diffusion, even minimal changes to the malware result in large differences in the resulting hash value. With the rapid evolution and proliferation of polymorphic malware, detection based on unique signatures no longer seems effective. 
+Also the field of cyber security has adopted methods suitable for similarity search, mainly for the analysis of polymorphic malware. This type of malware poses a significant challenge, since it changes its appearance over time in order to stay undetectable from antivirus software \cite[p.91]{whitman_principles_2018}. 
+Traditional antivirus software uses cryptographic hash functions (SHA-256) to create file signatures. Such signatures are well suited to search for identical files in a knowledge database. However, due to the property of cryptographic diffusion, even minimal changes to the malware result in large differences in the resulting hash value. With the rapid evolution and proliferation of polymorphic malware, detection based on unique signatures no longer seems effective. 
 
-% Based on these developments, detection schemes based on approximate matching algorithms have initially become the focus of research. In contrast to LSH, approximate matching functions are designed for producing digests of objects and a subsequent comparison of such digests, which yields a confidence value reflecting the similarity of two objects \cite{moia_similarity_2017}. Popular approaches in this area are for example \textit{ssdeep}, which implements context triggered piecewise hashing (CTPH) \cite{kornblum_identifying_2006} or \textit{sdhash}, that makes use of bloom filters for the digest creation and comparison \cite{chow_data_2010}.
+Based on these developments, detection schemes based on approximate matching algorithms have initially become the focus of research. In contrast to LSH, approximate matching functions are designed for producing digests of objects and a subsequent comparison of such digests, which yields a confidence value reflecting the similarity of two objects \cite{moia_similarity_2017}. Popular approaches in this area are for example \textit{ssdeep}, which implements context triggered piecewise hashing (CTPH) \cite{kornblum_identifying_2006} or \textit{sdhash}, that makes use of bloom filters for the digest creation and comparison \cite{chow_data_2010}.
 
+\newpage
 \section{Generative Algorithms and Intrusion Detection}
+In the area of intrusion detection, generative algorithms primarily demonstrate their typical strengths. The ability to compensate for underrepresented classes with synthetic data generated by the generative model is by far the most frequent application.
+
+within presented network intrusion detection architecture, a deep convolutional generative adversarial networks (DCGAN) is used to generate network intrusion training samples in order to balance training data \cite{8736331}; A multichannel SRU-based model is used as discriminative model for the classification task
+KDD99 dataset \cite{kdd99}, NSL-KDD dataset \cite{nslkdd} and CIC-IDS2017 dataset \cite{sharafaldin_toward_2018}
+experiments show results for both binary and multiclass classification for the employed datasets; the presented approach is compared with the performance of common classification algorithms; however, the author neglect to state parameter settings for the algorithms which were used for comparison; lack of transparency
+
+using Imbalanced Generative Adversarial Network (IGAN) for generating new data for minority classes \cite{huang2020igan}; architecture consists of three modules: Neural Network for feature extraction (transform raw network attributeds into feature vectors); IGAN generates new samples; DNN module ios trained on balanced (real and synthetic) samples and executes intrusion detection in the inference phase; the following datasets were used for the multiclass classifiaction experiments: NSL-KDD \cite{nslkdd}, CIC-IDS2017 dataset \cite{sharafaldin_toward_2018} and UNSW-NB15 dataset \cite{unswnb15}; for comparison, the results of the appraoch are compared to common classification algorithms in combination with conventional balancing methods, namely random under-sampling, random over-sampling and SMOTE \cite{smote}; mostly, hyper-parameters were tuned by grid searching on the validation set; the robustness of the approach is further investigated by incrementally increasing class imbalances by random under-sampling; there, the performance drops slightly but remains relatively stable
+
+using a AE-CGAN in order to oversample rare classes based on the GAN model in order to solve the performance degradation caused by data imbalance after processing\cite{lee2019ae}
+% increase detection performance, increase robustness of model, balance datasets, distributed learning
+
+IDS trained on both real and synthetic data (GAN); KDD-99 \cite{shahriar2020g}
+
+Using GAN to synthesize adversarial attack traffic that is used to evade an IDS; increase robustness of IDS \cite{lin2022idsgan}
+
+distributed-GAN-based IDS on IoTD that can monitor its own data and data from neighbour IoTDs; does not require sharing the datasets between IoTDs; also tackles the spirit of federated learning \cite{ferdowsi2019generative}; 
+
+
+
+
+
+GAN-based adversarial attack that successfully evades an IDS; propose a GAN-based training mechanism for defense purposes that increases the robustness of the IDS against adversarials \cite{usama2019generative}
+
+
+
+
+% there are many approaches that use the generative abilities in order to enhance datasets by adding synthetic data to the real training data
+% there is even an approach that uses a distributed GAN for a distributed learning strategy within the IDS context (what is with benign data?)
+% no approach that exchanges the generative models itself; combines all advantages such as lower overhead in the data exchange (lower volume in sum), increased accuracy and robustness, exchange of information in order to detect unknown traffic, balancing of datasets, no exchange of benign data information, data privacy
 
 \end{document}
