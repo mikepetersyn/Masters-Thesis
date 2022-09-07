@@ -62,11 +62,11 @@ A flow exporter that is implemented using the Python Framework NFStream is used 
 Although the datasets have common attack classes, they are strongly imbalanced regarding the number of samples per class. This mainly results from the differences in the architectures of the employed testbeds, where the traces were recorded in.
 
 \subsection{Preprocessing}\label{subsec:preprocessing}
-
+% grey fields in the feature table is excluded
 The exported flow samples are labeled based on domain knowledge, such as timestamps  and IP addresses, that is available on the respective website from which the datasets can be accessed. Improvements of the labeling process regarding corrected timestamps and further sanity checks, which are described in \cite{engelen2021}, have been taken into account. 
 For example, traces that were produced by the DoS Hulk tool are neglected, because the tool is not implemented well and does not produce any meaningful attack data. Table~\ref{tab:preprocessed_flows} shows the number of samples per class of each respective dataset. Specific attack samples that are either not meaningful (DoS Hulk) or only represented in a single dataset (Brute-Force-FTP) or are too specific to be evaluated on (Infiltration) are removed, which is indicated by a grey cell color in the table.
 
-For the chosen evaluation strategy, the dataset is further preprocessed by restructuring related attack samples and grouping them into a common class. For example, all samples that represent a low volume \gls{dos} attack that were produced by one of the many tools are grouped into a single class called ``\gls{dos} \gls{http} Low Volume''. Subsequently, the different classes receive a numeric label. The regrouping and relabeling of the attack classes across the different datasets enables a basis on which a reasonable communication within the \gls{cids} can happen in the first place. In practice, this approach would correspond to a centrally controlled policy that tells the individual members how their local datasets must be labeled before inserting them into the pattern database. The resulting classes and corresponding sample counts are shown in Figure \ref{tab:preprocessed_flows}. The already mentioned class imbalances across the datasets are not further addressed in the preprocessing steps as this subject is handled in the Classifier Fitting Service of the pattern database (see Section~\ref{subsec:classifier_fitting}).
+For the chosen evaluation strategy, the dataset is further preprocessed by restructuring related attack samples and grouping them into a common class. For example, all samples that represent a low volume \gls{dos} attack that were produced by one of the many tools are grouped into a single class called ``\gls{dos} \gls{http} Low Volume''. Subsequently, the different classes receive a numeric label. The regrouping and relabeling of the attack classes across the different datasets enables a basis on which a reasonable communication within the \gls{cids} can happen in the first place. In practice, this approach would correspond to a centrally controlled policy that tells the individual members how their local datasets must be labeled before inserting them into the pattern database. The resulting classes and corresponding sample counts are shown in Figure \ref{tab:preprocessed_flows}. The already mentioned class imbalances across the datasets are not further addressed in the preprocessing steps as this subject is handled in the Classifier Fitting Service (see Section~\ref{subsec:classifier_fitting}).
 
 In the next step, the data is analyzed regarding the feature importances. From these results, it can be derived, if a common feature subset across all datasets can be selected. Recall, that both the feature set and the labels must match across the different datasets in order for the \gls{cids} to work. Feature selection can be seen as a form of dimensionality reduction. Common advantages are an improved learning performance, an increased computation efficiency, a decrease in memory and storage consumption as well as better generalization capabilites of the resulting models \cite{li2017feature}. As a method for computing the feature importance the permutation importance, also called \gls{mda}, is selected. The \gls{mda} is assessed for each single feature by removing the association between the feature and the target by randomly permuting the values of the feature and measuring the increase in error that results from that \cite[125]{rforests_2014}. Algorithm~\ref{alg:permutation_importance} describes this procedure in detail.
 
@@ -75,7 +75,7 @@ In the next step, the data is analyzed regarding the feature importances. From t
     \label{alg:permutation_importance}
     \begin{algorithmic}[1]
         \REQUIRE Fitted model $M$
-        \ENSURE Array $\bm{F}$ with feature importances as elements
+        \ENSURE vector $\bm{f}$ with feature importances as elements
 
         \STATE Compute the reference score $s$ of the model $M$ on data $\mathcal{X}$
         \FORALL{feature column $\{x_{d,1}, \dots, x_{d,N} \,|\, 1 \leq d \leq D\}$}
@@ -83,9 +83,9 @@ In the next step, the data is analyzed regarding the feature importances. From t
                 \STATE randomly shuffle column $d$ of dataset $\mathcal{X}$ resulting in corrupted data $\hat{\mathcal{X}}_{j,d}$
                 \STATE compute the score $s_{j,d}$ of model $M$ on $\hat{\mathcal{X}}_{j,d}$
             \ENDFOR
-            \STATE compute importance $\iota_d = s - \frac{1}{K} \sum_i=1^K s_{j,d}$
+            \STATE compute importance $\iota_d = s - \frac{1}{K} \sum\limits^K_{i=1} s_{j,d}$ and insert $\iota_d$ into $\bm{f}_d$
         \ENDFOR
-        \STATE \textbf{return} $\mathcal{R}_{\text{out}}$
+        \STATE \textbf{return} feature importance vector $\bm{f}$
     \end{algorithmic}
  \end{algorithm}
 
@@ -109,7 +109,5 @@ In the next step, the data is analyzed regarding the feature importances. From t
     \caption[Flow Feature Importance Analysis]{Flow Feature Importance Analysis Using Mean Decrease Accuracy (MDA)}
     \label{fig:feature_importances}
 \end{figure}
-
- As seen in the plot, when considering all employed datasets combined, there is no common tendency for a subset of significant features that could be selected. Instead, each dataset has its own features that are more or less important for the classification result. Moreover, as this exemplary setup with only three different datasets already delivers this result, the chances are high that this trend increases with higher numbers of datasets, i.e., member in the CIDS. Thus, the complete set of extracted features is used for the information exchange within the CIDS; Intuitively that makes sense, because the initial goal was to provide a general knowledge database, which each member of the CIDS can incorporate in its detection pipeline with their individual preprocessing steps for the final classification training
-
+Figure~\ref{fig:feature_importances} shows the permutation importances for each dataset, with the results being scaled to $[0,1]$ in order to establish comparability of the values across the datasets. It can be seen that there is no common tendency for a subset of significant features that could be selected. Moreover, as this exemplary setup with only three different datasets already delivers this result, the chances are high that this trend increases with higher numbers of datasets, i.e., members in the \gls{cids}. Thus, the complete set of extracted features is used for the information exchange within the \gls{cids}. Intuitively that makes sense, because the initial goal was to provide a general knowledge database, which each member of the \gls{cids} can incorporate in its detection pipeline with their individual preprocessing steps.
 \end{document}
