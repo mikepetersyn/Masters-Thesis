@@ -8,14 +8,16 @@
     \subfile{1_frontmatter/abstract}
     % \subfile{dedication.tex}
     % \subfile{formal_declaration.tex}
-    \begin{spacing}{1.35}
+    \begin{spacing}{1.2}
         \tableofcontents%
     \end{spacing}
 
 \mainmatter
+\addtocontents{toc}{\protect\vspace*{\fill}}
     \subfile{2_mainmatter/1_introduction/introduction}
     \subfile{2_mainmatter/2_preliminaries/preliminaries}
     \subfile{2_mainmatter/3_state_of_the_art/state_of_the_art}
+\addtocontents{toc}{\protect\newpage}
     \subfile{2_mainmatter/4_generative_pattern_database/generative_pattern_database.tex}
     \subfile{2_mainmatter/5_experimental_evalution/experimental_evaluation}
     \subfile{2_mainmatter/6_conclusion/conclusion}
