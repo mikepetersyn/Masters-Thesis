@@ -18,7 +18,7 @@ For general definitions of the \gls{nn} (see Definition \ref{def:nn}) and its va
     \end{equation}
 \end{definition}
 
-As the algorithms in the presented approach operate on vectors of statistical flow features (see Section~\ref{subsec:network_flow_monitoring}), the input set for specific definitions is usually restricted to $\mathbb{R}^D, D \in \mathbb{N}$. Thus, a specific example of Definition \ref{def:nn} in the context of this work includes high-dimensional data in $\mathcal{P} \in \mathbb{R}^D$ with $D \gg 1$ and could define $d$ as, e.g., the euclidean distance. In this case, an exhaustive search would require a query time of $O(DN)$. Unfortunately, all exact algorithms that provide a better time complexity than an exhaustive search require $O(2^D)$ space \cite{rubinstein2018hardness}. 
+As the algorithms in the presented approach operate on vectors of statistical flow features (see Section~\ref{subsec:network_flow_monitoring}), the input set for specific definitions is usually restricted to $\mathbb{R}^D, D \in \mathbb{N}$. Thus, a specific example of Definition \ref{def:nn} in the context of this work includes high-dimensional data in $\mathcal{P} \in \mathbb{R}^D$ with $D \gg 1$ and could define $d$ as, e.g., the euclidean distance. In this case, an exhaustive search would require a query time of $O(D \cdot N)$. Unfortunately, all exact algorithms that provide a better time complexity than an exhaustive search require $O(2^D)$ space \cite{rubinstein2018hardness}. % TODO: besser ausdrücken: definitions...
 
 This tradeoff between time and space complexity is usually referred to as ``curse of dimensionality'' and can only be resolved by accepting approximate solutions. The \gls{cnn} is defined as follows \cite{indyk_approximate_1998}.
 

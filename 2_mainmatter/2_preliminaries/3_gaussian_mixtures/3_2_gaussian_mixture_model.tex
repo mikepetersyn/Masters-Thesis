@@ -33,7 +33,7 @@ By further specifying the general definition of mixture models (see Definition~\
 A \acrlong{gmm} is a combination of a finite number of $K$ Gaussian distributions $\mathcal{N}(\bm{x}|\theta_k)$ which is fully described by a probability density function $p$ and its parameter set $\bm{\theta}$ as
 \begin{equation}\label{eq:gmm_def}
     \begin{aligned}
-        &p(\bm{x} \, | \, \bm{\theta}) = \sum\limits_{k=1}^K \pi_k \, \mathcal{N}(\bm{x} \, | \, \theta), \\
+        &p(\bm{x} \, | \, \bm{\theta}) = \sum\limits_{k=1}^K \pi_k \, \mathcal{N}(\bm{x} \, | \, \theta_k), \\
         &0 \leq \pi_k \leq 1, \sum\limits_{k=1}^K \pi_k = 1, \\
         &\bm{\theta} := \{\bm{\mu}_k, \bm{\Sigma}_k, \pi_k \, | \, k = 1, \dots, K \}.
     \end{aligned}
