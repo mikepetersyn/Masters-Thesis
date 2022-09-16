@@ -45,7 +45,7 @@ The variety of different attacks present in the datasets are shown in Table~\ref
 
 A flow exporter that is implemented using the Python Framework NFStream is used for tracking and exporting bidirectional network flows. A total of 45 flow features are extracted, including the basic 5-tuple and various statistical values based on the number of packets, packet sizes, and inter-arrival times. A detailed listing of all features is presented in Table~\ref{tab:flow_features}. An active and inactive timeout of 15 seconds is specified for the flow export. All datasets presented in Section~\ref{subsec:employed_datasets} are available in the pcap capture file format. Files from the datasets \RomanNumeralCaps{2} and \RomanNumeralCaps{3} were exported directly. In the case of dataset \RomanNumeralCaps{1} further preparations were required. Some files contained broken headers, which were fixed with the pcapfix repair tool. In addition, the individual days, by which the dataset is structured, were fragmented further into many individual files, which were merged into single files using the pcapmerge tool. Subsequently, these files were exported. The number of the resulting flow samples are shown in Table \ref{tab:num_exported_flows}.
 
-\begin{table}[t]
+\begin{table}[H]
     \footnotesize
     \centering
     \setlength{\extrarowheight}{0pt}
@@ -70,7 +70,9 @@ For the chosen evaluation strategy, the dataset is further preprocessed by restr
 
 In the next step, the data is analyzed regarding the feature importances. From these results, it can be derived, if a common feature subset across all datasets can be selected. Recall, that both the feature set and the labels must match across the different datasets in order for the \gls{cids} to work. Feature selection can be seen as a form of dimensionality reduction. Common advantages are an improved learning performance, an increased computation efficiency, a decrease in memory and storage consumption as well as better generalization capabilites of the resulting models \cite{li2017feature}. As a method for computing the feature importance the permutation importance, also called \gls{mda}, is selected. The \gls{mda} is assessed for each single feature by removing the association between the feature and the target by randomly permuting the values of the feature and measuring the increase in error that results from that \cite[125]{rforests_2014}. Algorithm~\ref{alg:permutation_importance} describes this procedure in detail.
 
-\begin{algorithm}
+Figure~\ref{fig:feature_importances} shows the permutation importances for each dataset, with the results being scaled to $[0,1]$ in order to establish comparability of the values across the datasets. It can be seen that there is no common tendency for a subset of significant features that could be selected. Moreover, as this exemplary setup with only three different datasets already delivers this result, the chances are high that this trend increases with higher numbers of datasets, i.e., members in the \gls{cids}. Thus, the complete set of extracted features is used for the information exchange within the \gls{cids}. Intuitively that makes sense, because the initial goal was to provide a general knowledge database, which each member of the \gls{cids} can incorporate in its detection pipeline with their individual preprocessing steps.
+
+\begin{algorithm}[H]
     \caption{Permutation Importance}
     \label{alg:permutation_importance}
     \begin{algorithmic}[1]
@@ -89,7 +91,7 @@ In the next step, the data is analyzed regarding the feature importances. From t
     \end{algorithmic}
  \end{algorithm}
 
- \begin{table}[t]
+ \begin{table}[H]
     \footnotesize
     \centering
     \setlength{\extrarowheight}{0pt}
@@ -103,11 +105,11 @@ In the next step, the data is analyzed regarding the feature importances. From t
     \label{tab:preprocessed_flows}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
     \includestandalone{2_mainmatter/5_experimental_evalution/tikz/feature_importances}
     \caption[Flow Feature Importance Analysis]{Flow Feature Importance Analysis Using Mean Decrease Accuracy (MDA)}
     \label{fig:feature_importances}
 \end{figure}
-Figure~\ref{fig:feature_importances} shows the permutation importances for each dataset, with the results being scaled to $[0,1]$ in order to establish comparability of the values across the datasets. It can be seen that there is no common tendency for a subset of significant features that could be selected. Moreover, as this exemplary setup with only three different datasets already delivers this result, the chances are high that this trend increases with higher numbers of datasets, i.e., members in the \gls{cids}. Thus, the complete set of extracted features is used for the information exchange within the \gls{cids}. Intuitively that makes sense, because the initial goal was to provide a general knowledge database, which each member of the \gls{cids} can incorporate in its detection pipeline with their individual preprocessing steps.
+
 \end{document}

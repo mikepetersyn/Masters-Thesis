@@ -1,0 +1,80 @@
+\documentclass{standalone}
+
+\usepackage{tikz,pgf}
+\usetikzlibrary{fit, bayesnet, arrows.meta, positioning, trees, decorations.pathreplacing,calligraphy, backgrounds, shapes}
+\begin{document}
+    \pgfdeclarelayer{foreground}%
+    \pgfdeclarelayer{background}%
+    \pgfdeclarelayer{background_lvl2}%
+    \pgfdeclarelayer{background_lvl3}%
+    \pgfsetlayers{background_lvl3,background_lvl2,background, main, foreground}%
+    \tikzstyle{component} = [rectangle, minimum width=2cm, minimum height=0.6cm, inner xsep=5pt, outer sep=0pt, align=flush center, draw=black, font=\normalsize]%
+    \tikzstyle{module} = [rectangle, minimum width=2cm, minimum height=2cm, inner xsep=0pt, outer sep=0pt, align=flush center, draw=black, font=\normalsize]%
+
+    \tikzstyle{group} = [rectangle, minimum width=3cm, minimum height=1cm, align=flush center, draw=black, line width=0.2mm, inner sep=0.3cm, thin, dashed]%
+    \tikzstyle{q_arrow} = [-{Latex[open, fill=white, length=1.5mm, width=1.0mm]},align=flush center, font=\normalsize]%
+    \tikzstyle{db_arrow} = [{Latex[length=1.5mm, width=1.0mm]}-{Latex[length=1.5mm, width=1.0mm]},align=flush center, font=\normalsize]% 
+
+
+
+
+
+    \definecolor{mygreen}{RGB}{68,170,153}
+    \definecolor{mysand}{RGB}{221,204,119}
+    \definecolor{mybrown}{RGB}{103,89,73}
+
+    \begin{tikzpicture}[scale=1.0, mylabels/.style={font=\small}, every label/.append style={mylabels}]
+        \node (service_3) [module, fill=mybrown!50, fill opacity=0.95, xshift=0.2cm, yshift=0.2cm,
+                            text centered,text width = 0.25\textwidth, text depth = 2 cm,
+                            draw,anchor=north, text opacity=0.0] {Service Instance};
+                            
+        \node (service_2) [module, fill=mybrown!50, fill opacity=0.95, xshift=0.1cm, yshift=0.1cm,
+                            text centered,text width = 0.25\textwidth, text depth = 2 cm,
+                            draw,anchor=north, text opacity=0.0] {Service Instance};
+        \node (service_1) [module, fill=mybrown!50, fill opacity=0.95,
+                            text centered,text width = 0.25\textwidth, text depth = 2 cm,
+                            draw,anchor=north] {Service Instance};
+
+        \node (service_group) [group, fit={(service_1)(service_2)(service_3)}] {};
+
+        \node (consumer_group_label) [left = 0.1cm of service_group, align=left, font=\small] {\textbf{service}: \\ common \\ consumer \\ group ID};
+
+        \node (pred_topic) [
+            component, 
+            minimum width=3.6cm, minimum height=.6cm,
+            above = 0.5cm of service_group,
+            fill=mysand!50,
+            fill opacity=0.95,
+            label=south:{$r_1, r_2, r_3, \dots$}] {Predecessor Service Topic};
+
+        \node (succ_topic) [
+            component, 
+            minimum width=3.6cm, minimum height=.6cm,
+            below = 0.5cm of service_group,
+            fill=mysand!50,
+            fill opacity=0.95,
+            label=north:{$r_3, r_2, r_5, \dots$}] {Successor Service Topic};
+
+        \node (redis) [component, fill=mygreen!50, fill opacity=0.95, right = 1cm of service_1] {KV-Store};
+
+        \draw[q_arrow] ([xshift=-0.7cm, yshift=-0.35cm]pred_topic.south) -- ([xshift=-0.6cm]service_1.north);
+        \draw[q_arrow] ([xshift=-0.25cm, yshift=-0.35cm]pred_topic.south) -- ([xshift=-0.25cm]service_2.north);
+        \draw[q_arrow] ([xshift=0.15cm, yshift=-0.35cm]pred_topic.south) -- ([xshift=0.05cm]service_3.north);
+
+        \begin{pgfonlayer}{background}
+            \draw[q_arrow] ([xshift=-0.6cm]service_1.south) -- ([xshift=-0.7cm, yshift=0.35cm]succ_topic.north);
+            \draw[q_arrow] ([xshift=-0.25cm]service_2.south) -- ([xshift=-0.25cm, yshift=0.35cm]succ_topic.north);
+            \draw[q_arrow] ([xshift=0.05cm]service_3.south) -- ([xshift=0.15cm, yshift=0.35cm]succ_topic.north);
+        \end{pgfonlayer}
+
+        \node (pool) [component, fill=mybrown!60, fill opacity=0.95, left = 1.225cm of redis, yshift=0.3cm,minimum height=0.5cm, font=\small] {connection pool};
+        \node (batch) [component, fill=mybrown!60, fill opacity=0.95, below=0.4cm of pool, minimum height=0.5cm, font=\small] {batch r/w};
+
+        \draw[db_arrow] (pool.south) -- (batch.north);
+        \draw[db_arrow] (batch.east) -| (redis.south) node[midway,below left, xshift=-0.5cm] {\small$r_i$};
+       
+
+
+    \end{tikzpicture}
+
+\end{document}
