@@ -1,0 +1,15 @@
+\begin{tabular}{ccccccccc} 
+    \toprule
+    \multirow{3}{*}{\textbf{Dataset}} & \multicolumn{8}{c}{\textbf{Attack Class}}                                                                                                                                                   \\ 
+    \cmidrule{2-9}
+                                    & \multicolumn{2}{c}{Brute Force}                   & \multicolumn{2}{c}{Web Attack}     & \multicolumn{2}{c}{DoS}          & \multicolumn{1}{c}{\multirow{2}{*}{DDoS }} & \multirow{2}{*}{Bot}  \\ 
+    \cmidrule(l){2-3}\cmidrule(l){4-5}\cmidrule(l){6-7}
+                                    & \multicolumn{1}{l}{SSH} & \multicolumn{1}{l}{Web} & \multicolumn{1}{l}{SQL Inj.} & XSS & HTTP  High Vol. & HTTP  Low Vol. & \multicolumn{1}{c}{}                       &                       \\ 
+    \midrule
+    \multicolumn{1}{l}{\RomanNumeralCaps{1}}             & \cmark   & \cmark                         & \cmark        & \cmark                   & \cmark               & \cmark              & \cmark                                          & \cmark                     \\ 
+    \cdashline{2-9}[1pt/1pt]
+    \multicolumn{1}{l}{\RomanNumeralCaps{2}}             & \cmark   & \cmark                         & \cmark        & \cmark                   & \cmark               & \cmark              & \cmark                                          & \cmark                     \\ 
+    \cdashline{2-9}[1pt/1pt]
+    \multicolumn{1}{l}{\RomanNumeralCaps{3}}             & \xmark   & \xmark                         & \xmark        & \xmark                   & \cmark               & \cmark              & \cmark                                          & \xmark                     \\
+    \bottomrule
+    \end{tabular}

@@ -17,28 +17,32 @@ A cloud-oriented architecture, consisting of four services for data processing (
 
 As the processing services effectively manage the disseminatation of data between all members of the CIDS, the data consistency between infrastructures depends on the processing guarantees given by the employed message queue that distributes the jobs among the processing instances. Kafka provides a configuration that enables transactional communication, such that a strong consistency can be achieved. For example, upon the successfull execution of operations on a data partition, the messaging queue can be notified and the job is done. In contrast to that, upon a failure, the messaging service will try to distribute that job again. Typically, the decision for transactional guarantees comes with the cost of a higher delay. Furthermore, for data availability and consistency on a datastore-level, the consistency guarantees of the employed data store is relevant. Redis implements a master-replica scheme with asynchronous replication and this provides an eventual consistency.
 
-    % implementation code is provided as a repository in
-
-
-
 \subsection{Methodologies}\label{subsec:methodologies}
 
-% Describe Evaluation of the CIDS: Question of how does the CIDS improve attack detection in cases of local knowledge gaps? Does the exchange of generative models help to fill the knowledge gaps
-     % leave one class out evaluation: simulate knowledge gaps by iteratively removing one class from the training proportion of one dataset while the testing proportion keeps all classes/samples; evaluate the fitted model by training on unvollständigen trainingsdatensatz, testen auf allen klassen (szenario ohne kollaboration); dann modell zusätzlich auf synthetischem Datensatz trainieren, der durch das CIDS bereitgestellt wird (szenario mit kollaboration);
+The evaluation of the approach focuses on two main questions. Does the \gls{cids} improve the attack detection of local \gls{ids} in cases of local knowledge gaps and how much compression can be achieved and therefore reduce the communication overhead between local \gls{ids} in terms of data volume? In order to answer the question of attack detection improvement, extensive experiments evaluate the classification results of local \gls{ids} with and without the help of the \gls{cids}. The compression capabalities of the approach is determined by analyzing the data within the pattern databases. The experiments are conducted using different configuarion parameters for the hash size in order to reason about the partitioning effect of the Random Projection operation on the datasets and the resulting quality of the generative models.
 
-     % verwendeter klassifizierer, train-test-split, klassifizierungsmetriken; binary + multiclass
+The classification experiments are constructed to simulate the absence of knowledge within a local infrastructure. At first, the operating classifier that performs attack detection in that local infrastructure is not aware of specific attack information. However, by participating in the \gls{cids}, the local infrastructure is provided with attack information from other infrastructures that might fill its local knowledge gap. That local knowledge gap is constructed by removing a single attack class from the training dataset. As the testing dataset stays unaltered, the classifier is confronted with samples from an attack class that do not occur within its local training dataset. Systematically, in each iteration one attack class within the training dataset is removed and a classifier is fitted and evaluated. We refer to this type of evaluation as Skip-One-Class-Evaluation (SOCE). Logically, a single SOCE includes as many iterations, i.e. experiments, as there are attack classes in the local dataset of the evaluated infrastructure (see Table~\ref{tab:included_attack_classes}).
 
-     % establish a comparison baseline: two experiments shall show the baseline: first, a normal classification without removing classes from the train set is the ideal szenario
-     % second, real data samples from other datasets instead of synthetic data should fill the knowledge gaps; shows what an exchange of flow samples could achieve and is the competitor for the presented appraoch in the contect of detection performance
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/included_attack_profiles.tex} 
+    \caption[Attack Classes Included in the Datasets]{The table indicates wether a dataset includes a particular attack class (\cmark) or not (\xmark).}
+    \label{tab:included_attack_classes}
+\end{table}
+
+The described experiments are conducted with and without collaboration. Without collaboration means that no synthetic dataset is used to enhance the training dataset. The scenario with collaboration is actually split into two different scenarios. The first one considers to create a synthetic dataset from the generative models within the pattern database and enhance the training dataset. The second scenario additionally includes the attack information provided by simple regions in the pattern database and therefore implies the help of the classification algorithm presented in Section X. In particular, flows from the testing dataset are hashed using the same Random Projection operation that is used for managing the Pattern Database. Then, the resulting hashes are compared to the hashes stored in the Pattern Database. If a hash represents a simple region, the contained label information is used as the classification result for the respective flow. And if the hash represents a complex region or is not available in the Pattern Database, the classifier that was fitted with the enhanced dataset is used for classification. 
+
+Three different hash sizes (16-bit, 32-bit and 48-bit) are considered for all experiments. As there are three local infrastructures and three different scenarios as described before, a number of 171 experiments are executed for the evaluation. For comparison, a set of 19 baseline experiments are conducted. The experiments involves the removal of single attack classes as described above but do not consider to fill knowledge gaps with synthetic data. Instead, the training dataset is merged with the original data from the training proportions of the other datasets. The obtained results represent the maximum performance that the \gls{cids} could theoretically achieve. In sum, a number of 190 experiments are conducted. The same classification algorithm (Random Forest) and test size ($25\%$) is used for each experiment. Regarding the classification algorithm, the scikit-learn\footnote{Scikit-learn is a machine learning software library for the Python programming language.} implementation of the Random Forest Classification Algorithm \cite{breiman2001random} is used in the application and the experiments. The default hyperparameters of the library are used. 
+
+For the evaluation of the compression capability of the approach, we consider the number of flows that were assigned to each region and relate their size to the number of parameters that are written to the Global Pattern Database instead. In particular we know that each simple region is represented by a single label. Hence, each simple region contains a single parameter only. Furthermore, we know the number of parameters that are stored in complex regions from Section~\ref{sec:generative_fitting}, which depends on the number of unique labels in the respective region, the dimensionality of the data and the number of components of the respective \gls{gmm}. As the ratio of simple and complex regions and the results from the model selection (see Algorithm~\ref{alg:model_selection}) cannot be determined theoretically, these numbers have to be analyzed for each particular hash size and can only provide a trend and do not represent a general compression rate that is to be expected from an arbitrary dataset. 
 
 
-% How well does the classification using label lookups in the case of simple regions (pattern lookups) work?
-     % this experiments extend the kollaboration scenario with a specialized classifier that is tightly coupled with the Pattern Database; as simple regions are not represented by generative models, the classification information contained in these regions is not contained in the synthetic dataset; however, as described in Section X, the label information can simply be used for a constant lookup (vorrausgesetzt die eingehenden daten werden vorher gehasht!); das heißt, eingehende daten werden gehasht; falls dieser hash in der PDB enthalten ist und eine simple region darstellt, wird das entsprechende label als klassifizierungsergebnis verwendet; andernfalls wird der potente klassifierer (e.g. RandomForest) verwendet, um den flow zu klassifizieren
-
-
-% Describe how to evaluate the compression capabilities
-     % numper of parameters known per region (how many numbers to store)
-     % thus, counting number of complex regions in the case of three datasets
-     % compare this number to the number of samples*dim
 
 \end{document}
