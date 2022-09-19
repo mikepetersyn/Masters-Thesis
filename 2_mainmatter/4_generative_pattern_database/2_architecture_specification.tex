@@ -3,10 +3,6 @@
 
 \section{Architecture Specification} \label{sec:architecture_specification}
 
-% Provide a general view on main components and their tasks and interfaces; how is this system supposed to work; how do the components interact with each other
-% Specify important definitions on components and data formally
-
-
 \begin{figure}[b!]
     \centering
     \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/detailed_architecture}
@@ -14,8 +10,7 @@
     \label{fig:detailed_architecture}
     \end{figure}
 
-    
-    Logically, the proposed CIDS exhibits a hierarchical architecture (see Figure \ref{fig:detailed_architecture}). For one, the global infrastructure $G$ represents the collection of $M \in \mathbb{N}$ CIDS participants and their knowledge on an abstract level. For another, it provides specific services, that are globally available to each local infrastructure $L_m, m \in \{1, \dots, M\}$ that includes all CIDS components and services within the IT infrastructure boundaries of a corresponding CIDS member. Each local infrastructure $L_m$ agrees to a specified feature extraction process that provides the monitoring data $\mathcal{X} \subset \mathbb{R}^D$ with a total number of features $D = |\bm{x}| \in \mathbb{N}$ for the attack detection. As the deployed NIDS is considered to be a supervised classification task, the ultimate goal is to find an approximation of an unknown target function $c: \mathcal{X} \rightarrow \mathcal{Y}$ that maps examples $\bm{x} \in \mathcal{X}$ to classes $y \in \mathcal{Y}$. In order to find an approximation $\hat{c} \sim c$, an individual training dataset $\mathcal{D}_m= \{(\bm{x}_n, y_n): 1 \leq n \leq N_m\}$ of size $N_m = |\mathcal{D}_m| \in \mathbb{N}$ is provided in every $L_m$. True target values $c(\bm{x}) = y$ are given by the domain expert that assembled $D_m$. In addition, in the CIDS network, a common $\mathcal{Y}$ is agreed upon, so that there is a global consensus on class memberships.
+    Logically, the proposed CIDS exhibits a hierarchical architecture (see Figure \ref{fig:detailed_architecture}). For one, the global infrastructure $G$ represents the collection of $M$ CIDS participants and their knowledge on an abstract level. For another, it provides specific services, that are globally available to each local infrastructure $L_m, m \in \{1, \dots, M\}$ that includes all CIDS components and services within the IT infrastructure boundaries of a corresponding CIDS member. Each local infrastructure $L_m$ agrees to a specified feature extraction process that provides the monitoring data $\mathcal{X} \subset \mathbb{R}^D$ with a total number of features $D = dim(\bm{x})$ for the attack detection. As the deployed NIDS is considered to be a supervised classification task, the ultimate goal is to find an approximation of an unknown target function $c: \mathcal{X} \rightarrow \mathcal{Y}$ that maps samples $\bm{x} \in \mathcal{X}$ to classes $y \in \mathcal{Y}$. In order to find an approximation $\hat{c} \sim c$, an individual training dataset $\mathcal{D}_m= \{(\bm{x}_n, y_n): 1 \leq n \leq N_m\}$ of size $N_m = |\mathcal{D}_m|$ is provided in every $L_m$. True target values $c(\bm{x}) = y$ are given by the domain expert that assembled $D_m$. In addition, in the CIDS network, a common $\mathcal{Y}$ is agreed upon, so that there is a global consensus on class memberships.
     
     CIDS communication across local boundaries occurs exclusively in a vertical direction. Thus, the exchange of information between individual $L_m$ takes place indirectly via the global pattern database $(PDB_G)$ and the global event channel $(C_G)$. Each $L_m$ includes a local pattern database $(PDB_{L_m})$, a local event channel $(C_{L_m})$ and an event-based data processing pipeline that consists of four services, namely \textit{Local Indexing}, \textit{Complexity Estimation}, \textit{Generative Fitting} and \textit{Classifier Fitting}. 
     

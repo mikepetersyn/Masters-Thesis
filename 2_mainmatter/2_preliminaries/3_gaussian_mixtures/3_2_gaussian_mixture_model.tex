@@ -6,11 +6,11 @@ Using statistical estimation techniques, it is possible to estimate an unobserva
 
 The idea is to represent a multimodal distribution by constructing a linear combination of multiple simple distributions, each of which representing a unimodal sub-population of the data, which is formalized under the term \textit{mixture model} \cite[p.111]{bis_2006}.
 
-\begin{definition}[Mixture Model] \cite[p. 315]{dei_2020}\label{th:mixture_model}
-A mixture model is a linear combination of $K$ parametric distributions $p_k$, each weighted by a mixture weight $\pi_k$, with the following form 
+\begin{definition}[Mixture Model] \label{th:mixture_model}
+A mixture model is a linear combination of $K$ parametric distributions $p_k$, where each distribution is weighted by a mixture weight $w_k$, defined as
 \begin{align*}
-    &p(x) = \sum\limits_{k=1}^K \pi_k p_k (x), \\
-    &0 \leq \pi_k \leq 1, \sum\limits_{k=1}^K \pi_k = 1.
+    &p(x) = \sum\limits_{k=1}^K w_k p_k (x), \\
+    &0 \leq w_k \leq 1, \sum\limits_{k=1}^K w_k = 1.
 \end{align*}
 \end{definition}
 
@@ -18,24 +18,24 @@ A distribution $p_k$ within this model is called mixture component and the sum o
 
 Mixture Models can use any arbitrary parametric distribution as component density, but the most common mixture model is the Gaussian mixture model, using Gaussians as components \cite[214]{has_2009}. First, \acrshort{gmm}s utilize the practical mathematical properties of Gaussians, introduced earlier in Section~\ref{subsec:gaussian_distribution}. 
 
-Furthermore, the quality of the model, in terms of its ability to estimate real data distributions, is theoretically supported by the Central Limit Theorem (see Definition~\ref{th:central_limit}), which states, that most data distributions converge to a normal distribution on average as the number of data points increases \cite[p.222]{jay_2003}.
+Furthermore, the quality of the model, in terms of its ability to estimate real data distributions, is theoretically supported by the Central Limit Theorem, which states that most data distributions converge to a normal distribution on average as the number of data points increases \cite[p.222]{jay_2003}. The Central Limit Theorem is stated as follows \cite[241]{montgomery_2010}.
 
-\begin{theorem}[Central Limit Theorem]\label{th:central_limit} \cite[p.241]{montgomery_2010}
+\begin{definition}[Central Limit Theorem]\label{th:central_limit} 
 Consider $N$ i.i.d. random variables $X_i$ with $\mathbb{E}[X_i]=\mu$ and $\mathbb{V}[X_i]=\sigma^2$ and let $S_N=\sum^N_{i=1}X_i$. It can be shown that, as $N$ increases, that
 \begin{equation*}
     p(S_N) \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{N}\right).
 \end{equation*}
-\end{theorem}
+\end{definition}
 
-By further specifying the general definition of mixture models (see Definition~\ref{th:mixture_model}), we obtain the definition of a \gls{gmm} (see Definition~\ref{th:gaussian_mixture_model}). Instead of using an arbitrary parametric distribution as the component density, the Gaussian distribtion is utilized. Furthermore, the set of parameters $\bm{\theta}$ of the \gls{gmm} is introduced.
+By further specifying the general definition of mixture models (see Definition~\ref{th:mixture_model}), we obtain the definition of a \gls{gmm} (see Definition~\ref{th:gaussian_mixture_model}). Instead of using an arbitrary parametric distribution as the component density, the Gaussian distribution is utilized. Furthermore, the set of parameters $\bm{\theta}$ of the \gls{gmm} is introduced.
 
-\begin{definition}[Gaussian Mixture Model]\label{def:gmm} \cite[p. 315]{dei_2020}\label{th:gaussian_mixture_model}
+\begin{definition}[Gaussian Mixture Model]\label{def:gmm}\label{th:gaussian_mixture_model}
 A \acrlong{gmm} is a combination of a finite number of $K$ Gaussian distributions $\mathcal{N}(\bm{x}|\theta_k)$ which is fully described by a probability density function $p$ and its parameter set $\bm{\theta}$ as
 \begin{equation}\label{eq:gmm_def}
     \begin{aligned}
-        &p(\bm{x} \, | \, \bm{\theta}) = \sum\limits_{k=1}^K \pi_k \, \mathcal{N}(\bm{x} \, | \, \theta_k), \\
-        &0 \leq \pi_k \leq 1, \sum\limits_{k=1}^K \pi_k = 1, \\
-        &\bm{\theta} := \{\bm{\mu}_k, \bm{\Sigma}_k, \pi_k \, | \, k = 1, \dots, K \}.
+        &p(\bm{x} \, | \, \bm{\theta}) = \sum\limits_{k=1}^K w_k \, \mathcal{N}(\bm{x} \, | \, \theta_k), \\
+        &0 \leq w_k \leq 1, \sum\limits_{k=1}^K w_k = 1, \\
+        &\bm{\theta} = (\theta_1, \dots, \theta_K), \theta_k = (\bm{\mu}_k, \bm{\Sigma}_k, w_k).
     \end{aligned}
 \end{equation}
 \end{definition}

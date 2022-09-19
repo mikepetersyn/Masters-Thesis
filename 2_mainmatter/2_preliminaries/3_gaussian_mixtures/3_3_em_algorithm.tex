@@ -49,20 +49,19 @@ The responsibility of mixture component $k$ generating a data point $\bm{x}$ can
 In practice, there exists no knowledge about the value assignment of the latent variables. Therefore, a prior is set to $\bm{z}$, which is defined as
 
 \begin{equation}\label{eq:prior_lat_var}
-    p(\bm{z})=\bm{\pi}=[\pi_{1}, \dots, \pi_{K}]^\top, \quad \sum\limits_{k=1}^K\pi_{k}=1.
+    p(\bm{z})=\bm{w}=[w_{1}, \dots, w_{K}]^\top, \quad \sum\limits_{k=1}^Kw_{k}=1.
 \end{equation}
 
 Now, there is a way to describe the \textit{probability} that the $k$th mixture component generated the data point $\bm{x}$ as
 \begin{equation}
-    p(z_k=1)=\pi_k.
+    p(z_k=1)=w_k.
 \end{equation}
-
 
 
 Then the conditional distribution $p(\bm{x}|\bm{z})$ from (\ref{eq:cond_lat_var}) and the prior distribution $p(\bm{z})$ from (\ref{eq:prior_lat_var}) are plugged into the joint distribution $p(\bm{z})p(\bm{x}|\bm{z})$ from (\ref{eq:joint_lat_var}) and the marginal distribution $p(\bm{x})$ is obtained by summing the joint distribution over all possible states of $\bm{z}$, which results in 
 
 \begin{equation}\label{eq:joint_marg_lat_var}
-    p(\bm{x}) = \sum\limits_{\bm{z}}p(\bm{z})p(\bm{x}|\bm{z}) = \sum\limits_{k=1}^K\pi_k\mathcal{N}(\bm{x} | \bm{\mu}, \bm{\Sigma}).
+    p(\bm{x}) = \sum\limits_{\bm{z}}p(\bm{z})p(\bm{x}|\bm{z}) = \sum\limits_{k=1}^Kw_k\mathcal{N}(\bm{x} | \bm{\mu}, \bm{\Sigma}).
 \end{equation}
 
 It can be summarized that the \gls{gmm} has been extended by including the discrete latent variable  $\bm{z}$ and that the result is still consistent with the previous definition, since the marginal distribution $p(\bm{x})$ is a Gaussian mixture of the form (\ref{eq:gmm_def}). This enables the joint distribution $p(\bm{x}, \bm{z})$ to be used in place of the marginal distribution $p(\bm{x})$, greatly simplifying parameter estimation by applying the \gls{ema}.
@@ -72,8 +71,8 @@ So far, it was assumed that the dataset consists of a single data point $\bm{x}$
 \begin{equation}\label{eq:responsibilities}
     \begin{aligned}
         r_{nk}=p(z_{nk}=1|\bm{x}_n) &= \frac{p(z_{nk}=1)p(\bm{x} | z_k=1)}{p(\bm{x})}\\[5pt]
-        &= \frac{p(\bm{x}_n) | z_{nk}=1)p(z_{nk}=1)}{\sum_{j=1}^K\pi_j p(\bm{x}_n | z_{nj}=1)p(z_{nj}=1)} \\[5pt]
-        &= \frac{\pi_k\mathcal{N}(\bm{x}_n) | \bm{\mu}_k, \bm{\Sigma}_k)}{\sum_{j=1}^K\pi_j\mathcal{N}(\bm{x}_n) | \bm{\mu}_j, \bm{\Sigma}_j)}.
+        &= \frac{p(\bm{x}_n) | z_{nk}=1)p(z_{nk}=1)}{\sum_{j=1}^Kw_j p(\bm{x}_n | z_{nj}=1)p(z_{nj}=1)} \\[5pt]
+        &= \frac{w_k\mathcal{N}(\bm{x}_n) | \bm{\mu}_k, \bm{\Sigma}_k)}{\sum_{j=1}^Kw_j\mathcal{N}(\bm{x}_n) | \bm{\mu}_j, \bm{\Sigma}_j)}.
     \end{aligned}
 \end{equation}
 
@@ -83,8 +82,8 @@ The central question is how to fit the set of unknown parameters $\bm{\theta}$ t
 
 \begin{equation*}
     \begin{aligned}
-        p(\mathcal{X}|\theta) &= \prod\limits_{n=1}^Np(\bm{x}_n|\bm{\theta}), \quad p(\bm{x}_n|\bm{\theta})=\sum\limits^K_{k=1}\pi_k\mathcal{N}(\bm{x}_n| \bm{\mu}, \bm{\Sigma}),\\[5pt]
-        \mathrm{log} \, p(\mathcal{X}|\bm{\theta}) &= \sum\limits_{n=1}^N \mathrm{log} \, p(\bm{x}_n|\bm{\theta}) = \underbrace{ \sum\limits_{n=1}^N \mathrm{log} \sum\limits_{k=1}^K \pi_k \mathcal{N}(\bm{x}_n | \bm{\mu}, \bm{\Sigma})}_{=:\mathcal{L}}.
+        p(\mathcal{X}|\theta) &= \prod\limits_{n=1}^Np(\bm{x}_n|\bm{\theta}), \quad p(\bm{x}_n|\bm{\theta})=\sum\limits^K_{k=1}w_k\mathcal{N}(\bm{x}_n| \bm{\mu}, \bm{\Sigma}),\\[5pt]
+        \mathrm{log} \, p(\mathcal{X}|\bm{\theta}) &= \sum\limits_{n=1}^N \mathrm{log} \, p(\bm{x}_n|\bm{\theta}) = \underbrace{ \sum\limits_{n=1}^N \mathrm{log} \sum\limits_{k=1}^K w_k \mathcal{N}(\bm{x}_n | \bm{\mu}, \bm{\Sigma})}_{=:\mathcal{L}}.
     \end{aligned}
 \end{equation*}
 
@@ -96,7 +95,7 @@ However, a solution can be found using the \gls{ema}. The key idea here is to up
     \begin{aligned}
     &\frac{\partial{\mathcal{L}}}{\partial{\bm{\mu}_k}} = \bm{0}^T \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\bm{\mu}_k}} = \bm{0}^\top\\[5pt]
     &\frac{\partial{\mathcal{L}}}{\partial{\bm{\Sigma}_k}} = \bm{0} \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\bm{\Sigma}_k}} = \bm{0}\\[5pt]
-    &\frac{\partial{\mathcal{L}}}{\partial{\pi_k}} = 0 \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{\pi_k}} = 0.\\
+    &\frac{\partial{\mathcal{L}}}{\partial{w_k}} = 0 \; &\Longleftrightarrow \quad &\sum\limits_{n=1}^N\frac{\partial{\mathrm{log}p(\bm{x}_n| \theta)}}{\partial{w_k}} = 0.\\
     \end{aligned}
 \end{equation*}
 
@@ -106,7 +105,7 @@ In the following only the partial derivatives of the model parameters that will 
     \begin{aligned}
     &\bm{\mu}_k' &= \quad &\frac{\sum_{n=1}^N r_{nk}\bm{x}_n}{\sum_{n=1}^N r_{nk}} \\
     &\bm{\Sigma}_k' &= \quad &\frac{1}{N_k}\sum_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top\\
-    &\pi_k' &= \quad &\frac{N_k}{N}
+    &w_k' &= \quad &\frac{N_k}{N}
     \end{aligned}
 \end{equation}
 
@@ -124,15 +123,15 @@ Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expec
     \begin{algorithmic}[1]
         \STATEx \textbf{Initialize:}
         \STATE $\qquad t = 0$
-        \STATE $\qquad \bm{\theta}^{(t)} := \{ \bm{\mu}_k, \bm{\Sigma}_k, \pi_k \, | \, k=1,\dots,K \}$
+        \STATE $\qquad \bm{\theta}^{(t)} := \{ \bm{\mu}_k, \bm{\Sigma}_k, w_k \, | \, k=1,\dots,K \}$
         \STATE $\qquad \mathcal{L}^{(t)} = \text{log} \, p(\mathcal{X} \, | \, \bm{\theta}^{(t)})$
 
         \WHILE{$\Delta \mathcal{L} > \epsilon$}
             \STATEx $\quad$ 1. Expectation-Step:
-            \STATE $\qquad r_{nk} = \frac{\pi_k \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_k, \bm{\Sigma}_k)}{\sum_{j=1}^K \pi_j \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_j, \bm{\Sigma}_j)} \text{ with } \bm{\theta}^{(t)}$
+            \STATE $\qquad r_{nk} = \frac{w_k \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_k, \bm{\Sigma}_k)}{\sum_{j=1}^K w_j \mathcal{N}(\bm{x}_n \, | \, \bm{\mu}_j, \bm{\Sigma}_j)} \text{ with } \bm{\theta}^{(t)}$
 
             \STATEx $\quad$ 2. Maximization-Step:
-            \STATE $\qquad \pi_k^{(t+1)} = \frac{N_k}{N}$
+            \STATE $\qquad w_k^{(t+1)} = \frac{N_k}{N}$
             \STATE $\qquad \bm{\mu}^{(t+1)} = \frac{\sum_{n=1}^N r_{nk} \bm{x}_n}{\sum_{n=1}^N r_{nk}}$
             \STATE $\qquad \bm{\Sigma}_k^{(t+1)} = \frac{1}{N_k}\sum_{n=1}^N r_{nk}(\bm{x}_n-\bm{\mu}_k)(\bm{x}_n-\bm{\mu}_k)^\top$
 

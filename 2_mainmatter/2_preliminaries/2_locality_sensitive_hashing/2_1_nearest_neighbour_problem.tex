@@ -3,7 +3,7 @@
 
 \subsection{The Approximate Nearest Neigbour Problem}\label{subsec:approximate_nearest_neighbour_problem}
 
-For general definitions of the \gls{nn} (see Definition \ref{def:nn}) and its variants, a set of points $\mathcal{P} = \{\bm{p}_1, \dots, \bm{p}_N \}, N \in \mathbb{N}$ in a metric space $(\mathcal{X}, d)$ with $\mathcal{P} \subset \mathcal{X}$ and where $d$ is a metric on $\mathcal{X}$, i.e., a function $d: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}$ is considered. It is assumed that $d$ is a proper metric, which means that it is
+For general definitions of the \gls{nn} and its variants, a set of points $\mathcal{P} = \{\bm{p}_1, \dots, \bm{p}_N \}$ in a metric space $(\mathcal{X}, d)$ with $\mathcal{P} \subset \mathcal{X}$ and where $d$ is a metric on $\mathcal{X}$, i.e., a function $d: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}$ is considered. It is assumed that $d$ is a proper metric, which means that it is
 
 \begin{enumerate}
     \item \textit{symmetric}: $d(\bm{p},\bm{q})=d(\bm{q},\bm{p})$,
@@ -11,16 +11,17 @@ For general definitions of the \gls{nn} (see Definition \ref{def:nn}) and its va
     \item \textit{triangle inequality}: $d(\bm{p},\bm{q}) \leq d(\bm{p},\bm{s}) + d(\bm{s},\bm{q})$.
 \end{enumerate}
 
+Given these assumptions, the authors in \cite{indyk_approximate_1998} define the \gls{nn} as stated in Definition~\ref{def:nn}. As the algorithms in the presented approach operate on vectors of statistical flow features (see Section~\ref{subsec:network_flow_monitoring}), the input set is restricted to $\mathbb{R}^D$. In particular, the input data is considered to be high dimensional, such that $D \gg 1$, and could define $d$ as, e.g., the euclidean distance. In this case, an exhaustive search would require a query time of $O(D \cdot N)$. Unfortunately, all exact algorithms that provide a better time complexity than an exhaustive search require $O(2^D)$ space \cite{rubinstein2018hardness}.
+
 \begin{definition}[\Acrlong{nn}\cite{indyk_approximate_1998}]\label{def:nn}
-     Construct a data structure so as to efficiently answer the following query: Given any query point $\bm{q} \in \mathcal{X}$, find some point $\bm{p} \in \mathcal{P}$ such that
-    \begin{equation}
-        \mathop{\text{min}}_{\bm{q} \in \mathcal{X}} \; d(\bm{p}, \bm{q}).
-    \end{equation}
+    Construct a data structure so as to efficiently answer the following query: Given any query point $\bm{q} \in \mathcal{X}$, find some point $\bm{p} \in \mathcal{P}$ such that
+
+   \begin{equation}
+       \mathop{\text{min}}_{\bm{p} \in \mathcal{P}} \; d(\bm{p}, \bm{q}).
+   \end{equation}
 \end{definition}
 
-As the algorithms in the presented approach operate on vectors of statistical flow features (see Section~\ref{subsec:network_flow_monitoring}), the input set for specific definitions is usually restricted to $\mathbb{R}^D, D \in \mathbb{N}$. Thus, a specific example of Definition \ref{def:nn} in the context of this work includes high-dimensional data in $\mathcal{P} \in \mathbb{R}^D$ with $D \gg 1$ and could define $d$ as, e.g., the euclidean distance. In this case, an exhaustive search would require a query time of $O(D \cdot N)$. Unfortunately, all exact algorithms that provide a better time complexity than an exhaustive search require $O(2^D)$ space \cite{rubinstein2018hardness}. % TODO: besser ausdrücken: definitions...
-
-This tradeoff between time and space complexity is usually referred to as ``curse of dimensionality'' and can only be resolved by accepting approximate solutions. The \gls{cnn} is defined as follows \cite{indyk_approximate_1998}.
+This tradeoff between time and space complexity is usually referred to as ``curse of dimensionality'' and can only be resolved by accepting approximate solutions. In \cite{indyk_approximate_1998} the \gls{cnn} is defined as follows.
 
 \begin{definition}[$c$-Approximate nearest-neighbour search problem]
     For any given query point $\bm{q} \in \mathcal{X}$ and some approximation factor $c > 1$, find some point $\bm{p} \in \mathcal{P}$ such that
@@ -29,7 +30,7 @@ This tradeoff between time and space complexity is usually referred to as ``curs
     \end{equation}
 \end{definition}
 
-Thus, the distance from the query point $\bm{q}$ to the approximate nearest neighbour $\bm{p}$ is at most $c$ times the distance to the true nearest neighbour $\bm{s}$. However, LSH does not solve the \gls{cnn} directly. Instead, the problem is relaxed first by introducing the \gls{crnn} as follows \cite{indyk_approximate_1998}.
+Thus, the distance from the query point $\bm{q}$ to the approximate nearest neighbour $\bm{p}$ is at most $c$ times the distance to the true nearest neighbour $\bm{s}$. However, \gls{lsh} does not solve the \gls{cnn} directly. Instead, the authors in \cite{indyk_approximate_1998} relax the problem by introducing the \gls{crnn}.
 
 \begin{definition}[$cr$-Approximate nearest-neighbour search problem]
     For any given query point $\bm{q} \in \mathcal{X}$, some approximation factor $c > 1$ and some target distance $r > 0$, if there exists a point $\bm{p} \in \mathcal{P}$ where $d(\bm{p},\bm{q}) \leq r$, then return a point $\bm{p}' \in \mathcal{P}$ where
@@ -38,7 +39,7 @@ Thus, the distance from the query point $\bm{q}$ to the approximate nearest neig
     \end{equation}
 \end{definition}
 
-Figure~\ref{fig:nearest_neighbour} depicts  the \gls{crnn}. The target distance $r$ represents the distance of the query object from its nearest neighbour. If there is such a point, the algorithm returns points within $cr$ distance from the query object, else it returns nothing. It is shown that LSH can solve the \gls{cnn} by solving the \gls{crnn} for different settings of $r$ \cite{indyk_approximate_1998}.
+Figure~\ref{fig:nearest_neighbour} depicts the \gls{crnn}. The distance $r$ represents the distance of the query object from its nearest neighbour. If there is such a point, the algorithm returns points within $cr$ distance from the query object, else it returns nothing. In \cite{indyk_approximate_1998} it is shown that LSH can solve the \gls{cnn} by solving the \gls{crnn} for different settings of $r$ .
 
 \begin{figure}[t!]
     \centering

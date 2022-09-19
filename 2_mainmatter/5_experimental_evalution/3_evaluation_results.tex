@@ -5,6 +5,20 @@
 
 \subsection{Baseline Experiments}
 
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \addtolength{\tabcolsep}{-0.4em}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/missing_classes.tex} 
+    \caption[Baseline Detection Performance With Missing Class Information]{The table shows the classification performance for isolated \acrshortpl{ids} with knowledge gaps.}
+    \label{tab:missing_classes}
+\end{table}
 
 \begin{table}[H]
     \footnotesize
@@ -17,13 +31,27 @@
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/baseline_classification.tex} 
-    \caption[Baseline Detection Performance]{The table indicates wether a dataset includes a particular attack class (\cmark) or not (\xmark).}
+    \caption[Baseline Detection Performance With Class Information from Other Datasets]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
     \label{tab:baseline_detection}
 \end{table}
 
 \subsection{Classification Improvement}
 
 \subsection{Overhead Reduction}
+    \begin{table}[H]
+        \footnotesize
+        \centering
+        \setlength{\extrarowheight}{0pt}
+        \addtolength{\extrarowheight}{\aboverulesep}
+        \addtolength{\extrarowheight}{\belowrulesep}
+        \addtolength{\tabcolsep}{-0.4em}
+        \setlength{\aboverulesep}{0pt}
+        \setlength{\belowrulesep}{0pt}
+        \setlength{\extrarowheight}{.1em}
+        \input{table/region_analysis.tex} 
+        \caption[Parameter Number Analysis]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+        \label{tab:region_analysis}
+    \end{table}
     % after indexing
         % how many regions have been created during the indexing service?
         % how many flows are stored per region (histogram?)

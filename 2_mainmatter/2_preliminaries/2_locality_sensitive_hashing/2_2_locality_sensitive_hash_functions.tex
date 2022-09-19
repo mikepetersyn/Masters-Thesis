@@ -3,7 +3,7 @@
 
 \subsection{Locality-Sensitive Hash Functions} \label{subsec:locality-sensitive-hashes}
 
-Introduced by Indyck and Motwani in 1998 \cite{indyk_approximate_1998} as an algorithm that solves the \gls{cnn}, \gls{lsh} has since been extensively researched and is now considered among the state of the art for approximate searches in high-dimensional spaces.\footnote{See \cite{nagarkar2021exploring} for an exhaustive survey of \gls{nn} Techniques.} The basic idea of the approach is to partition the input data using a hash function that is sensitive to the location of the input within the metric space. This way, similar inputs collide with a higher probability than inputs that are far apart. Thus, \gls{lsh} exhibits fundamental differences to conventional hash functions.\footnote{Cryptographic and non-cryptograhpic hash functions are referred to conventional hashing.}
+Introduced by Indyk and Motwani in 1998 \cite{indyk_approximate_1998} as an algorithm that solves the \gls{cnn}, \gls{lsh} has since been extensively researched and is now considered among the state of the art for approximate searches in high-dimensional spaces.\footnote{See \cite{nagarkar2021exploring} for an exhaustive survey of techniques that solve the \gls{nn}.} The basic idea of the approach is to partition the input data using a hash function that is sensitive to the location of the input within the metric space. This way, similar inputs collide with a higher probability than inputs that are far apart. Thus, \gls{lsh} exhibits fundamental differences to conventional hash functions.\footnote{Cryptographic and non-cryptograhpic hash functions are referred to conventional hashing.}
 
 A hash function is a function that maps a large input set to a smaller target set. The elements of the input set are called \textit{messages} or \textit{keys} and may be of arbitrary different lengths. The elements of the target set are called \textit{digests} or \textit{hash values} and are of fixed size length. 
 
@@ -17,7 +17,7 @@ For example, cryptographic hash functions are used in systems, where additional 
     \label{fig:hashing_differences}
 \end{figure}
 
-As a locality-sensitive hashing function can be constructed as a general concept, specific families of functions can be derived. We refer to a \textit{family} of hash functions $\mathcal{H} = \{ h: \mathcal{M} \rightarrow \mathcal{B} \}$ as a collection of hash functions that have the same domain and range, share a basic structure and are only differentiated by constants. Three basic requirements are demanded for such a family of functions \cite[99]{leskovec_rajaraman_ullman_2014}.
+As a locality-sensitive hashing function can be constructed as a general concept, specific families of functions can be derived. We refer to a \textit{family} of hash functions $\mathcal{H} = \{ h_1. \dots, h_K\}, h_k:\mathcal{M} \rightarrow \mathcal{B}$ as a collection of hash functions that have the same domain and range, share a basic structure and are only differentiated by constants. Three basic requirements are demanded for such a family of functions \cite[99]{leskovec_rajaraman_ullman_2014}.
 
 \begin{enumerate}
     \item Close pairs of input should be hashed into the same bucket with higher probability than distant pairs.
@@ -29,7 +29,7 @@ As a locality-sensitive hashing function can be constructed as a general concept
 The first step is to define LSH generally. Applied on the $cr$-ANN, the first requirement states, with high probability, two points $\bm{p}, \bm{q}$ should hash to the same hash value if their distance is at most $r$, i.e., $d(\bm{p},\bm{q}) \leq r$. And if their distance is at least $cr$, the points should hash to different hash values, i.e. $d(\bm{p},\bm{q}) > cr$. Thus,  A formal definition of a locality-sensitive hash function is given as follows \cite{andoni2006near}.
 
 \begin{definition}[Locality-Sesitive Hash Function]
-    Given a target distance $r \in \mathbb{R}, r>0$, an approximation factor $c \in \mathbb{R}, c>1$ and probability thresholds $p_1, p_2 \in \mathbb{R}$, a family $\mathcal{H} = \{h: \mathcal{P} \rightarrow \mathcal{B}$\} is called $(r, cr, p_1, p_2)$-sensitive if for any two points $\bm{p} \in \mathcal{P} \subset \mathcal{X},\bm{q} \in \mathcal{X}$ and any hash function $h$ chosen uniformly at random from $\mathcal{H}$ the following conditions are satisfied:
+    Given a target distance $r \in \mathbb{R}, r>0$, an approximation factor $c \in \mathbb{R}, c>1$ and probability thresholds $p_1, p_2 \in \mathbb{R}$, where $p_1 > p_2$, a family $\mathcal{H} = \{h: \mathcal{P} \rightarrow \mathcal{B}$\} is called $(r, cr, p_1, p_2)$-sensitive if for any two points $\bm{p} \in \mathcal{P} \subset \mathcal{X},\bm{q} \in \mathcal{X}$ and any hash function $h$ chosen uniformly at random from $\mathcal{H}$ the following conditions are satisfied:
         \[
         \setlength\arraycolsep{0pt}
         \renewcommand\arraystretch{1.2}
@@ -40,7 +40,7 @@ The first step is to define LSH generally. Applied on the $cr$-ANN, the first re
         \]
 \end{definition}
  
-Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicted in Figure \ref{subfig:exact_probability}, which in fact represents an exact search. This is, as already discussed, no option due to its time and space requirements. Considering a single locality-sensitive function as shown in Figure \ref{subfig:lsh_probability}, where the probability gap between $p_1$ and $p_2$ is relatively close, the false negative rate would be relatively high. Increasing the gap would require to increase $c$ and lead to a high number of false positives. Therefore, a single function would provide only a tradeoff. But it is possible to increase $p_1$ close to $1$ and decrease $p_2$ close to $1/N$ while keeping $r$ and $cr$ fixed as shown in Figure \ref{subfig:lsh_probability_boosted} by introducing a process called \textit{amplification}. By applying a logical AND-construction on $\mathcal{H}$ the threshold $p_2$ is reduced. For that, $K$ hash functions are sampled indepedently from $\mathcal{H}$ and each point $\bm{p}$ is hashed to a $K$-dimensional vector with a new constructed function $g \in \mathcal{H}^K$ as
+Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicted in Figure \ref{subfig:exact_probability}, which in fact represents an exact search. This is, as already discussed, no option due to its time and space requirements. Considering a single locality-sensitive function as shown in Figure \ref{subfig:lsh_probability}, where the probability gap between $p_1$ and $p_2$ is relatively close, the false negative rate would be relatively high. Increasing the gap would require to increase $c$ and lead to a high number of false positives. Therefore, a single function would provide only a tradeoff. But it is possible to increase $p_1$ close to $1$ and decrease $p_2$ close to $0$ while keeping $r$ and $cr$ fixed as shown in Figure \ref{subfig:lsh_probability_boosted} by introducing a process called \textit{amplification}. By applying a logical AND-construction on $\mathcal{H}$ both thresholds $p_1$ and $p_2$ are reduced. For that, $K$ hash functions are sampled indepedently from $\mathcal{H}$ and each point $\bm{p}$ is hashed to a $K$-dimensional vector with a new constructed function $g \in \mathcal{H}^K$ as
 
 \begin{equation}\label{eq:or_construction}
     g(p) = [h_1(\bm{p}), h_2(\bm{p}), \dots, h_K(\bm{p})].
@@ -79,7 +79,7 @@ Since all hash functions $\{h_1, \dots, h_K\} \in \mathcal{H}$ are statistically
     P[h_k(\bm{p})=h_k(\bm{q})] \leq p_2 \implies P[g(\bm{p})=g(\bm{q})] \leq p_2^K.
 \end{align*}
 
-Thus, by increasing $K$ the threshold $p_2$ can be arbitrarily decreased and approaches zero. However, the AND-construction lowers both $p_1$ and $p_2$. In order to improve $p_1$, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $g_1, \dots, g_L$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. For $d(\bm{p}, \bm{q}) \leq r$, the following probability for a collision follows as %is given by
+Thus, by increasing $K$ the thresholds can be arbitrarily decreased. In order to increase both thresholds, the OR-construction is introduced. For that, a number of $L \in \mathbb{N}$ functions $g_1, \dots, g_L$ are constructed, where each function $g_l, \; l \in \{1, \dots, L\}$ stems from a different family $\mathcal{H}_l$. Note, that the algorithm is successful, when the two points $\bm{p}, \bm{q}$ collide at least once for some $g_l$. For $d(\bm{p}, \bm{q}) \leq r$, the following probability for a collision is given by
 
 \begin{align*}
     P[\exists l \, | \, g_l(\bm{p})=g_l(\bm{q})] &= 1 - P[\forall l \,|\, g_l(\bm{p}) \neq g_l(\bm{q})] \\
@@ -135,45 +135,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
 
  Answering a query point $\bm{q}$ is done by hashing it multiple times for each $g_l$ as in the preprocessing step (see Algorithm \ref{alg:lsh_query}). Each time, the set of points $\mathcal{P}$, stored in the correspoding hash table $T_l$ at the slot $g_l(\bm{q})$, are retrieved. That is, identify all $\bm{p}_n$, such that $g_l(\bm{p}_n) = g_l(\bm{q})$. For each identified $\bm{p}_n$, a distance function evaluates if the distance $d(\bm{p}_n, \bm{q})$ is within the search perimeter $cr$. If positive, the point is added to the result set $\mathcal{S}$, which is returned at the end of the algorithm.
 
- With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, from which the optimization of the parameters $K$ and $L$ can be derived. The corresponding findings are summarized below.
-
- Choose $K$ such that $p_2^K = \frac{1}{N}, N = |\mathcal{P}|$. Let $\rho$ be the main parameter that determines the running time and space consumption of the algorithm. Assume that
-
-\begin{align*}
-    p_1 = p_2^\rho,
-\end{align*}
-
-for some $\rho < 1$ and choose $L \propto N ^{-\rho} \, \text{ln} \, N$. Then, by fixing a query point $q$ it follows by linearity of expectation that for any $l$,
-
-\begin{align*}
-    P[\exists \bm{p} \, | \, d(\bm{p}, \bm{q}) > cr, g_l(\bm{p}) = g_l(\bm{q})] = N p_2^K \leq 1.
-\end{align*}
-
-By taking the sum over all $l$, in expectation there are $L$ points $\bm{p} \in \mathcal{P}$ where $g_l(\bm{p}) = g_l(\bm{q})$ for some $l$, which implies an overhead of $O(L)$ in the query time. Conversely, if $d(\bm{p}, \bm{q}) \leq r$, then
-
-\begin{align*}
-    P[\exists l \, | \, g_l(\bm{p} = g_l(\bm{q})] &\geq 1 - (1-p_1^K)^L \\
-                                                  &= 1-(1-p_2^{\rho K})^L \\
-                                                  &= 1-(1-N^{-\rho})^L \\
-                                                  &\approx 1-e^{LN^{-\rho}} \\
-                                                  &= 1 - \frac{1}{N}.
-\end{align*}
-
-Thus, for any point $\bm{q}$ whose distance is at most $r$, the algorithm finds $\bm{p}$ with a probability of at least $1-\frac{1}{N}$. In expectation, the algorithm exhibits an overhead of $O(LD)$ for checking $L$ points whose distance from $\bm{q}$ is at least $cr$.
-
-The algorithm maintains a number of $L$ hash tables. In each hash table $N$ hash values are stored, where each hash value is a vector with $K$ dimensions. Therefore, the space complexity of the algorithm is 
-
-\begin{align*}
-    O(LNK) = O(N^{1+\rho} \, \text{log} \, \frac{N}{p_2}).
-\end{align*}
-
-The query time for computing $g_l(\bm{q})$ for all $1 \leq l \leq L$ is $O(LK)$. For any candidate $\bm{p}$ the time to compute $d(\bm{p}, \bm{q})$ is $O(D)$. Let $|O|$ be the number of points whose distance from $\bm{q}$ is $cr$. In expectation, a number of $L$ points are examined that are not returned by the algorithm, which results in a query time of $O(D(L + |O|))$ in expectation. Combined, the query time is
-
-\begin{align*}
-    O(D(L + |O|) LK) = O(N^\rho (D + \text{log} \frac{N}{p_2}) + |O| D).
-\end{align*}
-
-By ignoring lower order terms, the algorithm exhibits a query time of $O(N^\rho)$ and a space complexity of $O(N^{1+\rho})$. Thus, the query time and space consumption improves significantly as $\rho$ is decreased. In practice, the parameter $\rho$ is based on the available resources.
+ With regard to preprocessing, the consideration of space complexity of Algorithm \ref{alg:lsh_preprocess} is interesting, whereas the runtime of Algorithm \ref{alg:lsh_query} is the most relevant when examining the execution of queries. Fortunately, lower bounds on both quantities have been proven in \cite{motwani2006lower}, from which the optimization of the parameters $K$ and $L$ can be derived. Without giving details on the derivation of the results, the algorithm complexity is as follows. By ignoring lower order terms, the algorithm exhibits a query time of $O(N^\rho)$ and a space complexity of $O(N^{1+\rho})$. Thus, the query time and space consumption improves significantly as $\rho$ is decreased. The parameter $\rho$ is introduced as the main parameter that determines the running time and space consumption of the algorithm.
 
 
 \end{document}
