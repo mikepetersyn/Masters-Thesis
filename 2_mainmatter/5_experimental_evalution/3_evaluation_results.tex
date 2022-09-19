@@ -3,7 +3,18 @@
 
 \section{Evaluation Results}
 
-\subsection{Baseline Experiments}
+This section presents the results from the experiments described in Section~\ref{sec:experimental_setup}. First, the results from the baseline experiments are outlined in Section~\ref{sec:baseline}. Then, in Section~\ref{sec:classification_improvement} the experimental results regarding the detection performance of the presented \gls{cids} architecture are presented. Lastly, the results in the context of overhead reduction are shown in Section~\ref{sec:overhead_reduction}.
+
+\subsection{Baseline Experiments}\label{sec:baseline}
+
+The tables regarding the classification results in the next two sections are interpreted as follows. The columns, which are grouped into skipped classes refer to the class that is removed from training dataset. Four metrics are computed in a $k$-class problem setting for each iteration. First, the balanced accuracy score is evaluated. It shows the summarized detection performance over all $K$ classes and is computed from the diagonal elements and the row sums of the confusion matrix $\mathbf{C} = (c_{ij})$. Next, the precision, recall and the balanced F-score for the corresponding class that was removed from the training dataset are computed. Thus, while the accuracy provides a way to interpret the performance regarding all classes, the latter three metrics focus on the correct detection of the class that was removed from the local training dataset.
+
+\begin{align*}
+    \text{balanced accuracy} &= \frac{1}{K} \sum\limits_{k=1}^K \frac{c_{kk}}{\sum_{j=1}^K c_{kj}} \\
+    \text{precision} &= \frac{TP}{TP + FP} \\
+    \text{recall} &= \frac{TP}{TP + FN} \\
+    \text{F1} &= 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}}
+\end{align*}
 
 \begin{table}[H]
     \footnotesize
@@ -35,9 +46,54 @@
     \label{tab:baseline_detection}
 \end{table}
 
-\subsection{Classification Improvement}
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \addtolength{\tabcolsep}{-0.4em}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/num_samples.tex} 
+    \caption[Number of Samples]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \label{tab:num_samples_parameters}
+\end{table}
 
-\subsection{Overhead Reduction}
+\subsection{Classification Improvement}\label{sec:classification_improvement}
+
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \addtolength{\tabcolsep}{-0.4em}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/synth_classification.tex} 
+    \caption[Detection Performance with Synthetic Data from the CIDS]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \label{tab:synthetic_classification}
+\end{table}
+
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \setlength{\extrarowheight}{0pt}
+    \addtolength{\extrarowheight}{\aboverulesep}
+    \addtolength{\extrarowheight}{\belowrulesep}
+    \addtolength{\tabcolsep}{-0.4em}
+    \setlength{\aboverulesep}{0pt}
+    \setlength{\belowrulesep}{0pt}
+    \setlength{\extrarowheight}{.1em}
+    \input{table/pattern_synth_classification.tex} 
+    \caption[Detection Performance with Synthetic Data and Patterns from the CIDS]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \label{tab:pattern_synthetic_classification}
+\end{table}
+
+\subsection{Overhead Reduction}\label{sec:overhead_reduction}
     \begin{table}[H]
         \footnotesize
         \centering
