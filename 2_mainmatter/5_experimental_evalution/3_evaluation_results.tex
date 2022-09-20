@@ -7,14 +7,14 @@ This section presents the results from the experiments described in Section~\ref
 
 \subsection{Baseline Experiments}\label{sec:baseline}
 
-The tables regarding the classification results in the next two sections are interpreted as follows. The columns, which are grouped into skipped classes refer to the class that is removed from training dataset. Four metrics are computed in a $k$-class problem setting for each iteration. First, the balanced accuracy score is evaluated. It shows the summarized detection performance over all $K$ classes and is computed from the diagonal elements and the row sums of the confusion matrix $\mathbf{C} = (c_{ij})$. Next, the precision, recall and the balanced F-score for the corresponding class that was removed from the training dataset are computed. Thus, while the accuracy provides a way to interpret the performance regarding all classes, the latter three metrics focus on the correct detection of the class that was removed from the local training dataset.
-
+The tables regarding the classification results in the next two sections are interpreted as follows. The columns, which are grouped into skipped classes refer to the class that is removed from the respective training dataset that is indicated by the first row dimension. Four metrics are computed in a $k$-class problem setting for each iteration. First, the balanced accuracy score is evaluated. It shows the summarized detection performance over all $K$ classes and is computed from the diagonal elements and the row sums of the confusion matrix $\mathbf{C} = (c_{ij})$. Next, the precision, recall and the balanced F-score for the class that was removed from the training dataset are computed. Thus, while the accuracy provides a way to interpret the performance regarding all classes, the latter three metrics focus on the correct detection of the class that was removed from the local training dataset. Table~\ref{tab:missing_classes} shows the results from the experiments without any collaboration mechanism. As indicated by the accuracy, all classes, except for the removed class, are detected well. Note that no false positives regarding the removed class are introduced either, because the classifier did not include that class in training at all. Hence, all metrics that refer to the removed class consequently have a value of zero. In particular, by introducing data from other infrastructures in the training dataset, the classifier may not only perform better by detecting the removed class correctly, which is indicated by the recall. It may also be the case that other classes are falsely classified as the removed class, which is measured by the precision. Therefore, a low precision is interpreted as the introducion of noise that comes along with the data exchange in the \gls{cids}. Table~\ref{tab:baseline_detection} shows the results of the alternative \gls{cids} approach, where the original data is exchanged directly between members. These results are considered as a benchmark for the presented \gls{cids} architecture in terms of the detection performance. 
 \begin{align*}
-    \text{balanced accuracy} &= \frac{1}{K} \sum\limits_{k=1}^K \frac{c_{kk}}{\sum_{j=1}^K c_{kj}} \\
-    \text{precision} &= \frac{TP}{TP + FP} \\
-    \text{recall} &= \frac{TP}{TP + FN} \\
-    \text{F1} &= 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}}
+    \text{balanced accuracy} \quad &= \quad \frac{1}{K} \sum\limits_{k=1}^K \frac{c_{kk}}{\sum_{j=1}^K c_{kj}} \\
+    \text{precision} \quad &= \quad \frac{TP}{TP + FP} \\
+    \text{recall} \quad &= \quad \frac{TP}{TP + FN} \\
+    \text{F1} \quad &= \quad 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}}
 \end{align*}
+The overhead that is introduced by the direct exchange of original data between members is listed in Table~\ref{tab:num_samples_parameters}. The second column shows the number of attack samples directly after the flow export. The third column shows the number of samples after removing duplicates from the collection of attack samples. The fourth column lists the number of parameters, i.e. float values, that are to be exchanged, that is the product of attack flows and their respective dimensionality (see Table~\ref{tab:flow_features}).
 
 \begin{table}[H]
     \footnotesize
@@ -27,7 +27,7 @@ The tables regarding the classification results in the next two sections are int
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/missing_classes.tex} 
-    \caption[Baseline Detection Performance With Missing Class Information]{The table shows the classification performance for isolated \acrshortpl{ids} with knowledge gaps.}
+    \caption[Baseline Detection Performance with Missing Class Information]{The table shows the classification performance for isolated \acrshortpl{ids} with knowledge gaps. No collaboration mechanism is applied.}
     \label{tab:missing_classes}
 \end{table}
 
@@ -42,7 +42,7 @@ The tables regarding the classification results in the next two sections are int
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/baseline_classification.tex} 
-    \caption[Baseline Detection Performance With Class Information from Other Datasets]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \caption[Baseline Detection Performance with Original Data Exchange]{The table shows the classification performance for \acrshortpl{ids} that exchange original data directly within a \gls{cids}.}
     \label{tab:baseline_detection}
 \end{table}
 
@@ -57,14 +57,16 @@ The tables regarding the classification results in the next two sections are int
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/num_samples.tex} 
-    \caption[Number of Samples]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \caption[Communication Overhead in the Baseline Experiment]{The table shows the communication overhead for directly exchanging original attack data between the members in the \gls{cids}.}
     \label{tab:num_samples_parameters}
 \end{table}
 
 \subsection{Classification Improvement}\label{sec:classification_improvement}
 
+Table~\ref{tab:synthetic_classification} shows the results for the scenario, where members in the proposed \gls{cids} architecture enhance local datasets with synthetic data. Values that are equal ($\blacktriangleright$) or better ($\blacktriangle$) than the results from the baseline detection scenario, where original data is exchanged (see Table~\ref{tab:baseline_detection}), are displayed in bold font and marked with triangles respectively. Metric values from the baseline experiment that are marked with an asterisk are excluded from the comparison. Note that the asterisk marks metric values that are set to zero because of an ill-defined operation due to no predicted samples in the respective class. Table~\ref{tab:pattern_synthetic_classification} shows the results from the scenario where, in addition to synthetic data, the classification is supported by the usage of locality sensitive hashes, i.e., patterns. 
+
 \begin{table}[H]
-    \footnotesize
+    \scriptsize
     \centering
     \setlength{\extrarowheight}{0pt}
     \addtolength{\extrarowheight}{\aboverulesep}
@@ -72,14 +74,14 @@ The tables regarding the classification results in the next two sections are int
     \addtolength{\tabcolsep}{-0.4em}
     \setlength{\aboverulesep}{0pt}
     \setlength{\belowrulesep}{0pt}
-    \setlength{\extrarowheight}{.1em}
+    \setlength{\extrarowheight}{.15em}
     \input{table/synth_classification.tex} 
-    \caption[Detection Performance with Synthetic Data from the CIDS]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \caption[Detection Performance with Synthetic Data]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and enhance their local training datasets with synthetic data.}
     \label{tab:synthetic_classification}
 \end{table}
 
 \begin{table}[H]
-    \footnotesize
+    \scriptsize
     \centering
     \setlength{\extrarowheight}{0pt}
     \addtolength{\extrarowheight}{\aboverulesep}
@@ -87,15 +89,15 @@ The tables regarding the classification results in the next two sections are int
     \addtolength{\tabcolsep}{-0.4em}
     \setlength{\aboverulesep}{0pt}
     \setlength{\belowrulesep}{0pt}
-    \setlength{\extrarowheight}{.1em}
+    \setlength{\extrarowheight}{.15em}
     \input{table/pattern_synth_classification.tex} 
-    \caption[Detection Performance with Synthetic Data and Patterns from the CIDS]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
+    \caption[Detection Performance with Synthetic Data and Pattern Detector]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and both utilize synthetic data and the pattern detector.}
     \label{tab:pattern_synthetic_classification}
 \end{table}
 
 \subsection{Overhead Reduction}\label{sec:overhead_reduction}
     \begin{table}[H]
-        \footnotesize
+        \scriptsize
         \centering
         \setlength{\extrarowheight}{0pt}
         \addtolength{\extrarowheight}{\aboverulesep}
@@ -103,7 +105,7 @@ The tables regarding the classification results in the next two sections are int
         \addtolength{\tabcolsep}{-0.4em}
         \setlength{\aboverulesep}{0pt}
         \setlength{\belowrulesep}{0pt}
-        \setlength{\extrarowheight}{.1em}
+        \setlength{\extrarowheight}{.15em}
         \input{table/region_analysis.tex} 
         \caption[Parameter Number Analysis]{The table shows the classification performance for \acrshortpl{ids} that exchange their class samples directly within a \gls{cids}.}
         \label{tab:region_analysis}
