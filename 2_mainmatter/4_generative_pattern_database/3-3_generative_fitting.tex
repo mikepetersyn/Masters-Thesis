@@ -112,18 +112,11 @@ Regions that have been updated in the preceding service are received as events $
     \label{fig:uniform_dist_nn}%
 \end{figure}%
 
-
- % That way, the models are only fitted on data with the label in focus but evaluated with the complete region data.
-
- 
- %Moreover, as stated in Section (section of GMM), the runtime of a single step of the EM algorithm in this setting is asymptotically $O(NKd^3)$ or $O(NKd^2)$ by using the incremental algorithm proposed in \cite{pinto2015fast} ($N$ data points, $K$ components and $d$ dimensions); therefore, this curse of dimensionality that is encountered in calculating the covariance matrix while fitting the GMM is coped by approximation; using the diagonal covariance matrix as approximation to the regular covariance matrix; 
- 
-
  In the next phase of the algorithm, one \acrshort{gmm} is selected per unique label within a region. During the selection process multiple models are fitted with different model parameters using a flow data subset $\mathcal{X}_\alpha$. Since the resource demands of the \gls{ema} for fitting a \acrshort{gmm} are relatively high, the dimensionality of the training data is reduced by applying a dimensionality reduction via \gls{pca}. Later in the pipeline, when sampling data from the \acrshortpl{gmm}, the inverse operation of the corresponding \gls{pca} is applied on the synthetic data in order to restore the original feature space. Therefore, the parameters of the \gls{pca} have to be stored in the $PDB_G$ along with the parameters of the \gls{gmm}. 
  
  Note, that during the application of \gls{pca} in the first place, information within the data is lost by only keeping the components that describe most of the variance of the data. Of course, the result of the inverse transformation would then only be an approximation of the original data. However, the input for the inverse transformation is going to be the synthetic data. Thus, we accept the loss and focus on the fact that the synthetic data is transformed back into the original feature space, such that the synthetic data resembles more the original data as it was captured, increasing its compatibility.
  
- The model selection is specified in Algorithm~\ref{alg:model_selection}. First \gls{pca} is applied on $\mathcal{X}_\alpha$ resulting in a set of flows $\mathcal{X}'_\alpha$ with a reduced feature set. The number of components of the \gls{pca} has to be set heuristically or a threshold has to be set, which defines the minimum amount of variance that needs to be explained by a specific number of components. After the compression, the parameter search for the \gls{gmm} is started. In general, there is no exact method to determine the optimal parameters for a \gls{gmm}, such that different parameter settings have to be evaluated. For that, the search space is defined by two dimensions, namely the number of components and the type of covariance matrix that is used for each component. The set of numbers that is used for specifying the number of components is defined as $\mathcal{C} = \{ 4c \, | \,  c\in \mathbb{N}, 1 \leq c \leq \text{dim}(\mathcal{X}_1) \}$. The covariance matrix can either be a standard covariance matrix with a full set of entries or can be an approximation with entries only on the diagonal of the matrix, i.e., we define $\bm{\Sigma} = \{\text{``full''}, \text{``diagonal''}\}$. The reason behind the choice of both types of covariance matrix is also motivated by heuristical optimization. The full covariance matrix can result in overfitting, especially on small datasets, whereas the diagonal matrix acts as a type of regularization to the model. However, depending on the data the diagonal type sometimes also leads to an underfitting of the model.
+ The model selection is specified in Algorithm~\ref{alg:model_selection}. First \gls{pca} is applied on $\mathcal{X}_\alpha$ resulting in a set of flows $\mathcal{X}'_\alpha$ with a reduced feature set. The number of components of the \gls{pca} has to be set heuristically or a threshold has to be set, which defines the minimum amount of variance that needs to be explained by a specific number of components. After the compression, the parameter search for the \gls{gmm} is started. In general, there is no exact method to determine the optimal parameters for a \gls{gmm}, such that different parameter settings have to be evaluated. For that, the search space is defined by two dimensions, namely the number of components and the type of covariance matrix that is used for each component. The set of numbers that is used for specifying the number of components is referred to as $\mathcal{K}$. The covariance matrix can either be a standard covariance matrix with a full set of entries or can be an approximation with entries only on the diagonal of the matrix, i.e., we define $\mathcal{C} = \{\text{``full''}, \text{``diagonal''}\}$. The reason behind the choice of both types of covariance matrix is also motivated by heuristical optimization. The full covariance matrix can result in overfitting, especially on small datasets, whereas the diagonal matrix acts as a type of regularization to the model. However, depending on the data the diagonal type sometimes also leads to an underfitting of the model.
 
  After fitting a \gls{gmm} on $\mathcal{X}'_1$ the first metric for the selection is calculated. Precisely, the \gls{bic} is calculated as in Equation~\ref{eq:bic} (see Section~\ref{subsec:em_algorithm}). Note, that for the case of a diagonal covariance matrix, the number of entries of the covariance matrix to estimate changes from $\frac{D(D+1)}{2}$ to $D$. Thus, given a \gls{gmm} with $K$ mixture components, each exhibiting a diagonal covariance matrix, and a datasset $\mathcal{X}_1$ consisting of $N$ data points and $D$ features, the \gls{bic} is defined as
 
@@ -132,28 +125,24 @@ Regions that have been updated in the preceding service are received as events $
  \end{equation}
 
  After that, a second evaluation metric is calculated (see Algorithm~\ref{alg:adversary_evaluation}). The process that is used to gather that metric is called adversary evaluation and is based on the principles of \Acrfullpl{gan}.
- 
-
 
 \begin{algorithm}
     \caption{Model Selection}
     \label{alg:model_selection}
-    % \algsetup{indent=2em}
- 
     \begin{algorithmic}[1]
         \REQUIRE Dataset $\mathcal{X}_1$
         \ENSURE Tuple $(\text{\gls{gms}, \gls{gmm}, \gls{pca}})$
 
         \STATE $\mathcal{X}'_1 \leftarrow \text{PCA}(\mathcal{X}_1)$
-        \STATE $\mathcal{C} \leftarrow \{ 4c \, | \,  c\in \mathbb{N}, 1 \leq c \leq \text{dim}(\mathcal{X}_1) \}$
+        \STATE $\mathcal{K} \leftarrow \{ 4k \, | \,  k\in \mathbb{N}, 1 \leq k \leq \text{dim}(\mathcal{X}_1) \}$
         
-        \STATE $\bm{\Sigma} \leftarrow \{\text{``full''}, \text{``diagonal''}\}$
+        \STATE $\mathcal{C} \leftarrow \{\text{``full''}, \text{``diagonal''}\}$
 
         \STATE $L \leftarrow$ new list
 
-        \FORALL{$c$ in $\mathcal{C}$}
-            \FORALL{$\Sigma$ in $\bm{\Sigma}$}
-                \STATE \gls{gmm} $\leftarrow \text{fitGaussianMixture}(\mathcal{X}_1', c, \Sigma)$
+        \FORALL{$k$ in $\mathcal{K}$}
+            \FORALL{$c$ in $\mathcal{C}$}
+                \STATE \gls{gmm} $\leftarrow \text{fitGaussianMixture}(\mathcal{X}_1', k, c)$
                 \STATE \gls{bic} $\leftarrow \text{\gls{bic}}(\text{\gls{gmm}}, \mathcal{X}_1')$
                 \STATE $\text{\gls{acc}} \leftarrow$ AdversaryEvaluation$(\mathcal{X}_1, \text{\gls{gmm}}, \text{\gls{pca}})$
                 \STATE $\text{\gls{gms}} \leftarrow \text{\gls{gms}}(\text{\gls{bic}}, \text{\gls{acc}})$
@@ -191,8 +180,6 @@ Then, a discriminative model is trained on the training proportion, trying to fi
 \begin{algorithm}
     \caption{Adversary Evaluation}
     \label{alg:adversary_evaluation}
-    % \algsetup{indent=2em}
- 
     \begin{algorithmic}[1]
         \REQUIRE $\mathcal{X}_1, \text{GMM}, \text{PCA}$
         \ENSURE $ACC$ from decision tree model $DT$

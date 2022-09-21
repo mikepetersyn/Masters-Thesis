@@ -5,20 +5,36 @@
 
 The objective of the classifier fitting service is to provide the local infrastructures with the latest synthetic dataset for enhancing a local model fitting. Two different functional modes can be distinguished. First, as already described, a synthetic dataset is provided and the model that results from the respective fitting is used as the only detection algorithm. In addition to that, it is also possible to perform classifications directly with locality senstitive hashes from the pattern database. Thus, alongside the classifier model from the first scenario, a second detection algorithm  based on \gls{lsh} may be utilized in parallel. Therefore, in this section we first describe how to create a synthetic dataset using generative models. Subsequently, the classification with the help of the hashes is explained and formalized.
 
-The goal is to ensure that changes to the $PDB_G$ are disseminated to the local infrastructures as quickly as possible. Thus, after each change to the generative models in the $PDB_G$ made by the previous service, an event is sent into all local communication channels. The classifier fitting service, that is executed locally within each infrastructure, receives these events within a defined time window and collects them. Upon the termination of the time window the classifier fitting service is initiated and begins with assembling a training dataset, if at least a single event was collected. All generative models are loaded sequentially from the $PDB_G$ and synthetic data is generated in the amount that was also originally found in the corresponding region by sampling from the respective \glspl{gmm}. After that, the synthetic data is transformed from the lower-dimensional subspace to the original data space by the inverse function of the original PCA operation using the stored parameters. In order to fit a classifier, the local training dataset is loaded from the respective $PDB_L$ and blended with the synthetic data. Subsequently, the inverse normalization operation is also applied on both the original and the synthetic data by loading the corresponding parameters that were used to normalize the data before indexing it. 
+The goal is to ensure that changes to the $PDB_G$ are disseminated to the local infrastructures as quickly as possible. Thus, after each change to the generative models in the $PDB_G$ made by the previous service, an event is sent into all local communication channels. The classifier fitting service, that is executed locally within each infrastructure, receives these events within a defined time window and collects them. Upon the termination of the time window the classifier fitting service is initiated and begins with assembling a training dataset, if at least a single event was collected. All generative models are loaded sequentially from the $PDB_G$ and synthetic data is generated in the amount that was also originally found in the corresponding region by sampling from the respective \glspl{gmm}. After that, the synthetic data is transformed from the lower-dimensional subspace to the original data space by the inverse function of the original PCA operation using the stored parameters. In order to fit a classifier, the local training dataset is loaded from the respective $PDB_L$ and blended with the synthetic data. Subsequently, the inverse normalization operation is also applied on both the original and the synthetic data by loading the corresponding parameters that were used to normalize the data before indexing it. Finally, the first scenario consists of using the fitted classifier for detection.
 
-
-% For this task, all original data are first loaded from the local PDB. Then, 
-% \begin{algorithm}
-    % \caption{Dataset Assembly and Classifier Fitting}
-    % \label{alg:classifier_fitting}
-    % \algsetup{indent=2em}
+For the second scenario, we describe how to perform hybrid attack detection using the classifier from the first scenario and the pattern detector in combination. First, incoming flows are normalized and hashed using a \gls{grp} with the same parameters that were used for indexing the data into the $PDB$. Using the resulting hash $r$, the corresponding region complexity state is retrieved. If the result from the lookup is empty, that means that no such region exists in the $PDB$. In that case, the flow is classified using the model $M$ that was fitted on both synthetic and real train data. Similarly, if a region complexity state is found to be complex, the flow is classified using $M$ as well. If it turns out that the flow is assigned to a simple region, the corresponding label is loaded from the PDB and used as the classification result.
  
-    % \begin{algorithmic}[1]
-    %     \REQUIRE Region Update Event $r$
-    %     \ENSURE Model Update Notification
-%    \end{algorithmic}
-%  \end{algorithm}
+\begin{algorithm}
+    \caption{Hybrid Classification using Pattern Detection}
+    \label{alg:pattern_detection}
+    \begin{algorithmic}[1]
+        \REQUIRE Stream of incoming flows $\bm{X}$        
+        \ENSURE List of predictions $\hat{Y}$
+        \STATE $\hat{\mathcal{Y}} \leftarrow$ new List
+        \FORALL{$\bm{x}$ in $\bm{X}$}
+            \STATE $\bm{x}' \leftarrow \text{normalize}(\bm{x})$ \COMMENT{see Equation~\ref{eq:normalization}}
+            \STATE $r \leftarrow h(\bm{x}')$ \COMMENT{see Equation~\ref{eq:grp_sign}}
+            \STATE $ c_r \leftarrow PDB_G[\kappa]$ \COMMENT{see Algorithm~\ref{alg:complexity_estimation}}
+            \IF{$c_r \neq \emptyset$}
+                \IF{$c_r = 0$}
+                    \STATE $\mathcal{S}_r \leftarrow PDB_G[\delta]$ \COMMENT{see Algorithm~\ref{alg:complexity_estimation}}
+                    \STATE $\hat{y} \leftarrow \mathcal{S}_r$
+                \ELSE
+                    \STATE $\hat{y} \leftarrow \text{predict } \bm{x} \text{ with classifier model } M$
+                \ENDIF
+            \ELSE
+                \STATE $\hat{y} \leftarrow \text{predict } \bm{x} \text{ with classifier model } M$
+            \ENDIF
+            \STATE $\text{append } \hat{y} \text{ to } \hat{Y}$
+        \ENDFOR
+    \STATE \textbf{return} $\hat{Y}$
+   \end{algorithmic}
+ \end{algorithm}
 
 
 
