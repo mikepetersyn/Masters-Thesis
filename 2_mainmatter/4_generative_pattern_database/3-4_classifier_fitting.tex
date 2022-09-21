@@ -36,20 +36,4 @@ For the second scenario, we describe how to perform hybrid attack detection usin
    \end{algorithmic}
  \end{algorithm}
 
-
-
-% load the local dataset
-
-% iterate through all regions and retrieve the respective model parameters
-
-%       rebuild GMM and PCA models by deserialization and putting in parameters
-%       sample as many samples per (GMM,PCA) as originally indexed into the respective region-label-infrastructure combination
-%       collect (sample,label)-pairs in a collection
-
-% combine local dataset and synthetic dataset
-% shuffle, split
-% fit Ensemble of DecisionTrees (RandomForest) on combined dataset
-% serialize DecisionTree model and put into PDB
-% put an event into local communication channel
-% local IDS receives Event and retrieves lates DT-Model and puts it into the decision pipeline
 \end{document}

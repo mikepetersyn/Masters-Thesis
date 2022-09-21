@@ -1,6 +1,24 @@
 \documentclass[../../main.tex]{subfiles}
 \begin{document}
 
-\section{Summary and Discussion}
+\section{Discussion}
+
+% Diskussion um die Baseline Experimente
+    % Tabelle 5.5: Die Klasse, die aus dem Trainingsdatensatz entfernt wird, wird auch entsprechend nicht erkannt, da der Klassifizierer das Target nicht kennt. Was aus der Tabelle nicht hervorgeht ist in welche Klassen die unbekannten Samples zugeordnet wurden.Was aber eindeutig ist, ist dass eine Wissenslücke dazu führt dass neue Angriffe nicht als solches erkannt werden können, was sie tatsächlich sind.
+
+    % Tabelle 5.6: Das alternative Kollaborationsszenario sieht vor, dass Angriffsdaten unter den Teilnehmern direkt ausgetauscht werden. Diese Art von Experimente sollen zunächst aufzeigen, ob fehlende Daten in lokalen Trainingsdatensätzen erfolgreich durch Angriffsdaten aus anderen Datasets ersetzt werden können. Die Ergebnisse zeigen ein differenziertes Bild und ein breites Spektrum an Kompatibilität der Daten untereinander. Beispielsweise ist sind DDoS und Bot Traffic Samples überhaupt nicht kompatibel untereinander, sodass ein Austausch keinerlei Vorteile bringt. Weiterhin interessant, dass der Austausch zumindest keine negativen Effekte auf die Erkennung hat, sodass bspw. keine anderen Klassen mehrheitlich falsch klassifiziert wurden.
+    
+    % Im Gegenteil dazu gibt es bestimmte Klassen, bei denen der Austausch im CIDS einen großen positiven Effekt gezeigt hat. Der Austausch von Brute-Force SSH Traffic Samples hat bspw. dazu geführt, dass der Recall für diese Klasse von 0.0 auf 0.9955 bzw. 0.9813 gestiegen ist.  Zusätzlich wurden beinahe keine anderen Klassen fälschlicherweise als Bruteforce SSH Traffic erkannt. Das heißt, dass zumindest in diesem Szenario durch den Austausch von Angriffstraffic kein noise entstanden ist.
+    % Über alle Klassen, in denen ein positiver Effekt stattgefunden hat, beträgt der durchschnittliche Zuwachs für die Precision 0,98 und für den Recall 0,45.
+    % Besonders interessant ist die Tatsache, dass der Austausch von Brute Force Web Traces im Fall von der Infrastructure I einen positiven Effekt erzielt hat und für den umgekehrte Fall in Infrastructure II nicht.
+
+    % Aus Tabelle 5.7 sind zwei Dinge ersichtlich. Zunächst einmal unterscheiden sich alle drei Datasets in der Anzahl der enthaltenen Samples deutlich. zum anderen wird sichtbar, wieviel Daten in den entsprechenden Datasets redundant ist. Am größten Fällt der Effekt der Deduplizierung für Dataset III aus, wo sich das Dataset um den Faktor 5.6 verringert.
+
+
+% Classification Improvement
+
+    % Tabelle 5.8 zeigt die Ergebnisse der proposed CIDS-Architektur unter Verwendung synthetischer Daten und ohne die Verwendung der Pattern Detection. Die Resultate zeigen nicht nur, dass the generative pattern dissemination die Wissenlücken in lokalen Infrastrukturen füllen können, sondern dass es bessere Ergebnisse liefert als der direkte Austausch, wobei dies nur für eine Hashgröße von 16-bit zutrifft. Die Verbesserung der Detektion unter Verwendung synthetischer Daten ließe sich durch eine Verbesserte Generalisierbarkeit des Modells für das Problem erklären. Da in dem Experiment genau soviele Samples synthetisiert wurden, wie auch in die regions entsprechend indexiert wurde, ist ein Balancing-Effekt gegenüber dem Baseline-Experiment ausgeschlossen.
+    
+    % Im allgemeinen ist der Trend so, dass mit zunehmender Hashgröße die Vorteile geringer werden. Der Grund dafür könnte in erster Linie die Menge an Regions sein, die aus den unterschiedlichen Hashgrößen resultiert. Mit zunehmender Hashgröße steigt auch die Anzahl an Regions (siehe TAbelle 5.10). Dementsprechend enthalten die Regions auch weniger Samples, da die vorhandenen sich auf eine höhere Anzahl von Regions aufteilen müssen. Dementsprechend ist die Durchschnittliche Datenmenge, die in einer Region vorhanden ist geringer und bietet somit weniger input für den generativen Algorithmus. Die gerinegere Datenmenge könnte im Durchschnitt zu einer geringeren Qualität der Modelle führen.
 
 \end{document}
