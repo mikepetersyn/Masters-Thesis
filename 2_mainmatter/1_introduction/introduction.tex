@@ -3,10 +3,67 @@
 
 \chapter{Introduction}
 
+\newpage
 \section{Problem Description}
 
-\section{Contribution}
+Many facets of modern society are based on information technology infrastructures, which exhibit an increasing degree of complexity and interconnection. Companies and institutions use IT systems to provide their services, enabling processes to be managed and handled both more effectively and more efficiently. As a consequence of this shift of processes onto IT systems, our society is becoming increasingly dependent on these systems. From these developments it can be derived that the protection of IT systems against malfunctions and espionage is of high importance. Thus, \glspl{ids} are a key asset in IT infrastructures to secure individual computer systems or networks. When securing computer networks, some form of IP packet analysis is often used to monitor network traffic based on packet header or payload data.
+However, \gls{dpi} is very resource-intensive, making it difficult to monitor high-volume networks, especially those characterized by high dynamics where a forecast of the required resources is practically impossible \cite{dreger2004operational}. Another drawback of DPI solutions is that traffic from applications that encrypt their traffic end-to-end cannot be analyzed. A more scalable approach for network-based monitoring is to analyze network flows using flow exporters that collect and summarize packet header data and provide it as features for classification, for instance \cite{hofstede2018flow} . The topic of flow feature classification using \gls{ml} algorithms in the context of intrusion detection is popular in the research community  \cite{ahmad2021network}. However, the adoption rate of flow monitoring for detecting attacks on IT infrastructures is relatively low in practice due to fundamental challenges that \gls{ml}-based detection of attacks poses \cite{som_2010}. First, the costs incurred by errors in the model, especially false positives, are relatively high in this context. Furthermore, the results of many \gls{ml} algorithms are difficult to interpret, whereupon the transparency of detection suffers. Finally, collecting high quality data for training the models is a major challenge. Regardless of the question whether the fundamental challenges of \glspl{ids} based on flow data and machine learning can be solved sufficiently in the future, this work proceeds in that context and employs it as a use case for addressing challenges of another topic. In particular, when considering the development of the current threat environment, the effectiveness of conventional \glspl{ids} is limited. Technology trends, such as the internet of things or cloud computing, are main drivers for increasingly blurring corporate boundaries in the context of interconnection of infrastructures and shared resources. This transformation increases the potential attack surface of productive computer systems for large-scale and high-velocity cyber attacks, which traditional \glspl{ids} have limited effectiveness due to their isolated nature. Due to the mentioned increase of attack surface that is related to the size of current computer networks, attackers may attempt to obfuscate the characteristics of an intrusion by spreading single attack steps among multiple systems or networks. A common scenario would be scanning networks for opportunities to launch an intrusion, for example by exdecuting port scans. By slowing down the velocity of such techniques, attackers are able to evade current firewalls and IDSs \cite{riquet2012large}. Furthermore, it is common practice for attackers to perform automated attacks on a large number of different targets in order to speed up the identification of security vulnerabilities \cite{savage2005}. For this reason, it is reasonable to assume that identical or similar stealthy scans are performed on multiple infrastructures simultaneously. Isolated \gls{ids} will not be able to create connections between such security events that occur at different infrastructures. In order to address the aforementioned security problems, \gls{cids} have been proposed. A \gls{cids} refers to a network of multiple \glspl{ids} that exchange data with each other in order to increase detection performance, especially for distributed and novel attacks. In addition to an improved attack detection, another advantage is that \gls{cids} scale better than isolated \glspl{ids}, making them more suitable for monitoring large-scale networks. By sharing resources across different infrastructures, peak loads can be served using a loadbalancing strategy. Current literature divides the main functions of an IDS into different components \cite{vasilomanolakis_collaborative_2016}. Among these different components, the data dissemination is responsible for efficiently distributing the data that is collected and aggregated by the different \glspl{ids} in the network and thus avoiding unnecessary overhead in the \gls{cids}. In addition to the advantages a \gls{cids} provides, other challenges are introduced that need to be considered. In particular, the data dissemination is confronted with the following challenges. As already mentioned, the communication overhead is a central aspect that determines the efficiency of the \gls{cids} and thus the latency of information distribution among individual members. Furthermore, data privacy plays an important role, since sensitive data containing security-relevant information may not be shared without further ado. However, in order to enable the distribution of information, different techniques, for instance Bloom Filters \cite{Vasilomanolakis2015SkipMon} \cite{Locasto2005}, are employed. Finally, the dissemination must be performed in such a way that different IDSs can communicate with each other. Thus, a greater degree of interoperability requires fewer constraints and commitments on the part of local \gls{ids}.
 
+\section{Contribution} % nihe: why is research needed; current gap that iam looking to fill
+
+Current CIDS systems do not sufficiently realize data dissemination considering the aforemen-
+tioned challenges, as they only address parts of the challenges or individual points not suffi-
+ciently. For example, the alert dissemination techniques in [16] and [25] only focus on sharing
+simple alerts without considering important aspects like scalability or the degradation of infor-
+mation over time. A communication beyond this, for example the exchange of specific attack
+patterns that would fill knowledge gaps on novel attacks, is not feasible with the respective
+approaches.
+
+In the context of Data Dissemination in CIDS and its associated challenges mentioned above,
+the thesis and its related objectives are presented in this section. First, the working thesis is
+presented and based on it the different key objectives and sub-objectives are derived. This is
+followed by the formulation of various research questions that serve as a thread for answering
+the thesis. Finally, it is described which target group this thesis addresses and what contribution
+the thesis provides to the scientific discourse on this topic.
+
+It is stated that it is possible to design a CIDS with nowadays familiar algorithms and data
+structures, which sufficiently meets the of Data Privacy, Interoperability, Minimal Overhead and
+Domain Awareness, and additionally provides features for the exchange of various data on de-
+tection knowledge that can, for example, be used as complementary information in the case of
+novelties. From this, the following two key objectives can be derived.
+
+• It is shown that currently available CIDS concepts and systems realize data dissemination
+insufficiently.
+• It is shown how a component for data dissemination in a CIDS can be designed so that
+the above conditions are met.
+Furthermore, besides the key objectives the following sub-objectives are pursued by answering
+the declared thesis.
+• The effect of collaboration on attack detection performance is measured. In particular, an
+improvement is expected in scenarios where individual IDSs are unaware of a particular
+attack and this incomplete state of information is supplemented by other participants in
+the CIDS network.
+• By applying LSH techniques for feature extraction and developing a novel data manage-
+ment architecture, both the overhead for communication between members of the CIDS
+and the computational effort for attack detection within a system of a member is decreased
+by magnitudes.
+• An alert correlation function is integrated into the new data management architecture and
+supports decisions in the attack detection process. Correlation shall be applicable to both
+network and log data, providing a general solution for IDSs.
+
+% Research Questions
+To what extent does more data improve the detection rate of IDS or classification algo-
+rithms? Is more data always better or is it possible that too much data and therefore more
+available variance degrades the detection performance with respect to the introduction of
+noise or overlapping decision boundaries?
+• How do to transform network flows into appropriate patterns for anonymous and effective
+data sharing or which type of LSH algorithm is the most promising in this particular
+context?
+• What type of database, including data structure and replication protocol, is best suited
+for persisting and sharing patterns in a dynamic environment?
+• Is it possible to draw conclusions about other participants and their infrastructure from
+the shared data, even though the data is hashed?
+
+\newpage
 \section{Thesis Outline}
 
 The thesis consists of a total of 6 chapters and is mainly organized into a theoretical part (Chapter~\ref{ch:preliminaries} and \ref{ch:related_work}) and a practical part (Chapter~\ref{ch:generative_pattern_database} and \ref{ch:experimental_evaluation}). The theoretical part exclusively covers contents that can be sourced in the literature. In contrast, the practical part develops original contents, some of which are based on knowledge and concepts acquired in the theoretical part. A detailed overview of the thesis structure is given in the following.
@@ -15,8 +72,8 @@ The thesis consists of a total of 6 chapters and is mainly organized into a theo
     \item[Chapter~\ref{ch:preliminaries}] First, the preliminaries chapter provides the reader with basic background information regarding the topics of Intrusion Detection, Locality Sensitive Hashing, Gaussian Mixtures and Principal Component Analysis. While the topic Intrusion Detection gives a general overview of the context of this work, the remaining topics are more specific and provide a detailed insight into techniques and algorithms that are used to realize the proposed \acrshort{cids} architecture.
     \item[Chapter~\ref{ch:related_work}] In this chapter, the current state of the art in three different areas related to this thesis is summarized and briefly discussed. First, techniques for data dissemination in \glspl{cids} are examined and the main challenges in this context are highlighted. Then, various established and novel approaches that use some form of similarity hashing in the context of intrusion detection are presented. Finally, the advantages of generative algorithms for intrusion detection are analyzed.
     \item[Chapter~\ref{ch:generative_pattern_database}] Based on the main challenges for data dissemination, this chapter develops a \gls{cids} architecture that realizes the principles of Generative Pattern Dissemination, introducing a novel approach in the field of intrusion detection. After a general introduction of the idea and functionality, a detailed specification of the architecture and the developed algorithms is given.
-    \item[Chapter~\ref{ch:experimental_evaluation}]
-    \item[Chapter~\ref{ch:conclusion}]    
+    \item[Chapter~\ref{ch:experimental_evaluation}] Furthermore, the proposed architecture is evaluated by conducting comprehensive experiments that simulate different scenarios. The evaluation focuses on two key features of the \gls{cids}. First, it is examined whether participating in the \gls{cids} improves the detection in each of the individual member infrastructures when local knowledge gaps exist. Then, the communication overhead of the architecture is analyzed. Both aspects are compared to a baseline scenario.
+    \item[Chapter~\ref{ch:conclusion}] This chapter concludes the thesis by discussing the stated research questions and summarizing the contributions. Finally, several aspects from the evaluation will be addressed to discuss possible improvements to the architecture and to identify potential future work.
 \end{description}
 
 \end{document}

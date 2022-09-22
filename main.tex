@@ -4,15 +4,18 @@
 \begin{document}
 
 \frontmatter
+    % \pagestyle{plain}
     \subfile{1_frontmatter/titlepage}
     \subfile{1_frontmatter/abstract}
     % \subfile{dedication.tex}
-    % \subfile{formal_declaration.tex}
+    \newpage
+    \subfile{1_frontmatter/declaration.tex}
     \begin{spacing}{1.2}
         \tableofcontents%
     \end{spacing}
 
 \mainmatter
+% \pagestyle{fancy}
 \addtocontents{toc}{\protect\vspace*{\fill}}
     \subfile{2_mainmatter/1_introduction/introduction}
     \subfile{2_mainmatter/2_preliminaries/preliminaries}
@@ -23,6 +26,7 @@
     \subfile{2_mainmatter/6_conclusion/conclusion}
 
 \backmatter
+% \pagestyle{plain}
 %     % \include{appendix.tex}
     \addcontentsline{toc}{chapter}{Bibliography}
     \printbibliography%

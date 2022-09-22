@@ -70,13 +70,25 @@ sorting=ynt
 
 \usepackage{fancyhdr}
 
-\pagestyle{fancy}
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[LE]{\nouppercase\leftmark}
+% \fancyhead[RO]{Section \nouppercase\rightmark}
+% \fancyhead[RE,LO]{\thepage}
+% \fancyfoot[C]{}
+
+\fancypagestyle{myfancy}{%
 \fancyhf{}
 \fancyhead[LE]{\nouppercase\leftmark}
 \fancyhead[RO]{Section \nouppercase\rightmark}
 \fancyhead[RE,LO]{\thepage}
 \fancyfoot[C]{}
+}
 
+\let\oldfrontmatter\frontmatter
+\let\oldmainmatter\mainmatter
+\gdef\frontmatter{\oldfrontmatter\pagestyle{plain}}
+\gdef\mainmatter{\oldmainmatter\pagestyle{myfancy}}
 
 
 \newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}
