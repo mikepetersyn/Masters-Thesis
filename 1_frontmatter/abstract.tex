@@ -1,6 +1,34 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
-\section*{Abstract}
+
+\begingroup
 
 %However, when considering the development of the current threat environment, the effectiveness of conventional intrusion detection systems is limited. Technology trends, such as the internet of things or cloud computing, are main drivers for increasingly blurring corporate boundaries in the context of interconnection of infrastructures and shared resources. This transformation increases the potential attack surface of productive computer systems for large-scale and high-velocity cyber attacks, which traditional IDSs have limited effectiveness due to their isolated nature. For example, such stand-alone IDS will not be able to create connections between security events that occur at different infrastructures simultaneously. Due to the mentioned increase of attack surface that is related to the size of current computer networks, attackers may attempt to obfuscate the characteristic overall sequence of the intrusion by spreading single attack steps.
+\hspace{0pt}
+\vfill
+\begin{adjustwidth}{2cm}{2cm}
+\begin{center}
+    \small\textbf{Abstract}
+\end{center}
+\par\medskip
+
+The continuous blurring of corporate boundaries induced by the development of globally networked supply chains and the associated interconnection of IT infrastructures is increasing the potential attack surface and velocity of cyber attacks, which requires the development of innovative defense solutions.
+\glspl{cids} attempt to improve attack detection with intelligent mechanisms for information sharing and correlation.
+All approaches that implement data dissemination in \gls{cids} face the same key challenges.
+On the one hand, privacy must be ensured when exchanging sensitive data, while on the other hand the quality of the data must not be compromised. 
+Additionally, the exchange itself may increase the latency of attack detection and thus degrade the overall performance in practice.
+In this context, we present a novel \gls{cids} that exchanges generative machine learning models, which resemble original data. 
+Specifically, data sets are partitioned using \gls{lsh} and persisted locally in a key-value store by using a corresponding hash value (region) as a component for the key creation.
+%TODO: upstream oder downstream?
+This way, updates on specific regions are propagated automatically downstream through the processing pipeline, where regions are classified on a global level as either complex or simple with respect to the number of classes they contain.
+Complex regions are subject to the generative model selection process, where the respective data in a region is used for the training of a \gls{gmm}, which in turn is shared among members of the \gls{cids} by utilizing the replication capabilities of the key-value store the data is stored in.
+By compressing local data into generative models, the exchanged data volume is reduced, like-wise supporting data privacy.
+Processing latency is shortened by exploiting parallelization induced by the data partitioning.
+By exchanging only hashed values and class labels, data privacy is preserved. 
+Multiclass classification experiments on multiple network intrusion datasets demonstrate a superior performance of this approach in comparison to local detection schemes.
+\end{adjustwidth}
+\vfill
+\hspace{0pt}
+\par\endgroup
+\bigskip\noindent
 \end{document}

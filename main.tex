@@ -6,10 +6,17 @@
 \frontmatter
     % \pagestyle{plain}
     \subfile{1_frontmatter/titlepage}
-    \subfile{1_frontmatter/abstract}
-    % \subfile{dedication.tex}
-    \newpage
+        \newpage
+        \thispagestyle{empty}
+        \mbox{}
+        \newpage
     \subfile{1_frontmatter/declaration.tex}
+        \newpage
+        \thispagestyle{empty}
+        \mbox{}
+        \newpage
+    \subfile{1_frontmatter/abstract}
+  
     \begin{spacing}{1.2}
         \tableofcontents%
     \end{spacing}
