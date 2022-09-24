@@ -41,6 +41,8 @@ shrink=10]{microtype}
 \usepackage{graphicx}
 \usepackage{transparent}
 \usepackage{eso-pic}
+\usepackage{xcolor}
+\definecolor{ai_blue}{RGB}{0, 74, 126}
 
 \usepackage{algorithmicx}
 \usepackage[noend]{algcompatible}
@@ -65,7 +67,13 @@ sorting=ynt
 
 \usepackage{csquotes}
 
-\usepackage[colorlinks, linkcolor=black, citecolor=black]{hyperref}
+\usepackage[
+  colorlinks,
+  linkcolor=black, 
+  citecolor=ai_blue, 
+  urlcolor=ai_blue, 
+  pdftitle={Generative Pattern Dissemination for Collaborative Intrusion Detection},
+  pdfauthor={Mike Petersen}]{hyperref}
 \usepackage{url}
 
 \usepackage{fancyhdr}

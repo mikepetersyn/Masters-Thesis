@@ -3,16 +3,52 @@
 
 \chapter{Conclusion and Outlook}\label{ch:conclusion}
 
-% leistet beitrag im bereich CIDS, insb. data dissemination
-% und hat verschiedene wichtige aspekte davon addressiert, indem eine architektur zum kollaborativen datenaustausch beschrieben, implementiert und evaluiert wurde
-% final chapter concludes the thesis; giving a summary of all contributions; zusätzlich wird ein ausblick auf mögliche zukünftige arbeiten präsentiert, die bestehende fragestellungen vertiefen oder erkenntnisse aus der evaluation aufnehmen und verbesserung vorschlagen (potential improvements)
+This thesis contributes to the field of CIDS, in particular to the topic of data dissemination. It addresses the critical aspects of this topic by presenting a collaborative data sharing architecture that aims to fill knowledge gaps in local infrastructures by providing a global view on attack data. The effectiveness of the approach was investigated by implementing the specified architecture and evaluating it in a set of comprehensive experiments. This final chapter concludes the thesis and provides a summary of all contributions in Section~\ref{sec:conclusion}. In addition, an outlook on possible future work is presented in Section~\ref{sec:outlook}, which deepens specific questions or elaborates on the findings of the evaluation and proposes potential improvements.
+\newpage
 
-\section{Conclusion} % This research aimed to
-% Das Ziel der Thesis war das Design und die Entwicklung einer neuartigen CIDS-Architektur...
-% Basierend auf den Resultaten der Experimente, ..., it can be concluded that...; The results indicate that....
+\section{Conclusion}\label{sec:conclusion}
+This research aimed to design and develop a novel \gls{cids} architecture whose data dissemination component enables the exchange of information in the context of \gls{ml}-based attack detection, while respecting the critical challenges imposed on the collaboration. Based on the results of the experiments, it can be concluded that the proposed \gls{cids} not only provides advantages compared to isolated \glspl{ids}, but is also superior to an alternative scenario in which a naive approach involving a direct exchange of original is adopted. The findings also show that the three critical requirements, namely minimal overhead, data privacy, and interoperability, have been effectively addressed. In the following, the main contributions are summarized.
 
-% Zusammenfassung der Key Contributions
+The presented architecture addresses the challenges in the context of data dissemination primarily by using two mechanisms. First, information is exchanged via the exchange of generative models. To be precise, the parameters of GMMs are exchanged within the CIDS in order to create a global view of all attacks known in the CIDS which is subsequently disseminated to all members. In this context, the basic idea of exchanging parameters of ML models is not a fundamental novelty. For example, in federated learning, updates to the parameters of distributed neural networks are collected and aggregated into a global model during the execution of the backpropagation algorithm. The aggregated update values are then propagated back to all participating neural networks, so that the information from the individual training datasets is combined and made available to each participant in the federation. In contrast to that, the generative data dissemination does not exchange the parameters of the GMMs during the training phase, but instead once the training is finished. However, the biggest distinguishing feature is the way in which the exchange is managed and, in combination with the described parameter exchange, represents the actual novelty that brings significant advantages.
 
-\section{Outlook}
+In fact, the compression of data by means of the transformation into generative models would not be scalable to realize without further measures. Thus, two advantages are created by partitioning the data using LSH. On the one hand, the processing of the data can be accelerated through parallelization without the risk of encountering racing conditions. In particular, workload peaks can be served dynamically in a cloud deployment. On the other hand, the continuous provision of new data is addressed by the fact that updates are only performed on individual partitions, i.e. regions. This means that when new data arrives in the CIDS, it is not necessary to reprocess the entire existing database, which is a significant advantage in general given the dynamic nature of the environment. In addition, the presented approach provides the possibility to differentiate between normal and attack data, since the training phase of the discriminative model is decoupled from the data exchange. This allows only attack data to be exchanged in the CIDS, which is then combined in the local infrastructures with the respective existing datasets, including the normal data.
+
+% refelect on research questions on how they were answered
+
+% RQ2:
+    % kurze Zusammenfassung des Ansatzes
+        % theoretische konzeption:
+            % was passiert und wie werden die Daten ausgetauscht
+            % wie werden die requirements eingehalten
+        % praktische implementierung/prototypische anwendung
+
+% RQ4: beschreibung der Experimente - wie kann ein CIDS im Allgemeinen getestet werden
+
+% RQ1: Können subsets aus datasets sich gegenseitig ersetzen?
+    % bei den Experimenten ist folgendes zum Vorschein gekommen
+
+% RQ3: "old" Discussion on tradeoff between anonymity and usability
+    % how is it addressed in this thesis? what is the contribution; where are overlaps/similarities to other fields; for whom is this work relevant
+
+% Summarize and reflect on research
+    % why did i took the approach that i took?
+
+    % what was the initial expectation
+
+    % how well did the results meet the expectation
+
+
+% emphasize contributions
+    % how did my research contributed to the state of my field?
+        % how did i solve the problem
+        % how was the gap in knowledge addresses (related work)
+        % how did my findings confirm assumptions
+
+
+\section{Outlook}\label{sec:outlook}
+
+    % implications of work: recommendations in form of should
+
+    % points to improve...
 
 \end{document}
