@@ -6,7 +6,7 @@
 \begin{figure}[b!]
    \centering
    \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/complexity_estimation}
-   \caption{Illustration of the complexity estimation algorithm with two local infrastructures. Each local label set at $PDB_{L_m}[\kappa]$ is synchronized into the global pattern database at $PDB_G[\delta]$, where $\delta$ is constructed with $m$. Per region, the union operation is applied on the global label sets, whereupon the complexity is derived from.}  \label{fig:complexity_estimation}
+   \caption[Illustration of the complexity estimation]{Illustration of the complexity estimation algorithm with two local infrastructures. Each local label set at $PDB_{L_m}[\kappa]$ is synchronized into the global pattern database at $PDB_G[\delta]$, where $\delta$ is constructed with $m$. Per region, the union operation is applied on the global label sets, whereupon the complexity is derived from.}  \label{fig:complexity_estimation}
 \end{figure}
 
 As described in Section~\ref{subsec:global_view}, a region is said to be complex if it contains more than one unique label. Otherwise, a region is simple. Since the data within a region already represents a cluster created by a locality-sensitive hashing function $h$, the existence of multiple classes within a single region indicates a non-linear decision boundary. On that basis we differentiate how a region is processed in the subsequent services of the pipeline. Furthermore, the complexity state of a region may vary, depending on the scope it is observed. Note that since the projection matrix $\bm{M}$ that is used to construct $h$ is initialized with the same values in every $L_m$, all hashes that were computed by $h$ are globally comparable. This means that similar data points from different datasets, e.g., $\bm{x}_i \in D_1$ and $\bm{x}_j \in D_2, \; \bm{x}_i \sim \bm{x}_j$ may be hashed to the same region $h(\bm{x}_i) = h(\bm{x}_j)$. However, it is also possible that that the corresponding labels $y_i \in D_1$ and $y_j \in D_2$ are not equal. Thus, a certain region may contain only a single unique label in both local scopes but multiple unique labels in the global scope and therefore lead to a different global view on that region's complexity state. Given that, the complexity estimation service acts as a bridge between the local and global components and answers the question, which regions are considered to be complex in a global scope.
@@ -18,7 +18,7 @@ After collecting all label sets in $\mathcal{S}_t$, the complexity state is obta
 
 
 \begin{algorithm}
-   \caption{Construction of a global complexity state}
+   \caption[Complexity estimation of a region]{Construction of a global complexity state.}
    \label{alg:complexity_estimation}
    % \algsetup{indent=2em}
 

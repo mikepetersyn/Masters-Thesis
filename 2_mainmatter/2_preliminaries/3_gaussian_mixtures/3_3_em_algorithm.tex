@@ -52,7 +52,7 @@ In practice, there exists no knowledge about the value assignment of the latent 
     p(\bm{z})=\bm{w}=[w_{1}, \dots, w_{K}]^\top, \quad \sum\limits_{k=1}^Kw_{k}=1.
 \end{equation}
 
-Now, there is a way to describe the \textit{probability} that the $k$th mixture component generated the data point $\bm{x}$ as
+The \textit{probability} that the $k$th mixture component generates the data point $\bm{x}$ can be expressed as follows
 \begin{equation}
     p(z_k=1)=w_k.
 \end{equation}
@@ -89,7 +89,7 @@ The central question is how to fit the set of unknown parameters $\bm{\theta}$ t
 
 The common solution scheme that would follow would be to calculate the gradient $\partial{\mathcal{L}}/\partial{\bm{\theta}}$, set it to zero and solve for $\bm{\theta}$. Unfortunately, there is no closed form solution for a \gls{mle} in this form, because the summation over the $K$ components prevents the logarithm from being applied to the Gaussian densities within \cite[p. 435]{bis_2006}. That means that each of the partial derivatives of the model parameters depends on all $K$ parameters of the GMM through $r_{nk}$, which prohibits a closed form solution. 
 
-However, a solution can be found using the \gls{ema}. The key idea here is to update one model parameter at a time while keeping the others fixed. For that, the ML estimators for the individual parameters of the \gls{gmm} are required first, which will be applied in the \gls{ema} in the following step. The following necessary conditions are established:
+However, a solution can be found using the \gls{ema}. Intuitively explained, the algorithm proceeds in such a way that a single model parameter is updated at a time, while the others remain unchanged. For that, the ML estimators for the individual parameters of the \gls{gmm} are required first, which will be applied in the \gls{ema} in the following step. The following necessary conditions are established:
 
 \begin{equation*}
     \begin{aligned}
@@ -117,7 +117,7 @@ Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expec
 
 \begin{algorithm}
     \setstretch{1.5}
-    \caption{\gls{ema} for \gls{gmm}}
+    \caption[The \gls{ema} for \glspl{gmm}]{The \gls{ema} for \glspl{gmm}.}
     \label{alg:ema_gmm}
     % \algsetup{indent=2em}
     \begin{algorithmic}[1]
@@ -147,7 +147,7 @@ Each iteration $t$ of the \acrshort{ema} consists mainly of two steps, the Expec
  \begin{figure}[b!]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/em_dataset}
-    \caption{Illustration of the EM algorithm for fitting a GMM with three components on a two-dimensional dataset.}
+    \caption[Illustration of the \gls{ema}]{Illustration of the \gls{ema} for fitting a \gls{gmm} with three components on a two-dimensional dataset.}
     \label{fig:em_algo_gmm}
 \end{figure}
 
@@ -163,7 +163,7 @@ A common method is to select the model with the highest probability given the da
 which derives from the findings in \cite{schwarz1978estimating}. The BIC balances the number of model parameters $|\bm{\theta}|$ and number of data points $N$ against the likelihood function $\mathcal{L}$. In the model selection, the optimal number of model parameters $|\bm{\theta}|$ minimizes the \gls{bic}, such that it provides a principled way of selecting between multiple different models. More complex models almost always fit the data better, resulting in a lower value for the term $-2 \, \text{ln}(\mathcal{L})$. The \gls{bic} penalizes extra parameters by introducing the term $|\bm{\theta}| \, \text{ln} \, (N)$. A model selection utilizing the \gls{bic} is described in Algorithm~\ref{alg:gmm_selection_bic}, with $\bm{\theta}$ being the set of parameter settings for \gls{gmm}.
 
 \begin{algorithm}
-    \caption{GMM Selection with BIC}
+    \caption[\gls{gmm} selection using \gls{bic}]{\gls{gmm} selection using \gls{bic}.}
     \label{alg:gmm_selection_bic}
     \begin{algorithmic}[1]
         \REQUIRE Dataset $\mathcal{X}$

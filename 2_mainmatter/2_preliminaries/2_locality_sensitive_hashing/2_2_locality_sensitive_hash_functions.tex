@@ -13,7 +13,7 @@ For example, cryptographic hash functions are used in systems, where additional 
 \begin{figure}[t!]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/2_locality_sensitive_hashing/tikz/hashing_differences}
-    \caption{The behaviour of a conventional hashing function $h$ and a locality-sensitive hashing function $h_{\text{LSH}}$ when hashing very similar messages $\bm{m} \approx \bm{m}$, similar messages $\bm{m} \sim \bm{m}$ and non-similar messages $\bm{m} \not\sim \bm{m}$ into the slots of a hash table $T_1$ and $T_2$ respectively.}
+    \caption[Behaviour of hashing functions]{The behaviour of a conventional hashing function $h$ and a locality-sensitive hashing function $h_{\text{LSH}}$ when hashing very similar messages $\bm{m} \approx \bm{m}$, similar messages $\bm{m} \sim \bm{m}$ and non-similar messages $\bm{m} \not\sim \bm{m}$ into the slots of a hash table $T_1$ and $T_2$ respectively.}
     \label{fig:hashing_differences}
 \end{figure}
 
@@ -68,7 +68,7 @@ Ideally, the gap between $p_1$ and $p_2$ should be as big as possible as depicte
             \caption{Exact Search}
             \label{subfig:exact_probability}
     \end{subfigure}
-    \caption{The behaviour of a $(r, cr, p_1, p_2)$-sensitive function in (\ref{sub@subfig:lsh_probability}) and (\ref{sub@subfig:lsh_probability_boosted}) (adapted from \cite[100]{leskovec_rajaraman_ullman_2014}) approaching the ideal probability gap in (\ref{sub@subfig:exact_probability}) resembling the behaviour of an exact search.}
+    \caption[The behaviour of a $(r, cr, p_1, p_2)$-sensitive function]{The behaviour of a $(r, cr, p_1, p_2)$-sensitive function in (\ref{sub@subfig:lsh_probability}) and (\ref{sub@subfig:lsh_probability_boosted}) (adapted from \cite[100]{leskovec_rajaraman_ullman_2014}) approaching the ideal probability gap in (\ref{sub@subfig:exact_probability}) resembling the behaviour of an exact search.}
     \label{fig:lsh_probability}
 \end{figure}
    
@@ -90,7 +90,7 @@ Thus, by increasing $K$ the thresholds can be arbitrarily decreased. In order to
 As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-construction rises both thresholds. By choosing $K$ and $L$ judiciously, $p_2$ approaches zero while $p_1$ approaches one. Both constructions may be concatenated in any order to manipulate $p_1$ and $p_2$. Of course, the more constructions are used and the higher the values for the parameters $K$ and $L$ are picked, the more time is considered for the application of the function. The algorithm for solving the \gls{crnn} using \gls{lsh} consists of two consecutive steps, namely the preprocessing (Algorithm~\ref{alg:lsh_preprocess}) and the query (Algorithm~\ref{alg:lsh_query}).
 
 \begin{algorithm}
-    \caption{LSH Preprocessing}
+    \caption[LSH preprocessing]{LSH preprocessing.}
     \label{alg:lsh_preprocess}
     % \algsetup{indent=2em}
     \begin{algorithmic}[1]
@@ -112,7 +112,7 @@ As the AND-construction lowers both $p_1$ and $p_2$, similarly the OR-constructi
  First, a set of points $\mathcal{P}$ is required for the construction of the data structure $\mathcal{T}$ as described in Algorithm \ref{alg:lsh_preprocess}. For each function $g_l$ a corresponding hash table $T_l$ is initialized that will store all data points $\bm{p}_n$.  In other words, all data points are preprocessed and stored $L$ times.The resulting data structure represents the database, which is searched through, when answering a query. Note, that a common collision handling method, such as seperate chaining for example, is applied if a certain slot is already occupied.
 
  \begin{algorithm}
-    \caption{LSH Query}
+    \caption[LSH query]{LSH query}
     \label{alg:lsh_query}
     % \algsetup{indent=2em}
     \begin{algorithmic}[1]

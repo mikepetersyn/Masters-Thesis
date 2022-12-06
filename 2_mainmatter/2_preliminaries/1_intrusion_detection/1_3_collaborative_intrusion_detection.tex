@@ -36,7 +36,7 @@ In order to detect large-scale coordinated attacks, evidence of intrusions from 
         \caption{}%
         \label{subfig:distributed}%
     \end{subfigure}%
-    \caption{\gls{cids} architectures: (\subref{subfig:centralized}) centralized, (\subref{subfig:hierarchical}) hierarchical or (\subref{subfig:distributed}) distributed layout of monitoring (M) and aggregation units (A)}%
+    \caption[\gls{cids} architectures]{\gls{cids} architectures: (\subref{subfig:centralized}) centralized, (\subref{subfig:hierarchical}) hierarchical or (\subref{subfig:distributed}) distributed layout of monitoring (M) and aggregation units (A).}%
     \label{fig:cids_architectures}%
 \end{figure}%
 
@@ -49,7 +49,7 @@ Such information should not be disclosed directly to other participants for reas
 \begin{figure}[t]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/1_intrusion_detection/tikz/cids_components}
-    \caption{Components of \gls{cids} according to functions}
+    \caption[\gls{cids} components]{Components of \gls{cids} according to functions.}
     \label{fig:cids_components}
 \end{figure}
 
@@ -67,8 +67,8 @@ Attack scenario-based approaches detect complex attacks based on databases that 
 
 Multistage alert correlation aims to detect unknown multistage attacks by correlating defined pre- and post-conditions of individual alerts \cite{Cuppens2002} \cite{che_2003}. The idea behind the approach is based on the assumption that an attack is executed in preparation for a next step. The system states before and after an alert are modeled as pre- and postconditions, which are correlated with each other. While these approaches are more flexible than the all-static definition of attack scenarios, they still require the prior modeling of pre- and postconditions, which are based on expert knowledge.
 
-Filter-based approaches filter irrelevant data in order to reduce the number of alerts within the intrusion detection context. For example, \cite{goo_2002} filters alerts by a ranking based on priorities of incidents. Priorities are calculated through comparing the target's known topology with the vulnerability requirements of the incident type. The rank that each alert is assigned to provides the probability for its validity. The accuracy of the filters is based on the quality of the description of the topology to be protected and require reconfiguration when changes are made to the infrastructure.
+Filter-based approaches filter irrelevant data in order to reduce the number of alerts within the intrusion detection context. For example, \cite{goo_2002} filters alerts by a ranking based on priorities of incidents. Priorities are calculated through comparing the topology familiar to the target with the vulnerability requirements of the incident type. The rank that each alert is assigned to provides the probability for its validity. The accuracy of the filters is based on the quality of the description of the topology to be protected and require reconfiguration when changes are made to the infrastructure.
 
-Data Dissemination describes the efficient distribution of correlated and aggregated data in the \gls{cids} network. How the data is disseminated is strongly influenced by the topology and membership management of the system. Centralized topologies have a predefined flow of information from the monitoring units to the central analysis unit. If the system is organized hierarchically, information flows statically or dynamically organized from lower monitoring units in the hierarchy to higher units. Distributed topologies allow the use of versatile strategies, such as flooding, selective flooding or publish-subscribe methods.
+Data Dissemination describes the efficient distribution of correlated and aggregated data in the \gls{cids} network. How the data is disseminated is strongly influenced by the topology and membership management of the system. Centralized topologies exhibit a prespecified information path from the monitoring units to the central analysis unit. If the system is organized hierarchically, information flows statically or dynamically organized from lower monitoring units in the hierarchy to higher units. Distributed topologies allow the use of versatile strategies, such as flooding, selective flooding or publish-subscribe methods.
 
 Global monitoring mechanisms are needed for the detection of distributed attacks which isolated \glspl{ids} cannot detect due to the limited information base. Thus, the detection of distributed attacks relies on the insight obtained by combining data from different infrastructures. This means that global monitoring is strongly dependent on the employed correlation and aggregation techniques. The overall strategy of the \gls{cids} is described by global monitoring and can have both generic and specific objectives. 

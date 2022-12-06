@@ -45,23 +45,21 @@
 
 \newacronym{cidsm}{CIDSM}{Collaborative Intrusion Detection System Message}
 
-\newacronym{nn}{NNP}{nearest-neighbour search problem}
+\newacronym{nn}{NNP}{Nearest-Neighbour Problem}
 
-\newacronym{cnn}{$c$-ANNP}{$c$-approximate nearest-neighbour problem}
+\newacronym{cnn}{$c$-ANNP}{$c$-Approximate Nearest-Neighbour Problem}
 
-\newacronym{crnn}{$cr$-ANNP}{$cr$-approximate nearest-neighbour problem}
+\newacronym{crnn}{$cr$-ANNP}{$cr$-Approximate Nearest-Neighbour Problem}
 
-\newacronym{lsh}{LSH}{locality-sensitive hashing}
+\newacronym{lsh}{LSH}{Locality-Sensitive Hashing}
 
-\newacronym{grp}{GRP}{gaussian random projection}
+\newacronym{grp}{GRP}{Gaussian Random Projection}
 
-\newacronym{bic}{BIC}{bayesian information criterion}
+\newacronym{bic}{BIC}{Bayesian Information Criterion}
 
-\newacronym{acc}{$ACC$}{accuracy score}
+\newacronym{gms}{$GMS$}{Generative Model Selection}
 
-\newacronym{gms}{$GMS$}{generative model selection}
-
-\newacronym{spof}{SPoF}{single point of failure}
+\newacronym{spof}{SPoF}{Single Point of Failure}
 
 \newacronym{ietf}{IETF}{Internet Enginnering Task Force}
 
@@ -96,6 +94,8 @@
 \newacronym{ml}{ML}{Machine Learning}
 
 \newacronym{rq}{RQ}{Research Question}
+
+\newacronym{it}{IT}{Information Technology}
 
 
 
@@ -250,6 +250,42 @@
 \newglossaryentry{dataset}{
   name=\ensuremath{\mathcal{D}},
   description=training dataset,
+  parent=specific
+}
+
+\newglossaryentry{pattern database}{
+  name=\ensuremath{PDB},
+  description=pattern database,
+  parent=specific
+}
+
+\newglossaryentry{event channel}{
+  name=\ensuremath{C},
+  description=event channel,
+  parent=specific
+}
+
+\newglossaryentry{batch}{
+  name=\ensuremath{X},
+  description=batch of data points and labels,
+  parent=specific
+}
+
+\newglossaryentry{regions}{
+  name=\ensuremath{\mathcal{R}},
+  description=set of regions,
+  parent=specific
+}
+
+\newglossaryentry{keys}{
+  name=\ensuremath{\alpha, \beta, \gamma, \dots},
+  description=keys in terms of a hash table or key-value store,
+  parent=specific
+}
+
+\newglossaryentry{labelset_region}{
+  name=\ensuremath{\mathcal{S}_r},
+  description=set of unique labels within a region,
   parent=specific
 }
 

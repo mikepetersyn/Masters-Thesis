@@ -1,7 +1,7 @@
 \documentclass[../../main.tex]{subfiles}
 \begin{document}
 
-\section{Evaluation Results}
+\section{Evaluation Results}\label{sec:results}
 
 This section presents the results from the experiments described in Section~\ref{sec:experimental_setup}. First, the results from the baseline experiments are outlined in Section~\ref{sec:baseline}. Then, in Section~\ref{sec:classification_improvement} the experimental results regarding the detection performance of the presented \gls{cids} architecture are presented. Lastly, the results in the context of overhead reduction are shown in Section~\ref{sec:overhead_reduction}.
 
@@ -27,7 +27,7 @@ The overhead that is introduced by the direct exchange of original data between 
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/missing_classes.tex} 
-    \caption[Baseline Detection Performance with Missing Class Information]{The table shows the classification performance for isolated \acrshortpl{ids} with knowledge gaps. No collaboration mechanism is applied.}
+    \caption[Baseline detection performance with missing class information]{The table shows the classification performance for isolated \acrshortpl{ids} with knowledge gaps. No collaboration mechanism is applied.}
     \label{tab:missing_classes}
 \end{table}
 
@@ -42,7 +42,7 @@ The overhead that is introduced by the direct exchange of original data between 
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/baseline_classification.tex} 
-    \caption[Baseline Detection Performance with Original Data Exchange]{The table shows the classification performance for \acrshortpl{ids} that exchange original data directly within a \gls{cids}.}
+    \caption[Baseline detection performance with original data exchange]{The table shows the classification performance for \acrshortpl{ids} that exchange original data directly within a \gls{cids}.}
     \label{tab:baseline_detection}
 \end{table}
 
@@ -57,7 +57,7 @@ The overhead that is introduced by the direct exchange of original data between 
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/num_samples.tex} 
-    \caption[Communication Overhead in the Baseline Experiment]{The table shows the communication overhead for directly exchanging original attack data between the members in the \gls{cids}.}
+    \caption[Communication overhead in the baseline experiment]{The table shows the communication overhead for directly exchanging original attack data between the members in the \gls{cids}.}
     \label{tab:num_samples_parameters}
 \end{table}
 
@@ -76,7 +76,7 @@ Table~\ref{tab:synthetic_classification} shows the results for the scenario, whe
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.15em}
     \input{table/synth_classification.tex} 
-    \caption[Detection Performance with Synthetic Data]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and enhance their local training datasets with synthetic data.}
+    \caption[Detection performance with synthetic data]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and enhance their local training datasets with synthetic data.}
     \label{tab:synthetic_classification}
 \end{table}
 
@@ -91,7 +91,7 @@ Table~\ref{tab:synthetic_classification} shows the results for the scenario, whe
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.15em}
     \input{table/pattern_synth_classification.tex} 
-    \caption[Detection Performance with Synthetic Data and Pattern Detector]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and both utilize synthetic data and the pattern detector.}
+    \caption[Detection performance with synthetic data and pattern detector]{The table shows the classification performance for \acrshortpl{ids} that participate in the proposed \gls{cids} and both utilize synthetic data and the pattern detector.}
     \label{tab:pattern_synthetic_classification}
 \end{table}
 
@@ -107,7 +107,7 @@ Table~\ref{tab:synthetic_classification} shows the results for the scenario, whe
         \setlength{\belowrulesep}{0pt}
         \setlength{\extrarowheight}{.1em}
         \input{table/region_analysis.tex} 
-        \caption[Parameter Number Analysis]{The table shows the compression rates for different datasets and hash sizes.}
+        \caption[Parameter number analysis]{The table shows the compression rates for different datasets and hash sizes.}
         \label{tab:region_analysis}
     \end{table}
 

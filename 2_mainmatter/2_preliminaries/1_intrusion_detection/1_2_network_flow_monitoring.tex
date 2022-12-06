@@ -5,23 +5,23 @@ Network monitoring is a key component for network management as network administ
 Since the first attempts at standardization in the 1990s through the efforts of the \gls{ietf}, a number of proprietary standards have emerged as each network device vendor has implemented its own flow export protocol. In order to improve interoperability in the area of network flow measurement, the \gls{ietf}, established the \gls{ipfix} working group. This working group defined the \gls{ipfix} standard (RFC 5101), which defines the term network flow as follows.
 
 \begin{definition}[Network Flow]
-A network flow is an aggregation of all network packets that pass an observation point of a network during a certain time interval and share a set of common properties. These properties are defined as the result of applying a function to the value of
+A network flow is an aggregation of all network packets that pass an observation point of a network during a certain time interval and share a set of common properties. ``Each property is defined as the result of applying a function to the values of:
 \begin{enumerate}
-    \item one or more packet, transport or application header fields,
-    \item one or more characteristics of the packet itself,
-    \item one or more fields derived from packet treatment.
+    \item one or more packet [...], transport [...] or application header fields [...],
+    \item one or more characteristics of the packet itself [...],
+    \item one or more fields derived from packet treatment [...]'' \cite{rfc5101}.
 \end{enumerate}
 
 \end{definition}
 
-This definition is loose enough to cover the range from a flow containing all packets observed at a network interface to a flow that consists only of a single packet between two applications. Note, that this definition of the set of properties is also less strict than the conventional definition of the five-tuple consisting of source IP address, source port, destination IP address, destination port and protocol \cite{rfc5101}.
+This definition covers the range from a flow that contains all packets that were observed at a network interface to a flow that consists only of a single packet between two applications. Note, that this definition of the set of properties is also less strict than the conventional definition of the five-tuple consisting of source IP address, source port, destination IP address, destination port and protocol \cite{rfc5101}.
 
 In general, network flows can appear either as unidirectional flow, which aggregates all packets from one host to another host, or as bidirectional format, that aggregates all packets regardless of direction. Depending on which flow format and flow exporter is used, additional information, e.g. statistical calculations on bytes per second, can be obtained. Other common network flow protocols are NetFlow \cite{rfc3954}, OpenFlow \cite{mck_2008} and sFlow \cite{pha_2004}.
 
 \begin{figure}[t]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/1_intrusion_detection/tikz/flow_export}
-    \caption{General Flow Monitoring Architecture}
+    \caption[General flow monitoring architecture]{General flow monitoring architecture.}
     \label{fig:flow-export}
 \end{figure}
 

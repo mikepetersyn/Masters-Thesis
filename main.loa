@@ -1,24 +1,24 @@
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {1}{\ignorespaces LSH Preprocessing\relax }}{20}{algorithm.1}%
+\contentsline {algorithm}{\numberline {1}{\ignorespaces LSH preprocessing}}{20}{algorithm.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {2}{\ignorespaces LSH Query\relax }}{21}{algorithm.2}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces LSH query}}{21}{algorithm.2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {3}{\ignorespaces \gls {ema} for \gls {gmm}\relax }}{32}{algorithm.3}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces The \gls {ema} for \glspl {gmm}}}{32}{algorithm.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {4}{\ignorespaces GMM Selection with BIC\relax }}{33}{algorithm.4}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces \gls {gmm} selection using \gls {bic}}}{33}{algorithm.4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {5}{\ignorespaces Preprocessing and inserting $B \subset D_m$ into $PDB_{L_m}$\relax }}{51}{algorithm.5}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Local Indexing Service}}{51}{algorithm.5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {6}{\ignorespaces Construction of a global complexity state\relax }}{53}{algorithm.6}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Complexity estimation of a region}}{53}{algorithm.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Generative Fitting (Main Procedure)\relax }}{54}{algorithm.7}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Generative Fitting (Main Procedure)}}{54}{algorithm.7}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {8}{\ignorespaces Binary Splitting and Upsampling of Region Data\relax }}{55}{algorithm.8}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Upsampling of region data}}{55}{algorithm.8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {9}{\ignorespaces Model Selection\relax }}{57}{algorithm.9}%
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Automated model selection}}{57}{algorithm.9}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {10}{\ignorespaces Adversary Evaluation\relax }}{58}{algorithm.10}%
+\contentsline {algorithm}{\numberline {10}{\ignorespaces Adversary evaluation}}{58}{algorithm.10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {11}{\ignorespaces Hybrid Classification using Pattern Detection\relax }}{60}{algorithm.11}%
+\contentsline {algorithm}{\numberline {11}{\ignorespaces Hybrid classification using pattern detection}}{60}{algorithm.11}%
 \defcounter {refsection}{0}\relax 
-\contentsline {algorithm}{\numberline {12}{\ignorespaces Permutation Importance\relax }}{66}{algorithm.12}%
+\contentsline {algorithm}{\numberline {12}{\ignorespaces Permutation importance}}{66}{algorithm.12}%

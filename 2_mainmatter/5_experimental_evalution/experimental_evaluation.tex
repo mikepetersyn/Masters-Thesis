@@ -3,13 +3,7 @@
 
 \chapter{Experimental Evaluation}\label{ch:experimental_evaluation}
 
-%In the context of network intrusion detection, network flow data is employed for real time network analysis.
-
-% The objectives for the evaluation should reflect the challenges of Data Dissemination in CIDS, mentioned in \ref{sec:introduction}, namely Data Privacy, Data Interoperability and Minimal Overhead. However, within the context of an experimental setup, only the attributed of Minimal Overhead is evaluated. In the case of Data Privacy, a theoretical discussion in Section \ref{sec:results_and_analysis} evaluated the following question: How likely is it for a CIDS member, to recover the original values of a hashed data point? Also the attribute of Data Interoperability is discussed in section \ref{sec:results_and_analysis}, with references to related work in Section \ref{sec:related_work}.
-
-% Within this section, it is elaborated how the attribute of Minimal Overhead is evaluated experimentally with respect to its potential advantages and disadvantages. While its function as a data compression algorithm is advantageous for storing and disseminating data, similarity hashing also leads to loss of information which ultimately leads to drops in classification performance. The remaining questions are, how well does the data compression help with scalability and which exact price is to pay in form of degradation of classication performance. 
-
-% First, the data that is used for the different experiments and the applied preprocessing strategy is presented in Section \ref{sec:data_and_preprocessing}. After that, the evaluation strategy for testing the compression capabilities in the context of dimensionality reduction, data reduction and dissemination latency is evaluated thoroughly in Section \ref{sec:data_compression_evaluation}. Lastly, the setup for comparing the classification performance of the IDS with either utilizing raw data or hashed data in Section \ref{sec:classification_performance_evaluation} is presented.
+This chapter describes the evaluation of the proposed architecture organized into four parts.  First, Section~\ref{sec:network_flow_data} introduces the employed intrusion detection datasets, describes the feature extraction by application of a flow exporter and the resulting features, and describes the final preparation of the extracted flow data for use in the evaluation. Section~\ref{sec:experimental_setup} contains the explanation of the experimental procedure. This includes a brief description of implementation details and the description of the evaluation scenarios. Thereafter, Section~\ref{sec:results} presents the results of the experiments. Finally, the findings are analyzed in a discussion in Section~\ref{sec:discussion}.
 
 \newpage
 

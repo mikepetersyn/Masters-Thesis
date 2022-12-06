@@ -12,7 +12,7 @@ A cloud-oriented architecture, consisting of four services for data processing (
 \begin{figure}[b!]
     \centering
     \includestandalone{2_mainmatter/5_experimental_evalution/tikz/implementation_details}
-    \caption[Implementation Details]{Operation Principles of a Processing Service}  \label{fig:implementation}
+    \caption[Operation principles of a processing service]{Operation Principles of a Processing Service.}  \label{fig:implementation}
  \end{figure}
 
 As the processing services effectively manage the disseminatation of data between all members of the CIDS, the data consistency between infrastructures depends on the processing guarantees given by the employed message queue that distributes the jobs among the processing instances. Kafka provides a configuration that enables transactional communication, such that a strong consistency can be achieved. For example, upon the successfull execution of operations on a data partition, the messaging queue can be notified and the job is done. In contrast to that, upon a failure, the messaging service will try to distribute that job again. Typically, the decision for transactional guarantees comes with the cost of a higher delay. Furthermore, for data availability and consistency on a datastore-level, the consistency guarantees of the employed data store is relevant. Redis implements a master-replica scheme with asynchronous replication and this provides an eventual consistency.
@@ -33,7 +33,7 @@ The classification experiments are constructed to simulate the absence of knowle
     \setlength{\belowrulesep}{0pt}
     \setlength{\extrarowheight}{.1em}
     \input{table/included_attack_profiles.tex} 
-    \caption[Attack Classes Included in the Datasets]{The table indicates wether a dataset includes a particular attack class (\cmark) or not (\xmark).}
+    \caption[Attack classes included in the datasets]{The table indicates wether a dataset includes a particular attack class (\cmark) or not (\xmark).}
     \label{tab:included_attack_classes}
 \end{table}
 

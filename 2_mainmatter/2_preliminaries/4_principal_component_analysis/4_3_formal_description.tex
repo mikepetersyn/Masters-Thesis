@@ -23,9 +23,9 @@ is searched for, which retains as much signal as possible \cite{Hotelling1933Ana
 
 that projects $\mathcal{X}$ onto the subspace that is spanned by the columns of $\bm{B}$. Thus, $\bm{B}$ is an orthonormal basis. In order to preserve the most variance of the data, the basis vectors of $\bm{B}$ must point into the direction of maximal variance in the data, which is found by computing the eigenvectors of the covariance matrix $\bm{\Sigma}$ of $\mathcal{X}$. The projection of the data onto a lower-dimensional subspace is equal to the eigenvalue that is associated with the basis vector that spans this subspace. 
 
-Therefore, maximizing the variance of the low-dimensional representation requires to choose the basis vector that is associated with the largest eigenvalue of the data covariance matrix. This eigenvector is called the first principal component. All other directions in $\mathbb{R}^M$, which both maximize the variance and are orthogonal to all the other directions are the remaining $M-1$ principal components.
+Hence, maximizing the variance of the low-dimensional representation requires to choose the basis vector that is associated with the largest eigenvalue of the data covariance matrix \cite{dei_2020}. This eigenvector is the first principal component. All other directions in $\mathbb{R}^M$, which both maximize the variance and are orthogonal to all the other directions are the remaining $M-1$ principal components.
 
-As stated before, the projection matrix $\bm{B}$ is obtained by diagonalizing the covariance matrix $\bm{\Sigma}$, which can be done with via eigendecomposition. In the following, it is shown how the eigendecomposition is related to the diagonalization of a matrix and that an eigendecomposition of a covariance matrix is guaranteed to exist. In \cite[98]{dei_2020} it is stated that a matrix $\bm{A} \in \mathbb{R}^{N \times N}$ is diagonalizable if it is similar to a diagonal matrix, i.e., if there exists an invertible matrix $\bm{P} \in \mathbb{R}^{N \times N}$ such that $\bm{D} = \bm{P}^{-1} \bm{A} \bm{P}$.
+As stated before, the projection matrix $\bm{B}$ is obtained by diagonalizing the covariance matrix $\bm{\Sigma}$, which can be done with via eigendecomposition. In the following, it is shown how the eigendecomposition is related to the diagonalization of a matrix and that an eigendecomposition of a covariance matrix is guaranteed to exist. According to \cite[98]{dei_2020}, ``a matrix $\bm{A} \in \mathbb{R}^{N \times N}$ is diagonalizable if it is similar to a diagonal matrix, i.e., if there exists an invertible matrix $\bm{P} \in \mathbb{R}^{N \times N}$ such that $\bm{D} = \bm{P}^{-1} \bm{A} \bm{P}$''.
 
 In \cite[99]{dei_2020} it is stated that with an Eigendecomposition a square matrix $\bm{A} \in \mathbb{R}^{N \times N}$ can be factorized into
 
@@ -35,7 +35,7 @@ In \cite[99]{dei_2020} it is stated that with an Eigendecomposition a square mat
 
 where $\bm{P} \in \mathbb{R}^{N \times N}$ and $\bm{D}$ is a diagonal matrix whose entries are the eigenvalues of $\bm{A}$, if and only if the eigenvectors of $\bm{A}$ form a basis of $\mathbb{R}^n$.
 
-It follows, that only non defective matrices can be diagonalized. In other words, a square matrix that does not have a complete basis of eigenvectors is not diagonalizable. However, the Spectral Theorem (see Definition~\ref{def:spectral_theorem}) confirms the existence of such a basis for symmetric matrices \cite[94]{dei_2020}.
+It follows, that only non defective matrices can be diagonalized. In other words, a square matrix that does not have a complete basis of eigenvectors is not diagonalizable. However, the Spectral Theorem (see Definition~\ref{def:spectral_theorem} adopted from \cite[94]{dei_2020}) confirms the existence of such a basis for symmetric matrices.
 
 \begin{definition}[Spectral Theorem]\label{def:spectral_theorem}
 If $\bm{A} \in \mathbb{R}^{N \times N}$ is symmetric, there exists an orthonormal basis of the corresponding vector space consisting of eigenvectors of $\bm{A}$, and each eigenvalue is real.
@@ -43,7 +43,7 @@ If $\bm{A} \in \mathbb{R}^{N \times N}$ is symmetric, there exists an orthonorma
 
 From the fact that every covariance matrix is symmetric, we conclude that a symmetric matrix $\bm{S} \in \mathbb{R}^{n \times n}$ can always be diagonalized.
 
-Therefore, it is assured that an eigendecomposition of a symmetric matrix $\bm{A}$ exists (with real values), and that an \acrshort{onb} of eigenvectors can be found, so that $\bm{A} = \bm{P}\bm{D}\bm{P}^{-1}$, where $\bm{D}$ is diagonal and the columns of $\bm{P}$ contain the eigenvectors. Rewriting the equation from Theorem \ref{eq:eigendecomposition} as follows reveals the eigenvalue equations:
+Therefore, it is assured that an eigendecomposition of a symmetric matrix $\bm{A}$ exists, and that an \acrshort{onb} of eigenvectors can be found, so that $\bm{A} = \bm{P}\bm{D}\bm{P}^{-1}$, where $\bm{D}$ is diagonal and the columns of $\bm{P}$ contain the eigenvectors. Rewriting the equation from Theorem \ref{eq:eigendecomposition} as follows reveals the eigenvalue equations:
 
 \begin{equation*}
         \bm{A} [p_1, \dots, p_N] = [p_1, \dots, p_N] \left[\begin{array}{ccccc}
@@ -84,7 +84,7 @@ The relation between the variance and the factorized matrix in Equation~\ref{eq:
     \end{aligned}
 \end{equation}
 
-Maximizing the variance defined in Equation~\ref{eq:pca_variance_objective} results in finding vector $\bm{b}_1$. But arbitrarily increasing the magnitude of $\bm{b}_1$ increases $\mathbb{V}_1$, which is why restricting all solutions to unit vector size is necessary:
+Maximizing the variance defined in Equation~\ref{eq:pca_variance_objective} results in finding vector $\bm{b}_1$. But increasing the magnitude of $\bm{b}_1$ increases $\mathbb{V}_1$, which is why restricting all solutions to unit vector size is necessary:
 
 \begin{equation*}
     || \bm{b}_1 || ^2 = 1 \Leftrightarrow || \bm{b}_1 || = 1.
@@ -130,7 +130,7 @@ Since the vector $\bm{b}_1^\top$ is considered a linear transformation, computin
     \tilde{\bm{x}}_n = \bm{b}_1z_{1n} = \bm{b}_1 \bm{b}_1^\top \bm{x}_n.
 \end{equation*}
 
-So far, only the solution for the first principal component has been derived. Generalizing this schema onto a $M$-dimensional subspace with maximal variance involves some way of mathematical induction. The idea is to subtract the effect of the first $M-1$ principal components $\bm{b}_1, \dots, \bm{b}_{M-1}$ from the data and thereby trying to find the principal components that compress the remaining information. For a detailed investigation of this general case, reference is made to \cite[pp.291]{dei_2020}
+So far, only the solution for the first principal component has been derived. Generalizing this schema onto a $M$-dimensional subspace with maximal variance involves some way of mathematical induction. The idea is to subtract ``the effect of the first $M-1$ principal components $\bm{b}_1, \dots, \bm{b}_{M-1}$ from the data, thereby trying to find principal components that compress the remaining information'' \cite{dei_2020}. For a detailed investigation of this general case, reference is made to \cite[291]{dei_2020}.
 
 
 \end{document}

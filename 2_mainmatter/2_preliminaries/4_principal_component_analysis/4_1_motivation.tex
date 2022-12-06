@@ -8,11 +8,11 @@ Several difficulties arise when analyzing high-dimensional data \cite[p.286]{dei
 \begin{figure}[b]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/4_principal_component_analysis/tikz/pca_motivation}
-    \caption{Two synthetic datasets illustrating the difference in signal and noise}
+    \caption[The difference in signal and noise of a dataset]{Two synthetic datasets illustrating the difference in signal and noise.}
     \label{fig:pca_signal_noise}
 \end{figure}
 
-In general, dimensionality reduction methods make use of the following idea. Measuring data is error prone and associated with both incompleteness and redundancy. This trend increases with the number of dimensions. Thus, many dimensions in multivariate data can be explained by a combination of other dimensions. This underlying structure can be exploited by partitioning the full space into subspaces of signal and noise \cite[217]{sco_2015}. Figure \ref{fig:pca_signal_noise} shows two synthetic datasets each with two features. The plot on the right displays a negative correlation and the direction that carries the largest portion of the signal can be located visually. 
+In general, dimensionality reduction methods make use of the following idea. Measuring data is error prone and associated with both incompleteness and redundancy. This trend increases with the number of dimensions. Thus, a large number of dimensions in multivariate data can be properly described by a combination of other dimensions. This underlying structure can be exploited by partitioning the full space into subspaces of signal and noise \cite[217]{sco_2015}. Figure \ref{fig:pca_signal_noise} shows two synthetic datasets each with two features. The plot on the right displays a negative correlation and the direction that carries the largest portion of the signal can be located visually. 
 
 In this two-dimensional example, the direction that is perpendicular to that is the direction that carries the least amount of signal and is referred to as noise. The goal is to discard a significant amount of noise in the data and work with a more compact representation, with losing as little signal as possible.
 

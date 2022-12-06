@@ -10,7 +10,7 @@ The goal is to ensure that changes to the $PDB_G$ are disseminated to the local 
 For the second scenario, we describe how to perform hybrid attack detection using the classifier from the first scenario and the pattern detector in combination. First, incoming flows are normalized and hashed using a \gls{grp} with the same parameters that were used for indexing the data into the $PDB$. Using the resulting hash $r$, the corresponding region complexity state is retrieved. If the result from the lookup is empty, that means that no such region exists in the $PDB$. In that case, the flow is classified using the model $M$ that was fitted on both synthetic and real train data. Similarly, if a region complexity state is found to be complex, the flow is classified using $M$ as well. If it turns out that the flow is assigned to a simple region, the corresponding label is loaded from the PDB and used as the classification result.
  
 \begin{algorithm}
-    \caption{Hybrid Classification using Pattern Detection}
+    \caption[Hybrid classification using pattern detection]{Hybrid classification using pattern detection.}
     \label{alg:pattern_detection}
     \begin{algorithmic}[1]
         \REQUIRE Stream of incoming flows $\bm{X}$        

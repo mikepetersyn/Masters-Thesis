@@ -7,18 +7,10 @@ Several members exist in the CIDS, each of which manages an isolated IDS. Every 
 
 Section \ref{subsec:example_integration} starts with a reference example to illustrate the idea that is described above and discusses the integration of the CIDS into existing infrastructures. Subsequently, Section \ref{subsec:clustering} and Section \ref{subsec:filtering_and_compression} show the key concepts that enable data distribution and correlation under the given requirements. Finally, Section \ref{subsec:global_view} combines the individual elements to present the strategy for the creation and utilization of the global view.
 
-
-% The global view is a collection of transformed information from local intrusion detection datasets. 
-
-% Before any data is transferred from a local network of a member of the CIDS to the global view, it is clustered, filtered and compressed (\textit{Privacy} and \textit{Minimal Overhead}). Upon each update on the global view, a synchronization from the global view to each local view of all members is initiated.  In this way, the accumulated global knowledge is shared with individual members enriching their local databases, which form the backbone of their attack detection.
-
-
-% Section \ref{subsec:high_level_architecture} explains how this approach can be integrated into existing IDS architectures and introduces the key features and techniques that enable a data dissemination and correlation which meets the challenges described in section \ref{subsec:challenges}. Subsequently, details on the rules and processes for creating the global view are presented in section \ref{subsec:global_view}.
-
 \begin{figure}[t!]
     \centering
     \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/high_level_architecture}
-    \caption{Example integration of the generative pattern database into a generic NIDS deployment, seperated by data and detection level}
+    \caption[Example integration of the $PDB$]{Integration of the generative pattern database into a generic NIDS deployment, seperated by data and detection level.}
     \label{fig:high_level_architecture}
 \end{figure}
 
@@ -44,7 +36,7 @@ Two types of data are extracted within individual regions. First, metadata of lo
 \begin{figure}[b!]
     \centering
     \includestandalone{2_mainmatter/4_generative_pattern_database/tikz/global_view}
-    \caption{Building the global view by combining $M$ local views}
+    \caption[Building of the global view]{Building the global view by combining $M$ local views.}
     \label{fig:global_view}
 \end{figure}
 

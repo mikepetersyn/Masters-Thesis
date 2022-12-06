@@ -15,6 +15,8 @@ p(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} exp\bigg(- \frac{(x-\mu)^2
 
 with $x \in \mathbb{R}$ and where $\mu$ refers to the mean and $\sigma^2$ is the variance of the distribution. Then, if $\bm{X}$ follows a normal distribution, this is expressed as a multivariate Gaussian distribution, denoted by $\bm{X} \sim \mathcal{N}_D(\bm{\mu}, \bm{\Sigma})$, which is fully described by its mean vector $\bm{\mu}$ and its covariance matrix $\bm{\Sigma}$.
 
+\newpage
+
 \begin{definition}[Multivariate Gaussian Distribution]\label{def:multivariate_pdf}
 A multivariate random variable $\bm{X}$ follows a normal distribution, if it is described by a probability density function
 
@@ -47,7 +49,7 @@ with $\bm{x} \in \mathbb{R}^D$. The mean vector $\bm{\mu}$ specifies the estimat
         \caption{}%
         \label{subfig:bivariate_pos}%
     \end{subfigure}%
-    \caption{Bivariate gaussian distributions exhibit different shapes with a changing correlation value between the random variables $x_1$ and $x_2$: (\subref{subfig:bivariate_neg}) negative, (\subref{subfig:bivariate_neutral}) zero and (\subref{subfig:bivariate_pos}) positive correlation}%
+    \caption[Bivariate Gaussian distributions with different correlations]{Bivariate gaussian distributions exhibit different shapes with a changing correlation value between the random variables $x_1$ and $x_2$: (\subref{subfig:bivariate_neg}) negative, (\subref{subfig:bivariate_neutral}) zero and (\subref{subfig:bivariate_pos}) positive correlation.}%
     \label{fig:multiple_bivariate}%
 \end{figure}%
 
@@ -114,7 +116,7 @@ A line of arguments proving the stated theorems can be found in section 2.3 in \
 \begin{figure}[t!]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/3_gaussian_mixtures/tikz/marginal}
-    \caption{Marginals $p(x_M)$, $p(x_N)$ and Conditional Gaussian $p(x_{M|N})$}
+    \caption[Marginals of a Gaussian]{Marginals $p(x_M)$ and $p(x_N)$.}
     \label{fig:marginal_conditional_gaussian}
 \end{figure}
 

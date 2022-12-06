@@ -18,7 +18,7 @@ The angle $\theta$ can be normalized to the range $[0, 1]$ by dividing it by $\p
 \begin{figure}[t!]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/2_locality_sensitive_hashing/tikz/random_projection.tex}
-    \caption{Illustration of a random hyperplane partitioning the space}
+    \caption{Illustration of a random hyperplane partitioning the space.}
     \label{fig:rp_3d}
 \end{figure}
 
@@ -46,14 +46,14 @@ An illistration of a random hyperplane that dissects the three-dimensional space
 
 For a visual proof of the claim in Equation \ref{eq:rp_proba} consider Figure \ref{fig:rp_2d}, where two vectors $\bm{p}_1$ and $\bm{p}_2$, regardless of their dimensionality, define a plane and an angle $\theta$ in this plane. Pick a hyperplane $E_1$ that intersects the plane that is spanned by $\bm{p}_1$ and $\bm{p}_2$ in a line (depicted as a red dashed line), by randomly selecting a corresponding normal vector $n_1$. Since $\bm{p}_1$ and $\bm{p}_2$ are on different sides of the hyperplane, their projections given by $\bm{p}_1^\top n_1$ and  $\bm{p}_2^\top n_1$ will have different signs. Such a scenario, where two points have different signs, is interpreted as a notion of dissimilarity. Thus, the hyperplane acts as a clustering primitive that partitions the original input set into two disjunct sets.
 
-The opposite scenario is illustrated by a random normal vector $n_2$ that is normal to the hyperplane $E_2$, which is represented by the blue dashed line. Both $\bm{p}_1^\top n_2$ and  $\bm{p}_2^\top n_2$ will have the same sign. This in turn is interpreted as a notion of similarity, since both points are clustered into the same set. All angles between the intersection line of the random hyperplane and the plane spanned by $\bm{p}_1$ and $\bm{p}_2$ are equally likely. Thus, the probability that the hyperplane looks like the red line is $\theta / \pi$ and like the blue line $1 - \theta / \pi$.
+The opposite scenario is illustrated by a random normal vector $n_2$ that is normal to the hyperplane $E_2$, which is depicted by the blue dashed line. Both $\bm{p}_1^\top n_2$ and  $\bm{p}_2^\top n_2$ will have the same sign. This in turn is interpreted as a notion of similarity, since both points are clustered into the same set. All angles between the line that intersects the plane spanned by $\bm{p}_1$ and $\bm{p}_2$ and the random hyperplane equally likely to occur. Thus, the probability that the hyperplane looks like the red line is $\theta / \pi$ and like the blue line $1 - \theta / \pi$.
 
 Therefore, the \gls{grp} is a $(r, cr, (1-r/\pi), (1-cr/\pi))$-sensitive family for any $r$ and $cr$. As already explained in Section \ref{subsec:locality-sensitive-hashes}, such a family can be amplified as desired. The AND-construction is refers to the selection of a number of $K$ different random hyperplanes $r_k$. According to the construction in Equation \ref{eq:grp_sign}, all projections $sign(\bm{p}_n^\top n_k)$ for a single point are collected in a $K$-bit vector. Likewise, the OR-construction refers to the initialization of a number of $L$ such AND-constructions. The algorithmic procedures for preprocessing and queries from Algorithm \ref{alg:lsh_preprocess} and Algorithm \ref{alg:lsh_query} can be applied without change. 
 
 \begin{figure}[t]
     \centering
     \includestandalone{2_mainmatter/2_preliminaries/2_locality_sensitive_hashing/tikz/random_hyperplane_2d}
-    \caption{Visual Proof of claim in equation \ref{eq:rp_proba}}
+    \caption[Visual proof of assignment probability in a \gls{grp}]{Visual proof of claim in equation \ref{eq:rp_proba}.}
     \label{fig:rp_2d}
 \end{figure}
 \end{document}
